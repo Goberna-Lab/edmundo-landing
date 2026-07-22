@@ -1,13 +1,13 @@
-.propuestas__grid {
+.ejes__grid {
   display: grid;
-  /* auto-fit + minmax: se adapta sin media queries y sin desbordar en mobile. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  /* auto-fit + minmax: reflowa solo, sin breakpoints ni desborde en mobile. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
   gap: var(--espacio-6);
   list-style: none;
   padding: 0;
 }
 
-.propuesta {
+.eje {
   display: flex;
   flex-direction: column;
   gap: var(--espacio-3);
@@ -15,25 +15,27 @@
   background: var(--color-fondo);
   border: 1px solid var(--color-borde);
   border-radius: var(--radio);
-  transition: transform var(--transicion), box-shadow var(--transicion);
+  transition: transform var(--transicion), box-shadow var(--transicion),
+    border-color var(--transicion);
 }
 
-.propuesta:hover {
+.eje:hover {
   transform: translateY(-4px);
+  border-color: var(--color-primario);
   box-shadow: var(--sombra);
 }
 
-.propuesta__icono {
+.eje__icono {
   width: 40px;
   height: 40px;
   color: var(--color-primario);
   fill: currentColor;
 }
 
-.propuesta__titulo {
+.eje__titulo {
   font-size: var(--texto-lg);
 }
 
-.propuesta__resumen {
+.eje__resumen {
   color: var(--color-texto-suave);
 }

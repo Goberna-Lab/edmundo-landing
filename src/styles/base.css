@@ -103,6 +103,22 @@ button {
   margin-bottom: var(--espacio-4);
 }
 
+/* Etiqueta chica en rojo arriba del título de cada sección. */
+.kicker {
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+  margin-bottom: var(--espacio-3);
+}
+
+/* Sobre el fondo rojo del cierre, el rojo no se ve. */
+.kicker--claro {
+  color: var(--color-blanco);
+  opacity: 0.8;
+}
+
 .section__intro {
   max-width: var(--ancho-texto);
   color: var(--color-texto-suave);

@@ -1,0 +1,71 @@
+.quien-es__inner {
+  display: grid;
+  grid-template-columns: 0.85fr 1fr;
+  align-items: center;
+  gap: var(--espacio-16);
+}
+
+.quien-es__figura {
+  margin: 0;
+  position: relative;
+}
+
+.quien-es__figura img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-lg);
+}
+
+/* Bloque rojo detrás de la foto, como firma de marca. */
+.quien-es__figura::before {
+  content: '';
+  position: absolute;
+  inset: auto auto -18px -18px;
+  width: 55%;
+  height: 45%;
+  background: var(--color-primario);
+  border-radius: var(--radio-lg);
+  z-index: -1;
+}
+
+.quien-es__parrafo {
+  color: var(--color-texto-suave);
+  font-size: var(--texto-lg);
+  margin-bottom: var(--espacio-4);
+}
+
+.quien-es__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  gap: var(--espacio-6);
+  margin-top: var(--espacio-8);
+  padding-top: var(--espacio-8);
+  border-top: 1px solid var(--color-borde);
+}
+
+.dato__valor {
+  font-family: var(--fuente-titulo);
+  font-weight: 800;
+  font-size: var(--texto-2xl);
+  color: var(--color-primario);
+  line-height: 1;
+}
+
+.dato__etiqueta {
+  margin: var(--espacio-2) 0 0;
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 900px) {
+  .quien-es__inner {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-12);
+  }
+
+  .quien-es__figura {
+    max-width: 420px;
+  }
+}

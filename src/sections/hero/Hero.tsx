@@ -1,38 +1,57 @@
 import { heroContent } from './hero.content'
-import retrato from '@/assets/hero.png'
+import heroImg from './assets/hero-edmundo.png'
 import './Hero.css'
 
 export function Hero() {
   return (
     <section className="hero" id="hero">
+      {/* La foto es el fondo: va detrás y se funde con el blanco hacia la izquierda. */}
+      <div className="hero__fondo">
+        <img
+          className="hero__img"
+          src={heroImg}
+          alt={heroContent.altFoto}
+          fetchPriority="high"
+          decoding="async"
+        />
+        <div className="hero__velo" aria-hidden="true" />
+      </div>
+
       <div className="hero__inner container">
         <div className="hero__texto">
-          <p className="hero__kicker">{heroContent.kicker}</p>
-          <h1 className="hero__titulo">
-            {heroContent.titulo}
-            <span className="hero__tagline">{heroContent.tagline}</span>
+          <h1 className="hero__nombre">
+            <span className="hero__nombre-pila">{heroContent.nombre}</span>
+            <span className="hero__nombre-apellido">{heroContent.apellido}</span>
           </h1>
+
+          <p className="hero__cargo">
+            {heroContent.cargo}{' '}
+            <span className="hero__distrito">{heroContent.distrito}</span>
+          </p>
+
           <p className="hero__bajada">{heroContent.bajada}</p>
+
           <div className="hero__acciones">
-            <a className="btn btn--primario" href={heroContent.ctaPrimario.href}>
+            <a
+              className="hero__cta hero__cta--primario"
+              href={heroContent.ctaPrimario.href}
+            >
+              <svg className="hero__cta-icono" aria-hidden="true" viewBox="0 0 24 24">
+                <use href="./icons.svg#icon-propuesta" />
+              </svg>
               {heroContent.ctaPrimario.label}
             </a>
-            <a className="btn btn--fantasma" href={heroContent.ctaSecundario.href}>
+
+            <a
+              className="hero__cta hero__cta--secundario"
+              href={heroContent.ctaSecundario.href}
+            >
+              <svg className="hero__cta-icono" aria-hidden="true" viewBox="0 0 24 24">
+                <use href="./icons.svg#icon-plan" />
+              </svg>
               {heroContent.ctaSecundario.label}
             </a>
           </div>
-        </div>
-
-        <div className="hero__figura">
-          {/* Es la imagen LCP: sin lazy y con fetchPriority alta. */}
-          <img
-            src={retrato}
-            alt={heroContent.titulo}
-            width="720"
-            height="900"
-            fetchPriority="high"
-            decoding="async"
-          />
         </div>
       </div>
     </section>

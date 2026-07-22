@@ -6,21 +6,23 @@
  * una sección, casi seguro falta un token acá.
  */
 :root {
-  /* ---- Marca [[POR-LANDING]] ---- */
-  --color-primario: #1d4ed8;
-  --color-primario-oscuro: #1e3a8a;
-  --color-acento: #f59e0b;
+  /* ---- Marca de campaña ---- */
+  --color-primario: #c8102e;
+  --color-primario-oscuro: #9b0c23;
+  --color-acento: #c8102e;
 
   /* ---- Neutros ---- */
-  --color-texto: #14181f;
+  /* El negro del "Edmundo" del hero: casi negro, no negro puro. */
+  --color-texto: #17191c;
   --color-texto-suave: #5a6473;
   --color-fondo: #ffffff;
-  --color-fondo-alt: #f5f7fa;
+  --color-fondo-alt: #f6f7f9;
   --color-borde: #e2e8f0;
   --color-blanco: #ffffff;
 
   /* ---- Tipografía ---- */
-  --fuente-titulo: 'Inter', system-ui, sans-serif;
+  /* Geométrica pesada para los títulos, como el lockup del hero. */
+  --fuente-titulo: 'Poppins', 'Montserrat', system-ui, sans-serif;
   --fuente-texto: 'Inter', system-ui, sans-serif;
 
   /* Escala fluida: el tamaño acompaña al viewport sin media queries. */

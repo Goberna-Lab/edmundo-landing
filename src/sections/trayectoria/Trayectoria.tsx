@@ -3,8 +3,9 @@ import './Trayectoria.css'
 
 export function Trayectoria() {
   return (
-    <section className="section" id="trayectoria">
+    <section className="section section--alt" id="trayectoria">
       <div className="container">
+        <p className="kicker">{trayectoriaContent.kicker}</p>
         <h2 className="section__title">{trayectoriaContent.titulo}</h2>
         <p className="section__intro">{trayectoriaContent.intro}</p>
 

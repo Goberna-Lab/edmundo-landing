@@ -1,0 +1,117 @@
+/* Cierre de la landing: fondo rojo, es el momento de mayor peso visual. */
+.adelante {
+  background: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.adelante__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-16);
+  align-items: start;
+}
+
+.adelante__titulo {
+  font-size: var(--texto-2xl);
+  margin-bottom: var(--espacio-4);
+}
+
+.adelante__intro {
+  font-size: var(--texto-lg);
+  opacity: 0.92;
+  margin-bottom: var(--espacio-8);
+}
+
+.adelante__wsp {
+  display: inline-block;
+  font-weight: 600;
+  border-bottom: 2px solid rgb(255 255 255 / 0.5);
+  padding-bottom: 2px;
+  transition: border-color var(--transicion);
+}
+
+.adelante__wsp:hover {
+  border-color: var(--color-blanco);
+}
+
+/* ---- Formulario ---- */
+
+.adelante__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  padding: var(--espacio-8);
+  background: var(--color-blanco);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-lg);
+  color: var(--color-texto);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.campo__label {
+  font-size: var(--texto-sm);
+  font-weight: 600;
+}
+
+.campo__input {
+  font: inherit;
+  padding: var(--espacio-3);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  background: var(--color-fondo);
+  color: inherit;
+  /* ≥16px evita que iOS haga zoom al enfocar el input. */
+  font-size: max(16px, var(--texto-base));
+  resize: vertical;
+}
+
+.campo__input:focus {
+  border-color: var(--color-primario);
+}
+
+.adelante__enviar {
+  padding: var(--espacio-4) var(--espacio-8);
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-primario);
+  color: var(--color-blanco);
+  font-weight: 600;
+  font-size: var(--texto-base);
+  transition: background var(--transicion), transform var(--transicion);
+}
+
+.adelante__enviar:hover:not(:disabled) {
+  background: var(--color-primario-oscuro);
+  transform: translateY(-2px);
+}
+
+.adelante__enviar:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.adelante__estado:empty {
+  display: none;
+}
+
+.adelante__estado {
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+/* El foco visible por defecto es rojo; sobre el rojo no se ve. */
+.adelante :where(a, button):focus-visible {
+  outline-color: var(--color-blanco);
+}
+
+@media (max-width: 900px) {
+  .adelante__inner {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-8);
+  }
+}
