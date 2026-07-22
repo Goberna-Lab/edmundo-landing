@@ -6,6 +6,56 @@ import fondo from './assets/fondo-la-molina.webp'
 import edmundo from './assets/edmundo.webp'
 import './Hero.css'
 
+/*
+ * Iconos inline y no desde el sprite: con <use href="archivo.svg#id"> el
+ * currentColor no se hereda entre documentos, así que el icono no toma el
+ * color del botón. Van a trazo, como en el diseño.
+ */
+
+/** Globo de chat dentro de un círculo. 26×26 en el diseño. */
+function IconoPropuesta() {
+  return (
+    <svg
+      className="hero__cta-icono"
+      viewBox="0 0 26 26"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      aria-hidden="true"
+    >
+      <circle cx="13" cy="13" r="11.6" />
+      <path
+        d="M7.6 11.3c0-.9.7-1.6 1.6-1.6h7.6c.9 0 1.6.7 1.6 1.6v3c0 .9-.7 1.6-1.6 1.6h-4.5l-3.1 2.2v-2.2c-.9 0-1.6-.7-1.6-1.6z"
+        strokeLinejoin="round"
+      />
+      <g fill="currentColor" stroke="none">
+        <circle cx="10.5" cy="12.8" r=".95" />
+        <circle cx="13" cy="12.8" r=".95" />
+        <circle cx="15.5" cy="12.8" r=".95" />
+      </g>
+    </svg>
+  )
+}
+
+/** Anotador con anillas y renglones. 21×26 en el diseño. */
+function IconoPlan() {
+  return (
+    <svg
+      className="hero__cta-icono"
+      viewBox="0 0 21 26"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <rect x="1.4" y="4.6" width="18.2" height="19.8" rx="2.4" />
+      <path d="M6.4 1.6v5.2M14.6 1.6v5.2" />
+      <path d="M5.9 12.4h9.2M5.9 16.2h9.2M5.9 20h6.1" />
+    </svg>
+  )
+}
+
 export function Hero() {
   return (
     <section className="hero" id="hero">
@@ -63,9 +113,7 @@ export function Hero() {
               className="hero__cta hero__cta--primario"
               href={heroContent.ctaPrimario.href}
             >
-              <svg className="hero__cta-icono" aria-hidden="true" viewBox="0 0 24 24">
-                <use href="./icons.svg#icon-propuesta" />
-              </svg>
+              <IconoPropuesta />
               {heroContent.ctaPrimario.label}
             </a>
 
@@ -73,9 +121,7 @@ export function Hero() {
               className="hero__cta hero__cta--secundario"
               href={heroContent.ctaSecundario.href}
             >
-              <svg className="hero__cta-icono" aria-hidden="true" viewBox="0 0 24 24">
-                <use href="./icons.svg#icon-plan" />
-              </svg>
+              <IconoPlan />
               {heroContent.ctaSecundario.label}
             </a>
           </div>

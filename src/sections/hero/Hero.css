@@ -261,8 +261,8 @@
   box-shadow: 0 6px 12px rgb(0 0 0 / 0.2);
 }
 
+/* Van a trazo: el color lo toman del botón vía currentColor. */
 .hero__cta-icono {
-  fill: currentColor;
   flex-shrink: 0;
 }
 

@@ -1,16 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
   <!-- Sprite de iconos de la campaña. Usar con <use href="./icons.svg#id" />. -->
 
-  <!-- ---- CTAs del hero ---- -->
-
-  <symbol id="icon-propuesta" viewBox="0 0 24 24">
-    <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Zm0 14H5.17L4 17.17V4h16v12ZM7 9h10v2H7V9Zm0-3h10v2H7V6Zm0 6h7v2H7v-2Z"/>
-  </symbol>
-
-  <symbol id="icon-plan" viewBox="0 0 24 24">
-    <path d="M19 3h-4.18A3 3 0 0 0 12 1a3 3 0 0 0-2.82 2H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Zm-7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm7 18H5V5h2v2h10V5h2v16ZM7.5 11.5l1.4-1.4 1.6 1.6 3.6-3.6 1.4 1.4-5 5-3-3Zm0 5 1.4-1.4 1.6 1.6 3.6-3.6 1.4 1.4-5 5-3-3Z"/>
-  </symbol>
-
   <!-- ---- Ejes para La Molina ---- -->
 
   <symbol id="icon-seguridad" viewBox="0 0 24 24">
