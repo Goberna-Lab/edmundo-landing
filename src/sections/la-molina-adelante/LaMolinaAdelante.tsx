@@ -1,13 +1,79 @@
+import { useEffect, useRef } from 'react'
 import { adelanteContent } from './la-molina-adelante.content'
 import './LaMolinaAdelante.css'
 
 const { titulo, ctaPrimario, ctaSecundario } = adelanteContent
 
+/**
+ * Parallax de reserva para los navegadores sin `animation-timeline: view()`
+ * —hoy Firefox y Safari—. Donde el CSS ya lo resuelve, esto no hace nada:
+ * la versión CSS corre fuera del hilo principal y es más barata.
+ *
+ * @param desplazamiento Porcentaje que se mueve la foto en cada extremo.
+ */
+function useParallax(desplazamiento = 8) {
+  const ref = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    const foto = ref.current
+    if (!foto) return
+
+    // El navegador ya lo hace por CSS: no duplicar.
+    if (CSS.supports('animation-timeline', 'view()')) return
+    // Mismo criterio que el CSS: quien pide menos movimiento, no lo recibe.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    let cuadro = 0
+    let visible = false
+
+    const pintar = () => {
+      cuadro = 0
+      const caja = foto.getBoundingClientRect()
+      const alto = window.innerHeight
+      // 0 cuando la sección asoma por abajo, 1 cuando termina de salir arriba.
+      const avance = (alto - caja.top) / (alto + caja.height)
+      const y = (avance - 0.5) * 2 * desplazamiento
+      foto.style.transform = `translateY(${y.toFixed(2)}%)`
+    }
+
+    // rAF: agrupa los eventos de scroll en un repintado por cuadro.
+    const alScrollear = () => {
+      if (!visible || cuadro) return
+      cuadro = requestAnimationFrame(pintar)
+    }
+
+    // Solo escucha el scroll mientras la sección está en pantalla.
+    const observador = new IntersectionObserver(
+      ([entrada]) => {
+        visible = entrada.isIntersecting
+        if (visible) pintar()
+      },
+      { rootMargin: '100px' },
+    )
+    observador.observe(foto)
+
+    window.addEventListener('scroll', alScrollear, { passive: true })
+    window.addEventListener('resize', alScrollear, { passive: true })
+
+    return () => {
+      observador.disconnect()
+      window.removeEventListener('scroll', alScrollear)
+      window.removeEventListener('resize', alScrollear)
+      if (cuadro) cancelAnimationFrame(cuadro)
+    }
+  }, [desplazamiento])
+
+  return ref
+}
+
 export function LaMolinaAdelante() {
+  const fondo = useParallax()
+
   return (
     <section className="adelante" id="la-molina-adelante">
       {/* Fondo con parallax. Va más alto que la sección para tener recorrido. */}
       <img
+        ref={fondo}
         className="adelante__fondo"
         src={adelanteContent.imagen}
         alt={adelanteContent.altImagen}
