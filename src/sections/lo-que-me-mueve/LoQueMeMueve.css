@@ -110,9 +110,13 @@
 .mueve__creencias {
   display: flex;
   flex-direction: column;
-  gap: var(--espacio-5);
+  /*
+   * OJO: no usar --espacio-5, no existe en la escala (va 4 → 6). Un token
+   * indefinido invalida la declaración entera y la separación se va a cero.
+   */
+  gap: var(--espacio-8);
   margin: 0;
-  padding: 0 0 0 var(--espacio-5);
+  padding: 0 0 0 var(--espacio-6);
   list-style: none;
   /* Barra roja que agrupa las tres. */
   border-left: 2px solid var(--color-primario);
