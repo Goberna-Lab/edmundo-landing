@@ -11,9 +11,10 @@ export const headerContent = {
     { label: 'Trayectoria', href: '#trayectoria' },
     { label: 'Modelo de gestión', href: '#modelo-de-gestion' },
     { label: 'Ejes', href: '#ejes-para-la-molina' },
-    { label: 'Artículos', href: '#articulos' },
-    // "Propuestas" en el diseño: la sección donde el vecino deja la suya.
-    // Va último porque en la página cierra la landing.
+    // "Propuestas" es la sección donde el vecino deja la suya.
+    // Ojo: en la página va DESPUÉS de Artículos (cierra la landing con el
+    // formulario), pero en el nav va antes, como pide el diseño.
     { label: 'Propuestas', href: '#la-molina-adelante' },
+    { label: 'Artículos', href: '#articulos' },
   ],
 }

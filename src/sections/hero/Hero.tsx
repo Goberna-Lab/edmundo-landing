@@ -34,9 +34,6 @@ export function Hero() {
         />
       </picture>
 
-      {/* Banda que oscurece el borde superior de la foto, en multiply. */}
-      <div className="hero__degradado" aria-hidden="true" />
-
       <img
         className="hero__retrato"
         src={edmundo}

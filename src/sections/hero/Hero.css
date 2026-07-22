@@ -63,21 +63,13 @@
  */
 
 /*
- * Banda superior del diseño: 1366×64 en multiply, de #845F4E a transparente.
- * Va sobre la foto pero debajo del retrato, para que no le ensucie la cara.
- * 4.7vw = 64px a 1366.
+ * SACADA: la banda superior en multiply (#845F4E → transparente, 64px).
+ *
+ * Aplicada como venía en la spec tapaba el cielo: el multiply sobre un cielo
+ * al 87% de brillo da (117, 79, 61), un marrón oscuro que se comía el borde
+ * superior de la foto. Si el diseño la quiere como viñeta sutil, vuelve pero
+ * con opacidad baja, no al 100%.
  */
-.hero__degradado {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: -2;
-  height: clamp(48px, 4.7vw, 80px);
-  background: linear-gradient(180deg, #845f4e 0%, rgb(46 49 53 / 0) 100%);
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
 
 /*
  * Retrato: 504×507 apoyado en el piso del hero, a 112px del borde derecho.
