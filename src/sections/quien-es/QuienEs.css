@@ -31,18 +31,26 @@
   background: var(--color-primario);
 }
 
-/* Trama de puntos del ángulo superior derecho. */
+/*
+ * Trama de puntos del ángulo superior derecho: 4×4.
+ * La caja se calcula desde la celda para que siempre entren filas y columnas
+ * enteras. Si se escribe un alto suelto (62px con celdas de 18) la última
+ * fila queda cortada por la mitad.
+ */
 .quien-es__puntos {
+  --celda: 18px;
+  --puntos: 4;
+
   position: absolute;
   top: clamp(14px, 1.4vw, 30px);
   right: clamp(14px, 1.6vw, 34px);
-  width: 78px;
-  height: 62px;
+  width: calc(var(--celda) * var(--puntos));
+  height: calc(var(--celda) * var(--puntos));
   background-image: radial-gradient(
-    var(--color-primario) 1.8px,
-    transparent 1.9px
+    var(--color-primario) 1.7px,
+    transparent 1.8px
   );
-  background-size: 18px 18px;
+  background-size: var(--celda) var(--celda);
 }
 
 /*
