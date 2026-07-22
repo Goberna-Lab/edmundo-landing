@@ -34,32 +34,13 @@
 }
 
 /*
- * Parallax sin JavaScript, con animación ligada al scroll.
+ * El parallax lo maneja el hook useParallax en el .tsx, no el CSS.
  *
- * Va dentro de @supports a propósito: donde no está soportado (Safari y
- * Firefox al día de hoy) la foto simplemente queda quieta, que es un fallback
- * correcto — no se rompe nada.
- *
- * Y dentro de prefers-reduced-motion porque el parallax es de los efectos que
- * disparan mareo a quien lo tiene activado.
+ * Antes iba con `animation-timeline: view()` bajo un @supports, pero Firefox
+ * parsea la propiedad sin implementar la funcionalidad: el @supports daba
+ * verdadero, la animación se aplicaba sin timeline y la foto quedaba
+ * congelada en un extremo. Una sola implementación evita ese tipo de falla.
  */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .adelante__fondo {
-      animation: adelante-parallax linear both;
-      animation-timeline: view();
-    }
-  }
-}
-
-@keyframes adelante-parallax {
-  from {
-    transform: translateY(-8%);
-  }
-  to {
-    transform: translateY(8%);
-  }
-}
 
 /* Oscurece la foto para que el texto blanco tenga contraste suficiente. */
 .adelante__velo {

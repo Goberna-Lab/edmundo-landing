@@ -5,9 +5,10 @@ import './LaMolinaAdelante.css'
 const { titulo, ctaPrimario, ctaSecundario } = adelanteContent
 
 /**
- * Parallax de reserva para los navegadores sin `animation-timeline: view()`
- * —hoy Firefox y Safari—. Donde el CSS ya lo resuelve, esto no hace nada:
- * la versión CSS corre fuera del hilo principal y es más barata.
+ * Mueve la foto de fondo mientras la sección pasa por pantalla.
+ *
+ * Anda en todos los navegadores: no depende de `animation-timeline: view()`,
+ * que Firefox parsea pero no implementa.
  *
  * @param desplazamiento Porcentaje que se mueve la foto en cada extremo.
  */
@@ -16,11 +17,11 @@ function useParallax(desplazamiento = 8) {
 
   useEffect(() => {
     const foto = ref.current
-    if (!foto) return
+    // La sección es la que se mide; ver el comentario de `pintar`.
+    const seccion = foto?.parentElement
+    if (!foto || !seccion) return
 
-    // El navegador ya lo hace por CSS: no duplicar.
-    if (CSS.supports('animation-timeline', 'view()')) return
-    // Mismo criterio que el CSS: quien pide menos movimiento, no lo recibe.
+    // El parallax es de los efectos que marean a quien pide menos movimiento.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     let cuadro = 0
@@ -28,11 +29,17 @@ function useParallax(desplazamiento = 8) {
 
     const pintar = () => {
       cuadro = 0
-      const caja = foto.getBoundingClientRect()
+      /*
+       * Se mide la SECCIÓN, no la foto: getBoundingClientRect devuelve la
+       * caja YA transformada, así que medir la foto que estamos moviendo
+       * realimenta el cálculo y el movimiento sale amortiguado.
+       */
+      const caja = seccion.getBoundingClientRect()
       const alto = window.innerHeight
       // 0 cuando la sección asoma por abajo, 1 cuando termina de salir arriba.
       const avance = (alto - caja.top) / (alto + caja.height)
-      const y = (avance - 0.5) * 2 * desplazamiento
+      const acotado = Math.min(Math.max(avance, 0), 1)
+      const y = (acotado - 0.5) * 2 * desplazamiento
       foto.style.transform = `translateY(${y.toFixed(2)}%)`
     }
 
@@ -50,7 +57,11 @@ function useParallax(desplazamiento = 8) {
       },
       { rootMargin: '100px' },
     )
-    observador.observe(foto)
+    observador.observe(seccion)
+
+    // Primera pasada: si al cargar la sección ya está en pantalla, la foto
+    // tiene que arrancar en su posición, no en el centro.
+    pintar()
 
     window.addEventListener('scroll', alScrollear, { passive: true })
     window.addEventListener('resize', alScrollear, { passive: true })
