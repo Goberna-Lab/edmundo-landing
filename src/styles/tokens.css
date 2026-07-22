@@ -21,9 +21,11 @@
   --color-blanco: #ffffff;
 
   /* ---- Tipografía ---- */
-  /* Geométrica pesada para los títulos, como el lockup del hero. */
-  --fuente-titulo: 'Poppins', 'Montserrat', system-ui, sans-serif;
-  --fuente-texto: 'Inter', system-ui, sans-serif;
+  /* Open Sans en toda la landing: es la fuente del header en el diseño. */
+  --fuente-titulo: 'Open Sans', system-ui, sans-serif;
+  --fuente-texto: 'Open Sans', system-ui, sans-serif;
+  /* El nav del header va en Regular; el logo en ExtraBold. */
+  --fuente-header: 'Open Sans', system-ui, sans-serif;
 
   /* Escala fluida: el tamaño acompaña al viewport sin media queries. */
   --texto-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.82rem);

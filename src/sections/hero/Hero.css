@@ -1,6 +1,11 @@
 /*
- * Hero: foto de La Molina a pantalla completa, con el candidato recortado a la
- * derecha, y el texto sobre un degradado blanco a la izquierda.
+ * Hero de dos capas:
+ *   .hero__fondo    → la vista de La Molina (trae el degradado blanco integrado)
+ *   .hero__retrato  → el recorte del candidato, anclado abajo a la derecha
+ *   .hero__inner    → el texto, encima de todo
+ *
+ * El fondo YA viene degradado a blanco por la izquierda, así que acá no hay
+ * ningún overlay: encimarle otro velo ensuciaría la foto.
  */
 
 .hero {
@@ -8,8 +13,8 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  /* min-height, nunca height: si el texto crece, la sección crece. */
-  min-height: clamp(520px, 78vh, 760px);
+  /* Proporción del diseño (1366×620) pero con piso: si el texto crece, crece. */
+  min-height: clamp(480px, 45.4vw, 620px);
   background: var(--color-fondo);
   overflow: hidden;
 }
@@ -17,41 +22,34 @@
 .hero__fondo {
   position: absolute;
   inset: 0;
-  z-index: -1;
-}
-
-.hero__img {
+  z-index: -2;
   width: 100%;
   height: 100%;
-  /* Ancla el encuadre a la derecha: ahí está el candidato. */
   object-fit: cover;
-  object-position: 78% center;
+  /* Ancla a la derecha: ahí están el cerro y la ciudad. */
+  object-position: right center;
 }
 
-/*
- * El degradado que despega el texto de la foto. Va de blanco sólido a
- * transparente, para que el nombre se lea siempre sin tapar la vista del valle.
- */
-.hero__velo {
+.hero__retrato {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    100deg,
-    rgb(255 255 255 / 0.97) 0%,
-    rgb(255 255 255 / 0.92) 26%,
-    rgb(255 255 255 / 0.6) 42%,
-    rgb(255 255 255 / 0) 60%
-  );
+  right: clamp(0px, 4vw, 90px);
+  bottom: 0;
+  z-index: -1;
+  /* Escala con el ancho pero nunca supera el alto de la sección. */
+  height: min(94%, 620px);
+  width: auto;
+  object-fit: contain;
+  object-position: bottom;
 }
 
 .hero__inner {
   position: relative;
   width: 100%;
-  padding-block: var(--espacio-16);
+  padding-block: var(--espacio-12);
 }
 
 .hero__texto {
-  max-width: 620px;
+  max-width: 560px;
 }
 
 /* ---- Lockup del nombre ---- */
@@ -59,9 +57,9 @@
 .hero__nombre {
   font-family: var(--fuente-titulo);
   font-weight: 800;
-  font-size: clamp(3rem, 1.6rem + 6.2vw, 6.5rem);
-  line-height: 0.92;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.6rem, 1.2rem + 5.6vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.025em;
   margin-bottom: var(--espacio-4);
 }
 
@@ -79,11 +77,10 @@
 }
 
 .hero__cargo {
-  font-family: var(--fuente-titulo);
   font-weight: 700;
-  font-size: clamp(1.05rem, 0.9rem + 0.7vw, 1.5rem);
+  font-size: clamp(1rem, 0.85rem + 0.6vw, 1.35rem);
   color: var(--color-texto);
-  margin-bottom: var(--espacio-8);
+  margin-bottom: var(--espacio-6);
 }
 
 .hero__distrito {
@@ -93,12 +90,12 @@
 /* ---- Bajada con la barra roja ---- */
 
 .hero__bajada {
-  max-width: 34ch;
+  max-width: 32ch;
   padding-left: var(--espacio-4);
-  border-left: 4px solid var(--color-primario);
-  font-weight: 600;
-  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.2rem);
-  line-height: 1.45;
+  border-left: 3px solid var(--color-primario);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem);
+  line-height: 1.4;
   color: var(--color-texto);
   margin-bottom: var(--espacio-8);
 }
@@ -115,12 +112,11 @@
   display: inline-flex;
   align-items: center;
   gap: var(--espacio-3);
-  /* Pill: el radio se lo lleva la mitad de la altura. */
-  padding: var(--espacio-4) var(--espacio-8);
+  padding: var(--espacio-3) var(--espacio-6);
   border-radius: 999px;
   font-weight: 600;
-  font-size: var(--texto-base);
-  border: 2px solid transparent;
+  font-size: var(--texto-sm);
+  border: 1px solid transparent;
   transition: background var(--transicion), color var(--transicion),
     border-color var(--transicion), transform var(--transicion),
     box-shadow var(--transicion);
@@ -152,40 +148,55 @@
 }
 
 .hero__cta-icono {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   fill: currentColor;
   flex-shrink: 0;
 }
 
-/* ---- Mobile ---- */
+/* ---- Tablet: el retrato estorba al texto ---- */
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
+  .hero__retrato {
+    height: min(80%, 480px);
+    right: -4vw;
+    opacity: 0.9;
+  }
+
+  .hero__texto {
+    max-width: 60%;
+  }
+}
+
+/* ---- Mobile: el retrato arriba, el texto abajo ---- */
+
+@media (max-width: 760px) {
   .hero {
     min-height: auto;
-    padding-top: var(--espacio-8);
+    align-items: flex-start;
   }
 
-  /* El degradado pasa a ser vertical: la foto arriba, el texto abajo sobre blanco. */
-  .hero__velo {
-    background: linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0) 0%,
-      rgb(255 255 255 / 0.55) 34%,
-      rgb(255 255 255 / 0.95) 52%,
-      rgb(255 255 255 / 1) 62%
-    );
+  .hero__fondo {
+    height: 58%;
+    object-position: 70% center;
   }
 
-  .hero__img {
-    /* Deja ver la cara: el recorte se ancla arriba. */
-    object-position: 72% top;
+  .hero__retrato {
+    height: min(46vh, 340px);
+    right: 50%;
+    transform: translateX(50%);
+    opacity: 1;
   }
 
   .hero__inner {
-    /* Empuja el texto por debajo de la foto. */
-    padding-top: clamp(220px, 46vw, 380px);
+    /* Empuja el texto por debajo del retrato. */
+    padding-top: min(46vh, 340px);
     padding-bottom: var(--espacio-12);
+  }
+
+  .hero__texto {
+    max-width: none;
+    text-align: left;
   }
 
   .hero__bajada {

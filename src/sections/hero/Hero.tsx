@@ -1,21 +1,34 @@
 import { heroContent } from './hero.content'
-import heroImg from './assets/hero-edmundo.png'
+// WebP: pesan 133 KB entre las dos contra 1.6 MB de los PNG originales, que
+// quedan en la carpeta como fuente (al no importarse, no entran al bundle).
+import fondo from './assets/fondo-la-molina.webp'
+import edmundo from './assets/edmundo.webp'
 import './Hero.css'
 
 export function Hero() {
   return (
     <section className="hero" id="hero">
-      {/* La foto es el fondo: va detrás y se funde con el blanco hacia la izquierda. */}
-      <div className="hero__fondo">
-        <img
-          className="hero__img"
-          src={heroImg}
-          alt={heroContent.altFoto}
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div className="hero__velo" aria-hidden="true" />
-      </div>
+      {/*
+        Dos capas: el fondo de La Molina (que ya trae el degradado blanco
+        integrado, por eso no le encimamos ningún velo) y el recorte del
+        candidato encima, a la derecha.
+      */}
+      <img
+        className="hero__fondo"
+        src={fondo}
+        alt=""
+        aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+      />
+
+      <img
+        className="hero__retrato"
+        src={edmundo}
+        alt={heroContent.altFoto}
+        fetchPriority="high"
+        decoding="async"
+      />
 
       <div className="hero__inner container">
         <div className="hero__texto">
