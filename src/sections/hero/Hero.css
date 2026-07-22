@@ -34,16 +34,33 @@
   overflow: hidden;
 }
 
+/* El <picture> es solo el contenedor; la que pinta es la <img> de adentro. */
 .hero__fondo {
   position: absolute;
   inset: 0;
   z-index: -3;
+  display: block;
+}
+
+.hero__fondo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   /* Ancla a la derecha: ahí están el cerro y la ciudad. */
   object-position: right center;
 }
+
+/*
+ * FONDO DE 1920 — descomentar junto con el <source> de Hero.tsx.
+ * 52.5vw = 1008px a 1920, la proporción del asset grande (1920×1008).
+ * Sin esto el hero seguiría usando la proporción del de 1366 y recortaría.
+ *
+ * @media (min-width: 1600px) {
+ *   .hero {
+ *     min-height: clamp(770px, 52.5vw, 1100px);
+ *   }
+ * }
+ */
 
 /*
  * Banda superior del diseño: 1366×64 en multiply, de #845F4E a transparente.

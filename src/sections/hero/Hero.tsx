@@ -2,6 +2,7 @@ import { heroContent } from './hero.content'
 // WebP: pesan 133 KB entre las dos contra 1.6 MB de los PNG originales, que
 // quedan en la carpeta como fuente (al no importarse, no entran al bundle).
 import fondo from './assets/fondo-la-molina.webp'
+// import fondo1920 from './assets/fondo-la-molina-1920.webp'
 import edmundo from './assets/edmundo.webp'
 import './Hero.css'
 
@@ -13,14 +14,25 @@ export function Hero() {
         integrado, por eso no le encimamos ningún velo) y el recorte del
         candidato encima, a la derecha.
       */}
-      <img
-        className="hero__fondo"
-        src={fondo}
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        decoding="async"
-      />
+      {/*
+        PARA ACTIVAR EL FONDO DE 1920 (3 pasos):
+          1. Dejar el archivo en ./assets/fondo-la-molina-1920.webp (1920×1008)
+          2. Descomentar el import de arriba y el <source> de acá abajo
+          3. En Hero.css, descomentar el bloque `@media (min-width: 1600px)`
+        El navegador elige solo: a partir de 1600px de ancho usa el grande,
+        abajo sigue con el de 1366. Sin JS.
+      */}
+      <picture className="hero__fondo">
+        {/* <source media="(min-width: 1600px)" srcSet={fondo1920} /> */}
+        <img
+          className="hero__fondo-img"
+          src={fondo}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
 
       {/* Banda que oscurece el borde superior de la foto, en multiply. */}
       <div className="hero__degradado" aria-hidden="true" />

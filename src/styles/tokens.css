@@ -59,7 +59,8 @@
    */
   --ancho-contenido: 1258px;
   --ancho-texto: 68ch;
-  --alto-header: 68px;
+  /* 72px: es el offset donde arranca la foto en el asset del hero. */
+  --alto-header: 72px;
 
   /* ---- Superficie ---- */
   --radio-sm: 6px;
