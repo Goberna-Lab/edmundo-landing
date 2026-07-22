@@ -14,10 +14,11 @@
   position: relative;
   overflow: hidden;
   /*
-   * El diseño fija la sección en 1366×716 → 52.42vw.
-   * Igual que el hero, nunca menos que la pantalla: max() de las dos.
+   * El diseño da 716px, pero esa medida NO descuenta el header sticky, que
+   * tapa 72px. Para que la sección se vea entera, ocupa lo que queda de
+   * pantalla; la foto se topa más abajo para no desbordarla.
    */
-  min-height: max(calc(100svh - var(--alto-header)), 52.42vw);
+  min-height: calc(100svh - var(--alto-header));
   display: flex;
   /* La foto se apoya en el borde inferior; el aire va solo arriba. */
   align-items: end;
@@ -69,13 +70,19 @@
     calc(var(--alto) / var(--filas));
 }
 
-/* La foto ocupa 562px a 1366 → 41.1vw, sin topes: la sección tiene alto
-   propio (716px), así que no depende de lo que mida la pantalla. */
+/*
+ * La foto mide 41.1vw (562px a 1366) pero topada por el alto que queda:
+ * 0.906 es su proporción (562/620), así que ese cálculo da el ancho máximo
+ * con el que su alto todavía entra bajo el header. Sin el tope, la sección
+ * mediría 716px y quedaría cortada abajo.
+ */
 .quien-es__inner {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 41.1vw) minmax(0, 1fr);
+  grid-template-columns:
+    min(41.1vw, calc((100svh - var(--alto-header) - var(--aire)) * 0.906))
+    minmax(0, 1fr);
   gap: clamp(24px, 3.07vw, 60px);
   padding-left: clamp(32px, 8.13vw, 160px);
   padding-right: clamp(24px, 5.6vw, 110px);
