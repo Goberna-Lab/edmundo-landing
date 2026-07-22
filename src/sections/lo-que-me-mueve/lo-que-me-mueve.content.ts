@@ -8,12 +8,22 @@ export const loQueMeMueveContent = {
   numero: '03',
   kicker: 'Lo que me mueve',
 
-  /** Solo "orden" va en rojo; el resto del título es negro. */
-  titulo: {
-    antes: 'Devolverle a La Molina la tranquilidad, el',
-    destacado: 'orden',
-    despues: 'y la confianza en su gobierno local.',
-  },
+  /**
+   * El título va por líneas y no como un párrafo suelto: el corte en cuatro
+   * renglones es parte del diseño, y si lo decide el ancho de la caja cae
+   * distinto según cómo mida la fuente en cada equipo.
+   * Solo "orden" va en rojo.
+   */
+  titulo: [
+    [{ texto: 'Devolverle a La Molina la' }],
+    [
+      { texto: 'tranquilidad, el ' },
+      { texto: 'orden', destacado: true },
+      { texto: ' y la' },
+    ],
+    [{ texto: 'confianza en su gobierno' }],
+    [{ texto: 'local.' }],
+  ] satisfies { texto: string; destacado?: boolean }[][],
 
   /** El arranque de cada frase va en negrita y el resto en regular. */
   creencias: [

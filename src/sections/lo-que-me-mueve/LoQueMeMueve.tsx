@@ -19,9 +19,21 @@ export function LoQueMeMueve() {
 
         <div className="mueve__cabecera">
           <h2 className="mueve__titulo">
-            {titulo.antes}{' '}
-            <span className="mueve__titulo-destacado">{titulo.destacado}</span>{' '}
-            {titulo.despues}
+            {titulo.map((linea, indice) => (
+              // Una línea del diseño por bloque; el índice sirve de key
+              // porque el orden es fijo y no se reordena.
+              <span className="mueve__titulo-linea" key={indice}>
+                {linea.map((parte) =>
+                  parte.destacado ? (
+                    <span className="mueve__titulo-destacado" key={parte.texto}>
+                      {parte.texto}
+                    </span>
+                  ) : (
+                    parte.texto
+                  ),
+                )}
+              </span>
+            ))}
           </h2>
 
           <ul className="mueve__creencias">

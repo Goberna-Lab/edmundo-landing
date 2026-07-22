@@ -78,11 +78,15 @@
 
 /* ---- Cabecera: título + creencias ---- */
 
+/*
+ * Las creencias arrancan en 885px: 80 de margen + 700 de título + 105 de gap.
+ * La columna del título se lleva 51.2vw (700px a 1366) para que las cuatro
+ * líneas entren sin re-cortarse.
+ */
 .mueve__cabecera {
   display: grid;
-  /* El título ocupa 616px y las creencias arrancan en 885: 189px de aire. */
-  grid-template-columns: minmax(0, 616px) minmax(0, 1fr);
-  gap: clamp(32px, 13.8vw, 240px);
+  grid-template-columns: minmax(0, 51.2vw) minmax(0, 1fr);
+  gap: clamp(32px, 7.7vw, 140px);
   align-items: start;
   margin-bottom: clamp(32px, 3.5vw, 70px);
 }
@@ -98,6 +102,13 @@
   /* #171717: más profundo que el --color-texto general. */
   color: #171717;
   margin: 0;
+  /* Balancea el reparto si alguna línea llega a cortarse en pantallas chicas. */
+  text-wrap: pretty;
+}
+
+/* Cada renglón del diseño es un bloque: el corte no depende del ancho. */
+.mueve__titulo-linea {
+  display: block;
 }
 
 /* Solo esta palabra va en rojo. */
