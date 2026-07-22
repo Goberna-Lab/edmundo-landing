@@ -7,13 +7,13 @@
  */
 :root {
   /* ---- Marca de campaña ---- */
-  --color-primario: #c8102e;
-  --color-primario-oscuro: #9b0c23;
-  --color-acento: #c8102e;
+  --color-primario: #c51f25;
+  --color-primario-oscuro: #9d1a1e;
+  --color-acento: #c51f25;
 
   /* ---- Neutros ---- */
-  /* El negro del "Edmundo" del hero: casi negro, no negro puro. */
-  --color-texto: #17191c;
+  /* El gris oscuro del "Edmundo" del hero: no es negro puro. */
+  --color-texto: #2e3135;
   --color-texto-suave: #5a6473;
   --color-fondo: #ffffff;
   --color-fondo-alt: #f6f7f9;
@@ -21,10 +21,11 @@
   --color-blanco: #ffffff;
 
   /* ---- Tipografía ---- */
-  /* Open Sans en toda la landing: es la fuente del header en el diseño. */
+  /* Montserrat solo para el lockup del nombre en el hero. */
+  --fuente-display: 'Montserrat', system-ui, sans-serif;
+  /* Open Sans para todo lo demás: títulos de sección, texto y nav. */
   --fuente-titulo: 'Open Sans', system-ui, sans-serif;
   --fuente-texto: 'Open Sans', system-ui, sans-serif;
-  /* El nav del header va en Regular; el logo en ExtraBold. */
   --fuente-header: 'Open Sans', system-ui, sans-serif;
 
   /* Escala fluida: el tamaño acompaña al viewport sin media queries. */
@@ -51,7 +52,12 @@
   --seccion-y: clamp(3.5rem, 2rem + 6vw, 7rem);
 
   /* ---- Layout ---- */
-  --ancho-contenido: 1200px;
+  /*
+   * 1258 = 1210 de contenido + 24 de padding a cada lado.
+   * A 1366px de viewport eso deja el texto arrancando en 78px, que es
+   * exactamente el `left` del diseño. Alinea el hero con todas las secciones.
+   */
+  --ancho-contenido: 1258px;
   --ancho-texto: 68ch;
   --alto-header: 68px;
 

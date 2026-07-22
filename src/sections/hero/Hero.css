@@ -1,11 +1,21 @@
 /*
  * Hero de dos capas:
- *   .hero__fondo    → la vista de La Molina (trae el degradado blanco integrado)
+ *   .hero__fondo    → la vista de La Molina (ya trae el degradado blanco)
  *   .hero__retrato  → el recorte del candidato, anclado abajo a la derecha
  *   .hero__inner    → el texto, encima de todo
  *
- * El fondo YA viene degradado a blanco por la izquierda, así que acá no hay
+ * El fondo YA viene degradado a blanco por la izquierda, así que acá no va
  * ningún overlay: encimarle otro velo ensuciaría la foto.
+ *
+ * MEDIDAS DEL DISEÑO (mesa de 1366×620):
+ *   Edmundo     Montserrat 800, 77px/69px, #2E3135
+ *   Del Águila  Montserrat 700, 69px/58px, #C51F25
+ *   texto       left 78px  →  lo da el .container (ver --ancho-contenido)
+ *   botones     230×48
+ *
+ * Todo escala con el viewport en vez de quedar clavado en px, para que a
+ * 1920 se vea proporcional y no perdido. Las clamp() están calculadas para
+ * dar el valor exacto del diseño a 1366px de ancho.
  */
 
 .hero {
@@ -13,8 +23,8 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  /* Proporción del diseño (1366×620) pero con piso: si el texto crece, crece. */
-  min-height: clamp(480px, 45.4vw, 620px);
+  /* 45.4vw = 620px a 1366. Con piso para móviles y techo para pantallas grandes. */
+  min-height: clamp(480px, 45.4vw, 760px);
   background: var(--color-fondo);
   overflow: hidden;
 }
@@ -32,11 +42,11 @@
 
 .hero__retrato {
   position: absolute;
-  right: clamp(0px, 4vw, 90px);
+  right: clamp(0px, 3vw, 110px);
   bottom: 0;
   z-index: -1;
-  /* Escala con el ancho pero nunca supera el alto de la sección. */
-  height: min(94%, 620px);
+  /* Escala con el alto de la sección, nunca lo desborda. */
+  height: min(96%, 700px);
   width: auto;
   object-fit: contain;
   object-position: bottom;
@@ -49,17 +59,19 @@
 }
 
 .hero__texto {
-  max-width: 560px;
+  /* 398px de caja de texto a 1366 → deja respirar al retrato. */
+  max-width: min(52%, 560px);
 }
 
 /* ---- Lockup del nombre ---- */
 
 .hero__nombre {
-  font-family: var(--fuente-titulo);
-  font-weight: 800;
-  font-size: clamp(2.6rem, 1.2rem + 5.6vw, 5.2rem);
-  line-height: 0.95;
-  letter-spacing: -0.025em;
+  font-family: var(--fuente-display);
+  /*
+   * 77px exactos a 1366px de viewport:
+   *   1.4rem (22.4px) + 4vw (54.6px) = 77px
+   */
+  font-size: clamp(2.5rem, 1.4rem + 4vw, 5.75rem);
   margin-bottom: var(--espacio-4);
 }
 
@@ -69,17 +81,29 @@
 }
 
 .hero__nombre-pila {
+  font-weight: 800;
+  /* 69/77 del diseño. */
+  line-height: 0.896;
+  letter-spacing: -0.01em;
   color: var(--color-texto);
 }
 
 .hero__nombre-apellido {
+  /* 69/77: el apellido es más chico que el nombre, y menos pesado. */
+  font-size: 0.896em;
+  font-weight: 700;
+  /* 58/69 del diseño. */
+  line-height: 0.841;
+  letter-spacing: -0.005em;
   color: var(--color-primario);
 }
 
 .hero__cargo {
+  font-family: var(--fuente-display);
   font-weight: 700;
-  font-size: clamp(1rem, 0.85rem + 0.6vw, 1.35rem);
+  font-size: clamp(0.95rem, 0.6rem + 1.05vw, 1.5rem);
   color: var(--color-texto);
+  margin-top: var(--espacio-4);
   margin-bottom: var(--espacio-6);
 }
 
@@ -90,17 +114,19 @@
 /* ---- Bajada con la barra roja ---- */
 
 .hero__bajada {
-  max-width: 32ch;
+  max-width: 34ch;
   padding-left: var(--espacio-4);
   border-left: 3px solid var(--color-primario);
+  font-family: var(--fuente-texto);
+  /* Open Sans Bold, según el diseño. */
   font-weight: 700;
-  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem);
-  line-height: 1.4;
+  font-size: clamp(0.9rem, 0.78rem + 0.35vw, 1.05rem);
+  line-height: 1.45;
   color: var(--color-texto);
   margin-bottom: var(--espacio-8);
 }
 
-/* ---- CTAs ---- */
+/* ---- CTAs: 230×48 en el diseño ---- */
 
 .hero__acciones {
   display: flex;
@@ -111,8 +137,16 @@
 .hero__cta {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--espacio-3);
-  padding: var(--espacio-3) var(--espacio-6);
+  /*
+   * min-* en vez de width/height fijos: a 230×48 clavados, el texto se
+   * recorta si alguien agranda la tipografía del navegador. Visualmente da
+   * lo mismo, pero no se rompe.
+   */
+  min-width: 230px;
+  min-height: 48px;
+  padding-inline: var(--espacio-6);
   border-radius: 999px;
   font-weight: 600;
   font-size: var(--texto-sm);
@@ -154,21 +188,20 @@
   flex-shrink: 0;
 }
 
-/* ---- Tablet: el retrato estorba al texto ---- */
+/* ---- Tablet: el retrato empieza a comerse el texto ---- */
 
 @media (max-width: 1024px) {
   .hero__retrato {
-    height: min(80%, 480px);
-    right: -4vw;
-    opacity: 0.9;
+    height: min(82%, 520px);
+    right: -5vw;
   }
 
   .hero__texto {
-    max-width: 60%;
+    max-width: 62%;
   }
 }
 
-/* ---- Mobile: el retrato arriba, el texto abajo ---- */
+/* ---- Mobile: retrato arriba, texto abajo ---- */
 
 @media (max-width: 760px) {
   .hero {
@@ -177,26 +210,24 @@
   }
 
   .hero__fondo {
-    height: 58%;
+    height: 56%;
     object-position: 70% center;
   }
 
   .hero__retrato {
-    height: min(46vh, 340px);
+    height: min(44vh, 330px);
     right: 50%;
     transform: translateX(50%);
-    opacity: 1;
   }
 
   .hero__inner {
     /* Empuja el texto por debajo del retrato. */
-    padding-top: min(46vh, 340px);
+    padding-top: min(44vh, 330px);
     padding-bottom: var(--espacio-12);
   }
 
   .hero__texto {
     max-width: none;
-    text-align: left;
   }
 
   .hero__bajada {
@@ -204,7 +235,7 @@
   }
 
   .hero__cta {
-    flex: 1 1 auto;
-    justify-content: center;
+    /* Que ocupen el ancho en vez de quedar dos pastillas sueltas. */
+    flex: 1 1 230px;
   }
 }
