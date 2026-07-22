@@ -38,8 +38,12 @@ body {
   color: var(--color-texto);
   background: var(--color-fondo);
   -webkit-font-smoothing: antialiased;
-  /* Corta el scroll horizontal, la causa nº1 de "se rompe en mobile". */
-  overflow-x: hidden;
+  /*
+   * clip, NO hidden: `overflow-x: hidden` en el body crea un contenedor de
+   * scroll y rompe el `position: sticky` del header. `clip` recorta igual
+   * sin crear ese contenedor.
+   */
+  overflow-x: clip;
 }
 
 img,
