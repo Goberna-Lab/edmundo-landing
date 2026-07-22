@@ -16,7 +16,7 @@ export function ModeloDeGestion() {
   return (
     <section className="modelo" id="modelo-de-gestion">
       {/* Trama de puntos del ángulo superior derecho. */}
-      <div className="modelo__puntos" aria-hidden="true" />
+      <div className="puntos" aria-hidden="true" />
 
       <div className="modelo__inner">
         <p className="modelo__kicker">

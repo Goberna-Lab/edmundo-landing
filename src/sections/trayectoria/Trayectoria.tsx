@@ -7,7 +7,7 @@ export function Trayectoria() {
   return (
     <section className="trayectoria" id="trayectoria">
       {/* Trama de puntos del ángulo superior derecho. */}
-      <div className="trayectoria__puntos" aria-hidden="true" />
+      <div className="puntos" aria-hidden="true" />
 
       <div className="trayectoria__inner">
         <div className="trayectoria__texto">

@@ -6,7 +6,7 @@ export function QuienEs() {
   return (
     <section className="quien-es" id="quien-es">
       {/* Trama de puntos decorativa del ángulo superior derecho. */}
-      <div className="quien-es__puntos" aria-hidden="true" />
+      <div className="puntos" aria-hidden="true" />
 
       <div className="quien-es__inner">
         <figure className="quien-es__figura">

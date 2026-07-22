@@ -17,26 +17,6 @@
   background: var(--color-fondo);
 }
 
-/* Trama de puntos: 5 columnas × 4 filas, mismo paso que en Quién es. */
-.mueve__puntos {
-  --ancho: 85px;
-  --alto: 55px;
-  --columnas: 5;
-  --filas: 4;
-
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  width: var(--ancho);
-  height: var(--alto);
-  background-image: radial-gradient(
-    var(--color-primario) 1.7px,
-    transparent 1.8px
-  );
-  background-size: calc(var(--ancho) / var(--columnas))
-    calc(var(--alto) / var(--filas));
-}
-
 .mueve__inner {
   position: relative;
   width: 100%;
@@ -178,10 +158,6 @@
   .mueve__cabecera {
     grid-template-columns: 1fr;
     gap: var(--espacio-8);
-  }
-
-  .mueve__puntos {
-    display: none;
   }
 
   .mueve__pie {

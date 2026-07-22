@@ -17,27 +17,6 @@
   background: #f7f8fa;
 }
 
-/* Trama de puntos: 5 columnas × 4 filas, igual que en Lo que me mueve. */
-.trayectoria__puntos {
-  --ancho: 85px;
-  --alto: 55px;
-  --columnas: 5;
-  --filas: 4;
-
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  z-index: 2;
-  width: var(--ancho);
-  height: var(--alto);
-  background-image: radial-gradient(
-    var(--color-primario) 1.7px,
-    transparent 1.8px
-  );
-  background-size: calc(var(--ancho) / var(--columnas))
-    calc(var(--alto) / var(--filas));
-}
-
 .trayectoria__inner {
   position: relative;
   width: 100%;
@@ -210,9 +189,5 @@
   .trayectoria__retrato {
     right: 5%;
     width: 65%;
-  }
-
-  .trayectoria__puntos {
-    display: none;
   }
 }

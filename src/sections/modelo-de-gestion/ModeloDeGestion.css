@@ -16,25 +16,6 @@
   background: #f7f8fa;
 }
 
-.modelo__puntos {
-  --ancho: 85px;
-  --alto: 55px;
-  --columnas: 5;
-  --filas: 4;
-
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  width: var(--ancho);
-  height: var(--alto);
-  background-image: radial-gradient(
-    var(--color-primario) 1.7px,
-    transparent 1.8px
-  );
-  background-size: calc(var(--ancho) / var(--columnas))
-    calc(var(--alto) / var(--filas));
-}
-
 .modelo__inner {
   position: relative;
   width: 100%;
@@ -219,9 +200,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--espacio-4);
-  }
-
-  .modelo__puntos {
-    display: none;
   }
 }

@@ -8,7 +8,7 @@ export function LoQueMeMueve() {
   return (
     <section className="mueve" id="lo-que-me-mueve">
       {/* Trama de puntos del ángulo superior derecho. */}
-      <div className="mueve__puntos" aria-hidden="true" />
+      <div className="puntos" aria-hidden="true" />
 
       <div className="mueve__inner">
         <p className="mueve__kicker">

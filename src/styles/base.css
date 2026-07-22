@@ -142,6 +142,44 @@ button {
   margin-bottom: var(--espacio-12);
 }
 
+/*
+ * Trama de puntos del ángulo superior derecho de las secciones.
+ * Medidas del diseño: 68×55, 4×4, a 22px del borde superior y del derecho.
+ *
+ * El tamaño de celda se deriva de la grilla en vez de escribirse a mano: si
+ * se pone un alto suelto que no sea múltiplo, la última fila queda cortada.
+ * La caja no es cuadrada, así que el paso horizontal (17px) es mayor que el
+ * vertical (13.75px).
+ *
+ * Requiere `position: relative` en la sección que la contiene.
+ */
+.puntos {
+  --ancho: 68px;
+  --alto: 55px;
+  --columnas: 4;
+  --filas: 4;
+
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: var(--ancho);
+  height: var(--alto);
+  background-image: radial-gradient(
+    var(--color-primario) 1.7px,
+    transparent 1.8px
+  );
+  background-size: calc(var(--ancho) / var(--columnas))
+    calc(var(--alto) / var(--filas));
+  pointer-events: none;
+}
+
+/* Estorban al contenido en pantallas chicas. */
+@media (max-width: 900px) {
+  .puntos {
+    display: none;
+  }
+}
+
 /* Solo para lectores de pantalla. */
 .sr-only {
   position: absolute;

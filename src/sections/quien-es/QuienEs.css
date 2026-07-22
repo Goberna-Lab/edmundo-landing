@@ -47,39 +47,6 @@
 }
 
 /*
- * Trama de puntos del ángulo superior derecho: 4×4.
- * La caja se calcula desde la celda para que siempre entren filas y columnas
- * enteras. Si se escribe un alto suelto (62px con celdas de 18) la última
- * fila queda cortada por la mitad.
- */
-.quien-es__puntos {
-  /*
-   * Medidas del diseño: 68×55 en top 642 / left 1276 (mesa de 1366).
-   *   1366 - (1276 + 68) = 22px del borde derecho
-   *   642 - 620 (fin del hero) = 22px del tope de la sección
-   * La caja NO es cuadrada, así que la celda tampoco: el paso horizontal
-   * (17px) es mayor que el vertical (13.75px).
-   */
-  --ancho: 68px;
-  --alto: 55px;
-  --columnas: 4;
-  --filas: 4;
-
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  width: var(--ancho);
-  height: var(--alto);
-  background-image: radial-gradient(
-    var(--color-primario) 1.7px,
-    transparent 1.8px
-  );
-  /* Derivado de la grilla: siempre entran filas y columnas enteras. */
-  background-size: calc(var(--ancho) / var(--columnas))
-    calc(var(--alto) / var(--filas));
-}
-
-/*
  * La foto mide 41.1vw (562px a 1366) pero topada por el alto que queda:
  * 0.906 es su proporción (562/620), así que ese cálculo da el ancho máximo
  * con el que su alto todavía entra bajo el header. Sin el tope, la sección
@@ -276,10 +243,5 @@
 
   .quien-es__figura {
     max-width: 420px;
-  }
-
-  .quien-es__puntos {
-    /* Estorba al texto en pantallas chicas. */
-    display: none;
   }
 }
