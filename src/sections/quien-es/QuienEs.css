@@ -8,14 +8,19 @@
  */
 
 .quien-es {
-  /* Aire de arriba: 95px a 1366 (6.95vw), como el diseño. */
-  --aire: clamp(32px, 6.95vw, 130px);
+  /* 96px a 1366: el aire que queda arriba de la foto (716 - 620). */
+  --aire: clamp(32px, 7.03vw, 130px);
 
   position: relative;
   overflow: hidden;
-  min-height: calc(100svh - var(--alto-header));
+  /*
+   * El diseño fija la sección en 1366×716 → 52.42vw.
+   * Igual que el hero, nunca menos que la pantalla: max() de las dos.
+   */
+  min-height: max(calc(100svh - var(--alto-header)), 52.42vw);
   display: flex;
-  align-items: center;
+  /* La foto se apoya en el borde inferior; el aire va solo arriba. */
+  align-items: end;
   padding-top: var(--aire);
   background: var(--color-fondo);
 }
@@ -64,20 +69,13 @@
     calc(var(--alto) / var(--filas));
 }
 
-/*
- * La columna de la foto es 41.1vw (562px a 1366) PERO topada por lo que
- * queda de pantalla: 0.906 es su proporción (562/620), así que ese cálculo
- * da el ancho máximo que puede tener sin que su alto empuje la sección más
- * allá del viewport. Sin este tope, a 1366×620 la sección mediría 715px
- * contra 548 disponibles y quedaría cortada.
- */
+/* La foto ocupa 562px a 1366 → 41.1vw, sin topes: la sección tiene alto
+   propio (716px), así que no depende de lo que mida la pantalla. */
 .quien-es__inner {
   position: relative;
   width: 100%;
   display: grid;
-  grid-template-columns:
-    min(41.1vw, calc((100svh - var(--alto-header) - var(--aire)) * 0.906))
-    minmax(0, 1fr);
+  grid-template-columns: minmax(0, 41.1vw) minmax(0, 1fr);
   gap: clamp(24px, 3.07vw, 60px);
   padding-left: clamp(32px, 8.13vw, 160px);
   padding-right: clamp(24px, 5.6vw, 110px);
@@ -88,7 +86,7 @@
 
 .quien-es__figura {
   margin: 0;
-  /* Apoyada en el piso de la sección, como en el diseño. */
+  /* Apoyada en el piso de la sección, como el diseño. */
   align-self: end;
 }
 
