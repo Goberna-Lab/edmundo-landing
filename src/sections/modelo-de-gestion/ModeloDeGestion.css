@@ -1,42 +1,220 @@
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección 1366×927 en top 3141):
+ *   fondo    #F7F8FA
+ *   kicker   left 166px, Open Sans 16px/22px, ls 2.24px, #2E3135
+ *   título   left 80px,  Montserrat Bold 50px/55px, ls -1px
+ *   foto     left 588px, 698×509
+ */
+
 .modelo {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-  gap: var(--espacio-6);
-  list-style: none;
-  padding: 0;
-  counter-reset: paso;
-}
-
-.paso {
+  position: relative;
+  overflow: hidden;
+  /* 927/1366 = 67.86vw, nunca menos que la pantalla bajo el header. */
+  min-height: max(calc(100svh - var(--alto-header)), 67.86vw);
   display: flex;
-  flex-direction: column;
-  gap: var(--espacio-4);
-  padding: var(--espacio-8);
-  background: var(--color-fondo);
-  border-radius: var(--radio);
-  box-shadow: var(--sombra);
+  align-items: center;
+  background: #f7f8fa;
 }
 
-.paso__numero {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--color-primario);
-  color: var(--color-blanco);
-  font-family: var(--fuente-titulo);
-  font-weight: 800;
-  font-size: var(--texto-lg);
+.modelo__puntos {
+  --ancho: 85px;
+  --alto: 55px;
+  --columnas: 5;
+  --filas: 4;
+
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  width: var(--ancho);
+  height: var(--alto);
+  background-image: radial-gradient(
+    var(--color-primario) 1.7px,
+    transparent 1.8px
+  );
+  background-size: calc(var(--ancho) / var(--columnas))
+    calc(var(--alto) / var(--filas));
+}
+
+.modelo__inner {
+  position: relative;
+  width: 100%;
+  /* left 80px → 5.86vw. */
+  padding-inline: clamp(24px, 5.86vw, 110px);
+}
+
+/* ---- Kicker: 04 —— MODELO DE GESTIÓN ---- */
+
+.modelo__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: clamp(24px, 4.6vw, 82px);
+  /* Open Sans acá, a diferencia del kicker de "Lo que me mueve". */
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 2.24px;
+  text-transform: uppercase;
+  color: #2e3135;
+}
+
+.modelo__raya {
+  width: clamp(28px, 4vw, 70px);
+  height: 1px;
+  background: var(--color-texto);
+}
+
+/* ---- Cabecera: título + contador ---- */
+
+.modelo__cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espacio-8);
+  margin-bottom: clamp(24px, 2.8vw, 50px);
+}
+
+.modelo__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  /* 50px exactos a 1366: 1rem (16) + 2.49vw (34). */
+  font-size: clamp(1.75rem, 1rem + 2.49vw, 4.25rem);
+  /* 55/50 del diseño. */
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #171717;
+  margin: 0;
+}
+
+.modelo__titulo-linea {
+  display: block;
+}
+
+/* "gestión" va en gris. */
+.modelo__titulo-suave {
+  color: #6e7479;
+}
+
+.modelo__contador {
   flex-shrink: 0;
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-weight: 600;
+  font-size: var(--texto-base);
+  letter-spacing: 0.04em;
+  color: var(--color-texto);
 }
 
-.paso__titulo {
-  font-size: var(--texto-lg);
-  margin-bottom: var(--espacio-2);
-}
-
-.paso__texto {
+.modelo__contador-total {
   color: var(--color-texto-suave);
-  font-size: var(--texto-sm);
+}
+
+/* ---- Cuerpo: lista + foto ---- */
+
+.modelo__cuerpo {
+  display: grid;
+  /* La foto arranca en 588px y mide 698 → 51.1vw. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 51.1vw);
+  gap: clamp(24px, 4.9vw, 90px);
+  align-items: start;
+}
+
+/* ---- Lista ---- */
+
+.modelo__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* El primer punto también lleva línea arriba. */
+  border-top: 1px solid var(--color-borde);
+}
+
+.punto {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 16px;
+  align-items: center;
+  gap: var(--espacio-3);
+  width: 100%;
+  padding: var(--espacio-4) 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--color-borde);
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-texto);
+  transition: color var(--transicion);
+}
+
+.punto:hover {
+  color: var(--color-primario);
+}
+
+.punto--activo {
+  color: var(--color-primario);
+}
+
+.punto__numero {
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-xs);
+  color: var(--color-texto-suave);
+}
+
+.punto--activo .punto__numero {
+  color: var(--color-primario);
+}
+
+.punto__texto {
+  font-family: var(--fuente-texto);
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+/* La flecha solo aparece en el punto elegido. */
+.punto__flecha {
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity var(--transicion);
+}
+
+.punto--activo .punto__flecha {
+  opacity: 1;
+}
+
+/* ---- Foto ---- */
+
+.modelo__figura {
+  margin: 0;
+}
+
+.modelo__figura img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radio);
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 900px) {
+  .modelo {
+    min-height: auto;
+    padding-block: clamp(40px, 8vw, 80px);
+  }
+
+  .modelo__cuerpo {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-8);
+  }
+
+  .modelo__cabecera {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--espacio-4);
+  }
+
+  .modelo__puntos {
+    display: none;
+  }
 }
