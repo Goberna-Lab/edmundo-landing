@@ -1,117 +1,187 @@
-/* Cierre de la landing: fondo rojo, es el momento de mayor peso visual. */
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, foto 1366×685):
+ *   título   left 80px, Montserrat Bold 69px/61px
+ *            "Construyamos Juntos" en blanco
+ *            "La Molina adelante."  en #B4B2B1
+ */
+
 .adelante {
-  background: var(--color-primario);
-  color: var(--color-blanco);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* 685/1366 = 50.15vw, nunca menos que la pantalla bajo el header. */
+  min-height: max(calc(100svh - var(--alto-header)), 50.15vw);
+  display: flex;
+  align-items: center;
+  background: var(--color-texto);
 }
+
+/* ---- Fondo con parallax ---- */
+
+/*
+ * La foto es más alta que la sección (120%) y arranca corrida hacia arriba:
+ * ese excedente es el recorrido que tiene para moverse sin dejar huecos.
+ */
+.adelante__fondo {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  z-index: -2;
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/*
+ * Parallax sin JavaScript, con animación ligada al scroll.
+ *
+ * Va dentro de @supports a propósito: donde no está soportado (Safari y
+ * Firefox al día de hoy) la foto simplemente queda quieta, que es un fallback
+ * correcto — no se rompe nada.
+ *
+ * Y dentro de prefers-reduced-motion porque el parallax es de los efectos que
+ * disparan mareo a quien lo tiene activado.
+ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .adelante__fondo {
+      animation: adelante-parallax linear both;
+      animation-timeline: view();
+    }
+  }
+}
+
+@keyframes adelante-parallax {
+  from {
+    transform: translateY(-8%);
+  }
+  to {
+    transform: translateY(8%);
+  }
+}
+
+/* Oscurece la foto para que el texto blanco tenga contraste suficiente. */
+.adelante__velo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    rgb(23 23 23 / 0.62) 0%,
+    rgb(23 23 23 / 0.42) 45%,
+    rgb(23 23 23 / 0.18) 100%
+  );
+}
+
+/* ---- Contenido ---- */
 
 .adelante__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--espacio-16);
-  align-items: start;
+  position: relative;
+  width: 100%;
+  /* left 80px → 5.86vw. */
+  padding-inline: clamp(24px, 5.86vw, 110px);
+  padding-block: clamp(40px, 6vw, 110px);
+  color: var(--color-blanco);
 }
+
+.adelante__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: clamp(24px, 3.4vw, 60px);
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 2.24px;
+  text-transform: uppercase;
+  color: var(--color-blanco);
+}
+
+.adelante__raya {
+  width: clamp(28px, 4vw, 70px);
+  height: 1px;
+  background: currentColor;
+}
+
+/* ---- Título ---- */
 
 .adelante__titulo {
-  font-size: var(--texto-2xl);
-  margin-bottom: var(--espacio-4);
-}
-
-.adelante__intro {
-  font-size: var(--texto-lg);
-  opacity: 0.92;
-  margin-bottom: var(--espacio-8);
-}
-
-.adelante__wsp {
-  display: inline-block;
-  font-weight: 600;
-  border-bottom: 2px solid rgb(255 255 255 / 0.5);
-  padding-bottom: 2px;
-  transition: border-color var(--transicion);
-}
-
-.adelante__wsp:hover {
-  border-color: var(--color-blanco);
-}
-
-/* ---- Formulario ---- */
-
-.adelante__form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-4);
-  padding: var(--espacio-8);
-  background: var(--color-blanco);
-  border-radius: var(--radio-lg);
-  box-shadow: var(--sombra-lg);
-  color: var(--color-texto);
-}
-
-.campo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espacio-2);
-}
-
-.campo__label {
-  font-size: var(--texto-sm);
-  font-weight: 600;
-}
-
-.campo__input {
-  font: inherit;
-  padding: var(--espacio-3);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-sm);
-  background: var(--color-fondo);
-  color: inherit;
-  /* ≥16px evita que iOS haga zoom al enfocar el input. */
-  font-size: max(16px, var(--texto-base));
-  resize: vertical;
-}
-
-.campo__input:focus {
-  border-color: var(--color-primario);
-}
-
-.adelante__enviar {
-  padding: var(--espacio-4) var(--espacio-8);
-  border: 0;
-  border-radius: 999px;
-  background: var(--color-primario);
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  /* 69px exactos a 1366: 1.2rem (19.2) + 3.65vw (49.9). */
+  font-size: clamp(2.2rem, 1.2rem + 3.65vw, 5.5rem);
+  /* 61/69 del diseño. */
+  line-height: 0.884;
+  letter-spacing: -0.01em;
   color: var(--color-blanco);
+  margin-bottom: clamp(28px, 3.7vw, 66px);
+}
+
+/* Cada renglón del diseño es un bloque: el corte no depende del ancho. */
+.adelante__titulo-linea {
+  display: block;
+}
+
+.adelante__titulo-linea--suave {
+  color: #b4b2b1;
+}
+
+/* ---- CTAs ---- */
+
+.adelante__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Los dos van en blanco, a diferencia del hero. */
+.adelante__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-3);
+  min-width: 190px;
+  min-height: 48px;
+  padding-inline: var(--espacio-6);
+  border-radius: 30px;
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  font-family: var(--fuente-texto);
   font-weight: 600;
-  font-size: var(--texto-base);
-  transition: background var(--transicion), transform var(--transicion);
-}
-
-.adelante__enviar:hover:not(:disabled) {
-  background: var(--color-primario-oscuro);
-  transform: translateY(-2px);
-}
-
-.adelante__enviar:disabled {
-  opacity: 0.6;
-  cursor: progress;
-}
-
-.adelante__estado:empty {
-  display: none;
-}
-
-.adelante__estado {
   font-size: var(--texto-sm);
-  color: var(--color-texto-suave);
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.161);
+  transition: color var(--transicion), transform var(--transicion),
+    box-shadow var(--transicion);
 }
 
-/* El foco visible por defecto es rojo; sobre el rojo no se ve. */
-.adelante :where(a, button):focus-visible {
-  outline-color: var(--color-blanco);
+.adelante__cta:hover {
+  color: var(--color-primario);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgb(0 0 0 / 0.24);
 }
 
-@media (max-width: 900px) {
-  .adelante__inner {
-    grid-template-columns: 1fr;
-    gap: var(--espacio-8);
+.adelante__cta-icono {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.adelante__cta-icono--plan {
+  width: 18px;
+}
+
+/* El foco por defecto es rojo y sobre la foto oscura no se ve. */
+.adelante :where(a):focus-visible {
+  outline: 2px solid var(--color-blanco);
+  outline-offset: 3px;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 760px) {
+  .adelante__cta {
+    flex: 1 1 190px;
   }
 }

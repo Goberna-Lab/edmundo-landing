@@ -1,14 +1,30 @@
+import atardecer from './assets/atardecer-la-molina.webp'
+
+/** Acá el gris aplica al renglón entero, no a palabras sueltas. */
+export interface LineaTitulo {
+  texto: string
+  suave?: boolean
+}
+
+/*
+ * Cuatro renglones: los dos primeros en blanco y los dos últimos en gris.
+ * El corte es del diseño, no del ancho de la caja.
+ */
+const titulo: LineaTitulo[] = [
+  { texto: 'Construyamos' },
+  { texto: 'Juntos' },
+  { texto: 'La Molina', suave: true },
+  { texto: 'adelante.', suave: true },
+]
+
 export const adelanteContent = {
-  kicker: 'La Molina Adelante',
-  titulo: 'Déjame tu propuesta',
-  intro: '[[adelante-intro]]',
-  /**
-   * Endpoint del formulario. Cambiar por el del CRM de la campaña antes de
-   * publicar: hasta entonces el form no manda a ningún lado.
-   */
-  endpoint: '[[endpoint-formulario]]',
-  whatsapp: {
-    numero: '[[whatsapp]]',
-    mensaje: 'Hola, quiero sumarme a la campaña de Edmundo Del Águila.',
-  },
+  numero: '07',
+  kicker: 'La Molina adelante.',
+  titulo,
+
+  ctaPrimario: { label: 'Déjame tu propuesta', href: '[[url-propuesta]]' },
+  ctaSecundario: { label: 'Conoce mi plan', href: '#ejes-para-la-molina' },
+
+  imagen: atardecer,
+  altImagen: 'Atardecer sobre La Molina desde los cerros',
 }
