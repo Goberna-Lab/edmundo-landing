@@ -1,0 +1,318 @@
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección 1366×927 en top 5323):
+ *   fondo   #F7F8FA
+ *   foto    left 80px, 474×681
+ *   texto   arranca en 629px  (80 + 474 + 75 de separación)
+ */
+
+.escuchar {
+  position: relative;
+  overflow: hidden;
+  /* 927/1366 = 67.86vw, nunca menos que la pantalla bajo el header. */
+  min-height: max(calc(100svh - var(--alto-header)), 67.86vw);
+  display: flex;
+  align-items: center;
+  background: #f7f8fa;
+}
+
+.escuchar__inner {
+  width: 100%;
+  display: grid;
+  /* La foto ocupa 474 → 34.7vw. */
+  grid-template-columns: minmax(0, 34.7vw) minmax(0, 1fr);
+  gap: clamp(24px, 5.49vw, 100px);
+  align-items: center;
+  padding-inline: clamp(24px, 5.86vw, 110px);
+  padding-block: clamp(40px, 7.3vw, 130px);
+}
+
+/* ---- Foto ---- */
+
+.escuchar__figura {
+  margin: 0;
+}
+
+.escuchar__figura img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radio);
+}
+
+/* ---- Kicker ---- */
+
+.escuchar__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-4);
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 2.24px;
+  text-transform: uppercase;
+  color: #2e3135;
+}
+
+.escuchar__raya {
+  width: clamp(28px, 4vw, 70px);
+  height: 1px;
+  background: var(--color-texto);
+}
+
+/* ---- Título ---- */
+
+.escuchar__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 0.95rem + 2.4vw, 4rem);
+  line-height: 1.146;
+  letter-spacing: -0.02em;
+  /* "Tu propuesta" va más claro que el remate. */
+  color: #404040;
+  margin-bottom: var(--espacio-4);
+}
+
+.escuchar__titulo-destacado {
+  color: #171717;
+}
+
+/* ---- Bajada ---- */
+
+.escuchar__bajada {
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2c2c2c;
+  margin-bottom: clamp(28px, 3.4vw, 60px);
+}
+
+.escuchar__bajada-linea {
+  display: block;
+}
+
+/* ---- Pasos ---- */
+
+.escuchar__pasos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 clamp(24px, 3vw, 52px);
+  padding: 0;
+  list-style: none;
+}
+
+.paso {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-4);
+  text-align: center;
+}
+
+/* Línea que une un paso con el siguiente; pasa por detrás de los círculos. */
+.paso:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: calc(50% + 24px);
+  right: calc(-50% + 24px);
+  height: 1px;
+  background: var(--color-borde);
+}
+
+.paso__circulo {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  font-family: var(--fuente-texto);
+  font-weight: 600;
+  font-size: var(--texto-xs);
+  color: var(--color-texto-suave);
+}
+
+.paso--activo .paso__circulo {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.paso__texto {
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 14px;
+  color: #2c2c2c;
+}
+
+/* ---- Tarjetas: compromiso + plazo ---- */
+
+.escuchar__tarjetas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.4fr);
+  gap: var(--espacio-6);
+  margin-bottom: clamp(24px, 3vw, 52px);
+}
+
+.compromiso {
+  padding: var(--espacio-6);
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+.compromiso__titulo {
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-xs);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+  margin-bottom: var(--espacio-4);
+}
+
+.compromiso__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.compromiso__punto {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: var(--espacio-3);
+  align-items: start;
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #2c2c2c;
+}
+
+.compromiso__tilde {
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  color: var(--color-primario);
+}
+
+/* ---- Caja del plazo ---- */
+
+.plazo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--espacio-6);
+  background: #2e3135;
+  border-radius: var(--radio);
+  color: var(--color-blanco);
+}
+
+.plazo__numero {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+  line-height: 1;
+  margin-bottom: var(--espacio-3);
+}
+
+.plazo__etiqueta {
+  font-family: var(--fuente-texto);
+  font-size: var(--texto-xs);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.plazo__etiqueta span {
+  display: block;
+}
+
+/* ---- CTAs ---- */
+
+.escuchar__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.escuchar__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-3);
+  min-width: 175px;
+  min-height: 48px;
+  padding-inline: var(--espacio-6);
+  border-radius: 30px;
+  font-family: var(--fuente-texto);
+  font-weight: 600;
+  font-size: var(--texto-sm);
+  border: 1px solid transparent;
+  transition: background var(--transicion), color var(--transicion),
+    border-color var(--transicion), transform var(--transicion);
+}
+
+.escuchar__cta:hover {
+  transform: translateY(-2px);
+}
+
+.escuchar__cta--primario {
+  background: var(--color-primario);
+  color: var(--color-blanco);
+}
+
+.escuchar__cta--primario:hover {
+  background: var(--color-primario-oscuro);
+}
+
+.escuchar__cta--secundario {
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+.escuchar__cta--secundario:hover {
+  border-color: var(--color-primario);
+  color: var(--color-primario);
+}
+
+.escuchar__cta-icono {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 900px) {
+  .escuchar {
+    min-height: auto;
+  }
+
+  .escuchar__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .escuchar__figura {
+    max-width: 420px;
+  }
+
+  .escuchar__tarjetas {
+    grid-template-columns: 1fr;
+  }
+
+  .escuchar__cta {
+    flex: 1 1 175px;
+  }
+}

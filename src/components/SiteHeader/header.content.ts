@@ -15,6 +15,7 @@ export const headerContent = {
     // Ojo: en la página va DESPUÉS de Artículos (cierra la landing con el
     // formulario), pero en el nav va antes, como pide el diseño.
     { label: 'Propuestas', href: '#la-molina-adelante' },
+    { label: 'Escuchar', href: '#escuchar-para-decidir' },
     { label: 'Artículos', href: '#articulos' },
   ],
 }
