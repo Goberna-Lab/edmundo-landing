@@ -64,16 +64,21 @@ export function ModeloDeGestion() {
                 >
                   <span className="punto__numero">{conCero(indice + 1)}</span>
                   <span className="punto__texto">{item.texto}</span>
+                  {/*
+                    Flecha del diseño (Trazado 40721). Va inline y con
+                    currentColor en vez del #C51F25 fijo del archivo, así
+                    acompaña el color del punto en hover y cuando está activo.
+                  */}
                   <svg
                     className="punto__flecha"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
+                    viewBox="0 0 12.603 12.603"
                     aria-hidden="true"
                   >
-                    <path d="M4 12 12 4M5.5 4H12v6.5" />
+                    <path
+                      d="M68.6,56.7v9.1a.7.7,0,0,1-1.4,0V58.39L57.191,68.4a.7.7,0,0,1-.991-.991L66.208,57.4H58.8a.7.7,0,1,1,0-1.4h9.1A.7.7,0,0,1,68.6,56.7Z"
+                      transform="translate(-55.996 -56)"
+                      fill="currentColor"
+                    />
                   </svg>
                 </button>
               </li>

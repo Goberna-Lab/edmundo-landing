@@ -112,11 +112,15 @@
 
 /* ---- Cuerpo: lista + foto ---- */
 
+/*
+ * La flecha del diseño está en left 478 y mide 13, así que la lista termina
+ * en 491. Con la foto arrancando en 588, el hueco entre ambas es de 97px:
+ *   80 (margen) + 411 (lista) + 97 (gap) + 698 (foto) + 80 = 1366
+ */
 .modelo__cuerpo {
   display: grid;
-  /* La foto arranca en 588px y mide 698 → 51.1vw. */
   grid-template-columns: minmax(0, 1fr) minmax(0, 51.1vw);
-  gap: clamp(24px, 4.9vw, 90px);
+  gap: clamp(24px, 7.1vw, 130px);
   align-items: start;
 }
 
@@ -132,7 +136,7 @@
 
 .punto {
   display: grid;
-  grid-template-columns: 28px minmax(0, 1fr) 16px;
+  grid-template-columns: 28px minmax(0, 1fr) 13px;
   align-items: center;
   gap: var(--espacio-3);
   width: 100%;
@@ -173,10 +177,10 @@
   line-height: 1.35;
 }
 
-/* La flecha solo aparece en el punto elegido. */
+/* La flecha solo aparece en el punto elegido. 13×13 en el diseño. */
 .punto__flecha {
-  width: 16px;
-  height: 16px;
+  width: 13px;
+  height: 13px;
   opacity: 0;
   transition: opacity var(--transicion);
 }
