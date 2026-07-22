@@ -110,22 +110,27 @@
   list-style: none;
 }
 
+/*
+ * Columna de 37px para el icono: es el ancho del más grande (el apretón de
+ * manos). Los `left` del diseño van de 175 a 182 según cada icono, pero todos
+ * comparten el mismo centro (193.5) — o sea, van centrados en esa columna.
+ */
 .hito {
   display: grid;
-  /* Columna fija para el icono: los textos arrancan todos alineados aunque
-     los iconos tengan anchos distintos (van de 24 a 38px). */
-  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-columns: 37px minmax(0, 1fr);
   gap: var(--espacio-4);
   align-items: start;
 }
 
+/*
+ * Sin topes de tamaño: cada icono trae el suyo en width/height desde el
+ * contenido. Con un max-height común, el atril (38 de alto) y la multitud
+ * (36) se achicaban.
+ */
 .hito__icono {
-  width: auto;
-  max-width: 38px;
-  max-height: 30px;
+  justify-self: center;
   /* Alinea el icono con la primera línea del texto. */
   margin-top: 2px;
-  justify-self: center;
 }
 
 .hito__texto {

@@ -23,7 +23,14 @@ export function Trayectoria() {
           <ul className="trayectoria__hitos">
             {trayectoriaContent.hitos.map((hito) => (
               <li className="hito" key={hito.id}>
-                <img className="hito__icono" src={hito.icono} alt="" aria-hidden="true" />
+                <img
+                  className="hito__icono"
+                  src={hito.icono}
+                  alt=""
+                  aria-hidden="true"
+                  width={hito.ancho}
+                  height={hito.alto}
+                />
                 <p className="hito__texto">
                   <strong className="hito__fuerte">{hito.fuerte}</strong>{' '}
                   {hito.resto}
