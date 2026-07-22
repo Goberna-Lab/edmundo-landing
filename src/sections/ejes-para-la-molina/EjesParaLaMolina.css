@@ -1,41 +1,298 @@
-.ejes__grid {
-  display: grid;
-  /* auto-fit + minmax: reflowa solo, sin breakpoints ni desborde en mobile. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
-  gap: var(--espacio-6);
-  list-style: none;
-  padding: 0;
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección 1366×1255 en top 4068):
+ *   kicker      left 166px, Open Sans 16/22, ls 2.24px, #2E3135
+ *   título      left 80px,  Montserrat Bold 48/55, ls -0.96px, #171717
+ *   flechas     45×45 en left 1186 y 1241
+ *   ficha       foto 698×509
+ *   miniaturas  5 × 217×123, de 80 a 1285 con 30px de separación
+ *               (80 + 5×217 + 4×30 = 1285)
+ */
+
+.ejes {
+  position: relative;
+  overflow: hidden;
+  /* 1255/1366 = 91.87vw, nunca menos que la pantalla bajo el header. */
+  min-height: max(calc(100svh - var(--alto-header)), 91.87vw);
+  display: flex;
+  align-items: center;
+  background: var(--color-fondo);
 }
 
-.eje {
+.ejes__inner {
+  width: 100%;
+  /* left 80px → 5.86vw. */
+  padding-inline: clamp(24px, 5.86vw, 110px);
+  padding-block: clamp(40px, 7.4vw, 130px);
+}
+
+/* ---- Kicker ---- */
+
+.ejes__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: clamp(20px, 2.6vw, 48px);
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: 2.24px;
+  text-transform: uppercase;
+  color: #2e3135;
+}
+
+.ejes__raya {
+  width: clamp(28px, 4vw, 70px);
+  height: 1px;
+  background: var(--color-texto);
+}
+
+/* ---- Título ---- */
+
+.ejes__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  /* 48px exactos a 1366. */
+  font-size: clamp(1.75rem, 0.95rem + 2.4vw, 4rem);
+  line-height: 1.146;
+  letter-spacing: -0.02em;
+  color: #171717;
+  margin-bottom: clamp(20px, 3.1vw, 56px);
+}
+
+.ejes__titulo-linea {
+  display: block;
+}
+
+.ejes__titulo-destacado {
+  color: var(--color-primario);
+}
+
+/* ---- Bajada + flechas ---- */
+
+.ejes__intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--espacio-8);
+  margin-bottom: clamp(28px, 3.8vw, 70px);
+}
+
+.ejes__bajada {
+  max-width: 60ch;
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2c2c2c;
+  margin: 0;
+}
+
+.ejes__flechas {
+  display: flex;
+  /* 1241 - 1186 - 45 = 10px entre las dos. */
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.ejes__flecha {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform var(--transicion);
+}
+
+.ejes__flecha:hover {
+  transform: scale(1.08);
+}
+
+.ejes__flecha img {
+  /* Vienen exportadas a 63px pero el diseño las usa a 45. */
+  width: 45px;
+  height: 45px;
+}
+
+/* ---- Ficha del eje elegido ---- */
+
+.ejes__ficha {
+  display: grid;
+  /* La foto mide 698 → 51.1vw. */
+  grid-template-columns: minmax(0, 51.1vw) minmax(0, 1fr);
+  gap: clamp(24px, 2.8vw, 52px);
+  align-items: start;
+  margin-bottom: clamp(32px, 5.9vw, 105px);
+}
+
+.ejes__figura {
+  margin: 0;
+}
+
+.ejes__figura img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radio);
+}
+
+.ejes__detalle {
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+/* Número gigante de fondo. */
+.ejes__marca {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: clamp(4rem, 2rem + 6vw, 8rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--color-borde);
+  margin: 0 0 var(--espacio-6);
+}
+
+.ejes__eje-titulo {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1rem + 1.2vw, 2.1rem);
+  letter-spacing: -0.02em;
+  color: #171717;
+  margin-bottom: var(--espacio-4);
+}
+
+.ejes__eje-descripcion {
+  max-width: 46ch;
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2c2c2c;
+  margin: 0;
+}
+
+/* ---- Pie de la ficha: "Conoce más" + contador ---- */
+
+.ejes__pie {
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 3vw, 56px);
+  /* Empuja el pie al fondo de la columna, a la altura del borde de la foto. */
+  margin-top: auto;
+  padding-top: var(--espacio-8);
+}
+
+.ejes__mas {
+  display: inline-flex;
+  align-items: center;
   gap: var(--espacio-3);
-  padding: var(--espacio-8);
-  background: var(--color-fondo);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
-  transition: transform var(--transicion), box-shadow var(--transicion),
-    border-color var(--transicion);
+  padding-bottom: var(--espacio-3);
+  border-bottom: 1px solid var(--color-texto);
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--color-texto);
+  transition: color var(--transicion), border-color var(--transicion);
 }
 
-.eje:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-primario);
-  box-shadow: var(--sombra);
-}
-
-.eje__icono {
-  width: 40px;
-  height: 40px;
+.ejes__mas:hover {
   color: var(--color-primario);
-  fill: currentColor;
+  border-color: var(--color-primario);
 }
 
-.eje__titulo {
-  font-size: var(--texto-lg);
+.ejes__mas-flecha {
+  width: 13px;
+  height: 13px;
 }
 
-.eje__resumen {
+.ejes__contador {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-weight: 500;
+  font-size: 15px;
   color: var(--color-texto-suave);
+}
+
+.ejes__contador-actual {
+  color: var(--color-texto);
+}
+
+/* ---- Miniaturas ---- */
+
+.ejes__miniaturas {
+  display: grid;
+  /* Cinco columnas iguales con 30px de separación, como el diseño. */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mini {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  /* Las no elegidas van al 50%, como el diseño. */
+  opacity: 0.5;
+  transition: opacity var(--transicion);
+}
+
+.mini:hover,
+.mini--activa {
+  opacity: 1;
+}
+
+.mini__imagen {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radio-sm);
+  margin-bottom: var(--espacio-3);
+}
+
+.mini__nombre {
+  display: block;
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #2c2c2c;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 900px) {
+  .ejes {
+    min-height: auto;
+  }
+
+  .ejes__ficha {
+    grid-template-columns: 1fr;
+  }
+
+  .ejes__intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--espacio-6);
+  }
+
+  .ejes__miniaturas {
+    /* Tira horizontal deslizable en vez de cinco columnas apretadas. */
+    display: flex;
+    overflow-x: auto;
+    gap: var(--espacio-4);
+    scroll-snap-type: x mandatory;
+    padding-bottom: var(--espacio-3);
+  }
+
+  .ejes__miniaturas > li {
+    flex: 0 0 60%;
+    scroll-snap-align: start;
+  }
 }
