@@ -236,13 +236,17 @@
   color: var(--color-texto);
 }
 
-/* Rayita roja entre la etiqueta y el valor. */
+/*
+ * Rayita roja entre la etiqueta y el valor: abarca todo el ancho del dato.
+ * Como las columnas se ajustan al contenido, cada raya mide lo que mide su
+ * texto más largo — no todas iguales.
+ */
 .dato__valor::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 28px;
+  width: 100%;
   height: 2px;
   background: var(--color-primario);
 }
