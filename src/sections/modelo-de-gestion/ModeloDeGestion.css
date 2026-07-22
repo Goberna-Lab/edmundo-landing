@@ -93,7 +93,7 @@
 
 /* "gestión" va en gris. */
 .modelo__titulo-suave {
-  color: #6e7479;
+  color: #404040;
 }
 
 .modelo__contador {
@@ -154,8 +154,10 @@
   color: var(--color-primario);
 }
 
+/* Toda la lista va en Open Sans Medium (500). */
 .punto__numero {
   font-family: var(--fuente-texto);
+  font-weight: 500;
   font-size: var(--texto-xs);
   color: var(--color-texto-suave);
 }
@@ -166,6 +168,7 @@
 
 .punto__texto {
   font-family: var(--fuente-texto);
+  font-weight: 500;
   font-size: 15px;
   line-height: 1.35;
 }
