@@ -1,66 +1,204 @@
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección 1366×700 en top 1335):
+ *   fondo       #F7F8FA
+ *   título      left 175px, Montserrat Bold 48px/55px, ls -0.96px, #171717
+ *   bajada      left 175px, Open Sans 16px/32px, ls -0.32px, #1D1616
+ *   retrato     554×595, apoyado abajo a la derecha
+ *   forma roja  764×433, en el ángulo inferior derecho, detrás del retrato
+ */
+
 .trayectoria {
-  list-style: none;
+  position: relative;
+  overflow: hidden;
+  /* 700/1366 = 51.24vw, nunca menos que la pantalla bajo el header. */
+  min-height: max(calc(100svh - var(--alto-header)), 51.24vw);
+  display: flex;
+  align-items: center;
+  background: #f7f8fa;
+}
+
+/* Trama de puntos: 5 columnas × 4 filas, igual que en Lo que me mueve. */
+.trayectoria__puntos {
+  --ancho: 85px;
+  --alto: 55px;
+  --columnas: 5;
+  --filas: 4;
+
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  z-index: 2;
+  width: var(--ancho);
+  height: var(--alto);
+  background-image: radial-gradient(
+    var(--color-primario) 1.7px,
+    transparent 1.8px
+  );
+  background-size: calc(var(--ancho) / var(--columnas))
+    calc(var(--alto) / var(--filas));
+}
+
+.trayectoria__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  /* El texto arranca en 175px → 12.81vw. */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 44vw);
+  align-items: center;
+  padding-left: clamp(24px, 12.81vw, 240px);
+}
+
+/* ---- Kicker: 02 —— TRAYECTORIA ---- */
+
+.trayectoria__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: clamp(24px, 4vw, 70px);
+  font-family: var(--fuente-kicker);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  letter-spacing: 2.24px;
+  text-transform: uppercase;
+  color: #2e3135;
+}
+
+.trayectoria__raya {
+  width: clamp(28px, 4vw, 70px);
+  height: 1px;
+  background: var(--color-texto);
+}
+
+.trayectoria__etiqueta {
+  color: #2e3135;
+}
+
+/* ---- Título y bajada ---- */
+
+.trayectoria__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  /* 48px exactos a 1366. */
+  font-size: clamp(1.75rem, 0.95rem + 2.4vw, 4rem);
+  line-height: 1.146;
+  letter-spacing: -0.02em;
+  color: #171717;
+  margin-bottom: var(--espacio-1);
+}
+
+.trayectoria__bajada {
+  font-family: var(--fuente-texto);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 32px;
+  letter-spacing: -0.32px;
+  text-transform: uppercase;
+  color: #1d1616;
+  margin-bottom: clamp(20px, 2.6vw, 46px);
+}
+
+/* ---- Hitos ---- */
+
+.trayectoria__hitos {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6vw, 28px);
+  margin: 0;
   padding: 0;
-  max-width: 860px;
+  list-style: none;
 }
 
 .hito {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: var(--espacio-6);
-  padding-bottom: var(--espacio-12);
-  position: relative;
+  /* Columna fija para el icono: los textos arrancan todos alineados aunque
+     los iconos tengan anchos distintos (van de 24 a 38px). */
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: var(--espacio-4);
+  align-items: start;
 }
 
-/* Línea vertical que une los hitos. */
-.hito:not(:last-child)::before {
-  content: '';
+.hito__icono {
+  width: auto;
+  max-width: 38px;
+  max-height: 30px;
+  /* Alinea el icono con la primera línea del texto. */
+  margin-top: 2px;
+  justify-self: center;
+}
+
+.hito__texto {
+  margin: 0;
+  font-family: var(--fuente-texto);
+  font-size: 15px;
+  line-height: 1.45;
+  color: #2c2c2c;
+}
+
+.hito__fuerte {
+  font-weight: 700;
+  color: var(--color-texto);
+}
+
+/* ---- Retrato y forma roja ---- */
+
+.trayectoria__figura {
+  position: relative;
+  align-self: stretch;
+}
+
+/* 764×433 en el ángulo inferior derecho, detrás del retrato. */
+.trayectoria__forma {
   position: absolute;
-  left: 6px;
-  top: 16px;
+  right: 0;
   bottom: 0;
-  width: 2px;
-  background: var(--color-borde);
+  z-index: 0;
+  width: 55.93vw;
+  height: auto;
+  max-width: none;
 }
 
-.hito__anio {
-  position: relative;
-  padding-left: var(--espacio-8);
-  font-family: var(--fuente-titulo);
-  font-weight: 800;
-  font-size: var(--texto-lg);
-  color: var(--color-primario);
-}
-
-/* Punto sobre la línea. */
-.hito__anio::before {
-  content: '';
+/* 554×595 apoyado en el piso de la sección. */
+.trayectoria__retrato {
   position: absolute;
-  left: 0;
-  top: 9px;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--color-primario);
-  box-shadow: 0 0 0 4px var(--color-fondo-alt);
+  right: 12.15vw;
+  bottom: 0;
+  z-index: 1;
+  width: 40.56vw;
+  height: auto;
 }
 
-.hito__titulo {
-  font-size: var(--texto-lg);
-  margin-bottom: var(--espacio-2);
-}
+/* ---- Mobile ---- */
 
-.hito__detalle {
-  color: var(--color-texto-suave);
-}
-
-@media (max-width: 640px) {
-  .hito {
-    grid-template-columns: 1fr;
-    gap: var(--espacio-2);
+@media (max-width: 900px) {
+  .trayectoria {
+    min-height: auto;
+    padding-block: clamp(40px, 8vw, 80px);
   }
 
-  .hito__cuerpo {
-    padding-left: var(--espacio-8);
+  .trayectoria__inner {
+    grid-template-columns: 1fr;
+    padding-inline: clamp(24px, 6vw, 60px);
+  }
+
+  .trayectoria__figura {
+    /* En una columna el retrato ya no flota: ocupa su propio alto. */
+    position: relative;
+    height: min(70vw, 420px);
+    margin-top: var(--espacio-8);
+  }
+
+  .trayectoria__forma {
+    width: 90%;
+  }
+
+  .trayectoria__retrato {
+    right: 5%;
+    width: 65%;
+  }
+
+  .trayectoria__puntos {
+    display: none;
   }
 }
