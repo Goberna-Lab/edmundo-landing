@@ -141,7 +141,11 @@
 /* ---- Bajada con la barra roja ---- */
 
 .hero__bajada {
-  max-width: 34ch;
+  /*
+   * 475px = el ancho exacto de la fila de botones (230 + 15 + 230).
+   * Alinea el bloque y hace que el texto corte en 2 líneas como el diseño.
+   */
+  max-width: 475px;
   padding-left: var(--espacio-4);
   border-left: 3px solid var(--color-primario);
   font-family: var(--fuente-texto);
@@ -158,12 +162,15 @@
 .hero__acciones {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--espacio-4);
+  /* 325 - (80 + 230) = 15px de separación en el diseño. */
+  gap: 15px;
 }
 
 .hero__cta {
   display: inline-flex;
   align-items: center;
+  /* El contenido va centrado: por eso el icono arranca en 23px en el rojo
+     y en 44px en el blanco, según el largo de cada texto. */
   justify-content: center;
   gap: var(--espacio-3);
   /*
@@ -173,19 +180,17 @@
    */
   min-width: 230px;
   min-height: 48px;
-  padding-inline: var(--espacio-6);
-  border-radius: 999px;
+  padding-inline: var(--espacio-4);
+  border-radius: 30px;
   font-weight: 600;
   font-size: var(--texto-sm);
-  border: 1px solid transparent;
+  border: 0;
   transition: background var(--transicion), color var(--transicion),
-    border-color var(--transicion), transform var(--transicion),
-    box-shadow var(--transicion);
+    transform var(--transicion), box-shadow var(--transicion);
 }
 
 .hero__cta:hover {
   transform: translateY(-2px);
-  box-shadow: var(--sombra);
 }
 
 .hero__cta--primario {
@@ -200,19 +205,28 @@
 .hero__cta--secundario {
   background: var(--color-blanco);
   color: var(--color-texto);
-  border-color: var(--color-borde);
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.161);
 }
 
 .hero__cta--secundario:hover {
-  border-color: var(--color-primario);
   color: var(--color-primario);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 0.2);
 }
 
 .hero__cta-icono {
-  width: 18px;
-  height: 18px;
   fill: currentColor;
   flex-shrink: 0;
+}
+
+/* Tamaños del diseño: el del plan es más angosto que el de la propuesta. */
+.hero__cta--primario .hero__cta-icono {
+  width: 26px;
+  height: 26px;
+}
+
+.hero__cta--secundario .hero__cta-icono {
+  width: 21px;
+  height: 26px;
 }
 
 /* ---- Tablet: el retrato empieza a comerse el texto ---- */
