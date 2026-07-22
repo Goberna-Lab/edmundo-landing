@@ -32,8 +32,11 @@ export function Trayectoria() {
                   height={hito.alto}
                 />
                 <p className="hito__texto">
-                  <strong className="hito__fuerte">{hito.fuerte}</strong>{' '}
-                  {hito.resto}
+                  {/* Dos renglones fijos: el título arriba y el detalle
+                      abajo. Sin el salto, según el ancho se juntaban en una
+                      sola línea o cortaban donde no va. */}
+                  <strong className="hito__fuerte">{hito.fuerte}</strong>
+                  <span className="hito__resto">{hito.resto}</span>
                 </p>
               </li>
             ))}

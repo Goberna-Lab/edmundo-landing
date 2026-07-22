@@ -143,10 +143,16 @@
   color: #2c2c2c;
 }
 
-/* Open Sans Bold para el título. */
+/* Open Sans Bold para el título, en su propio renglón. */
 .hito__fuerte {
+  display: block;
   font-weight: 700;
   color: #2c2c2c;
+}
+
+/* El detalle arranca siempre en la línea de abajo. */
+.hito__resto {
+  display: block;
 }
 
 /* ---- Retrato y forma roja ---- */
