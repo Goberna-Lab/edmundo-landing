@@ -1,46 +1,93 @@
-.mueve__cita {
-  max-width: 46ch;
-  margin: 0 0 var(--espacio-16);
-  padding-left: var(--espacio-6);
-  border-left: 4px solid var(--color-primario);
-  font-family: var(--fuente-titulo);
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección 1366×1106 en top 2035):
+ *   título      left 80px, Montserrat Bold 48px/55px, ls -0.96px, #171717
+ *   foto        1206×500  →  80px de margen a cada lado (1206+80+80 = 1366)
+ *
+ * El alto cierra con la composición:
+ *   205 (aire) + 220 (título 4×55) + 100 (gap) + 500 (foto) + 80 = 1105
+ */
+
+.mueve {
+  /* 1106/1366 = 80.97vw, pero nunca menos que la pantalla bajo el header. */
+  min-height: max(calc(100svh - var(--alto-header)), 80.97vw);
+  display: flex;
+  align-items: center;
+  padding-block: clamp(40px, 5.86vw, 110px);
+  background: var(--color-fondo);
+}
+
+.mueve__inner {
+  width: 100%;
+  /* left 80px → 5.86vw. La foto usa el mismo margen, así que el título y la
+     imagen quedan alineados por el borde izquierdo. */
+  padding-inline: clamp(24px, 5.86vw, 110px);
+}
+
+/* ---- Kicker: 02 —— LO QUE ME MUEVE ---- */
+
+.mueve__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-6);
+  font-size: var(--texto-sm);
   font-weight: 600;
-  font-size: var(--texto-xl);
-  line-height: 1.35;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.mueve__numero {
   color: var(--color-texto);
 }
 
-.mueve__lista {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: var(--espacio-12);
-  list-style: none;
-  padding: 0;
+.mueve__raya {
+  width: clamp(28px, 3.4vw, 60px);
+  height: 2px;
+  background: var(--color-primario);
 }
 
-.motivo {
-  position: relative;
-  padding-top: var(--espacio-8);
-  border-top: 2px solid var(--color-primario);
-}
-
-.motivo__numero {
-  position: absolute;
-  top: var(--espacio-6);
-  right: 0;
-  font-family: var(--fuente-titulo);
-  font-weight: 800;
-  font-size: var(--texto-3xl);
-  line-height: 1;
+.mueve__etiqueta {
   color: var(--color-primario);
-  opacity: 0.12;
 }
 
-.motivo__titulo {
-  font-size: var(--texto-lg);
-  margin-bottom: var(--espacio-3);
+/* ---- Título ---- */
+
+.mueve__titulo {
+  /* 616px de caja a 1366 → 45.1vw: fuerza el corte en 4 líneas del diseño. */
+  max-width: min(45.1vw, 616px);
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  /* 48px exactos a 1366: 0.95rem (15.2) + 2.4vw (32.8). */
+  font-size: clamp(1.75rem, 0.95rem + 2.4vw, 4rem);
+  /* 55/48 del diseño. */
+  line-height: 1.146;
+  letter-spacing: -0.02em;
+  /* #171717: un negro más profundo que el --color-texto general. */
+  color: #171717;
+  margin-bottom: clamp(40px, 7.3vw, 130px);
 }
 
-.motivo__texto {
-  color: var(--color-texto-suave);
+/* Segunda mitad del título, en rojo. */
+.mueve__titulo-destacado {
+  color: var(--color-primario);
+}
+
+/* ---- Foto ---- */
+
+.mueve__figura {
+  margin: 0;
+}
+
+.mueve__figura img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* La foto del diseño trae las esquinas redondeadas. */
+  border-radius: var(--radio-lg);
+}
+
+@media (max-width: 760px) {
+  .mueve__titulo {
+    max-width: none;
+  }
 }

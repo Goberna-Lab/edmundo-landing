@@ -1,16 +1,14 @@
-export interface Motivo {
-  id: string
-  titulo: string
-  texto: string
-}
-
 export const loQueMeMueveContent = {
+  numero: '02',
   kicker: 'Lo que me mueve',
-  titulo: 'Por qué doy este paso',
-  cita: '[[mueve-cita]]',
-  motivos: [
-    { id: 'escuchar', titulo: '[[mueve-1-titulo]]', texto: '[[mueve-1-texto]]' },
-    { id: 'ordenar', titulo: '[[mueve-2-titulo]]', texto: '[[mueve-2-texto]]' },
-    { id: 'resultados', titulo: '[[mueve-3-titulo]]', texto: '[[mueve-3-texto]]' },
-  ] satisfies Motivo[],
+
+  /**
+   * El título va partido en dos porque en el diseño son dos capas distintas
+   * con la misma tipografía: lo que cambia es el color.
+   */
+  titulo: 'Devolverle a La Molina la',
+  tituloDestacado:
+    'tranquilidad, el orden y la confianza en su gobierno local.',
+
+  altFoto: 'Vista aérea de La Molina con la laguna y los cerros al atardecer',
 }

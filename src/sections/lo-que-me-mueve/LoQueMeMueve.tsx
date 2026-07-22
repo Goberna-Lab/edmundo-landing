@@ -1,29 +1,34 @@
 import { loQueMeMueveContent } from './lo-que-me-mueve.content'
+import panoramica from './assets/la-molina-panoramica.webp'
 import './LoQueMeMueve.css'
 
 export function LoQueMeMueve() {
   return (
-    <section className="section mueve" id="lo-que-me-mueve">
-      <div className="container">
-        <p className="kicker">{loQueMeMueveContent.kicker}</p>
-        <h2 className="section__title">{loQueMeMueveContent.titulo}</h2>
+    <section className="mueve" id="lo-que-me-mueve">
+      <div className="mueve__inner">
+        <p className="mueve__kicker">
+          <span className="mueve__numero">{loQueMeMueveContent.numero}</span>
+          <span className="mueve__raya" aria-hidden="true" />
+          <span className="mueve__etiqueta">{loQueMeMueveContent.kicker}</span>
+        </p>
 
-        <blockquote className="mueve__cita">
-          <p>{loQueMeMueveContent.cita}</p>
-        </blockquote>
+        <h2 className="mueve__titulo">
+          {loQueMeMueveContent.titulo}{' '}
+          <span className="mueve__titulo-destacado">
+            {loQueMeMueveContent.tituloDestacado}
+          </span>
+        </h2>
 
-        <ul className="mueve__lista">
-          {loQueMeMueveContent.motivos.map((motivo, indice) => (
-            <li className="motivo" key={motivo.id}>
-              {/* El número es decorativo: el orden ya lo da la lista. */}
-              <span className="motivo__numero" aria-hidden="true">
-                {String(indice + 1).padStart(2, '0')}
-              </span>
-              <h3 className="motivo__titulo">{motivo.titulo}</h3>
-              <p className="motivo__texto">{motivo.texto}</p>
-            </li>
-          ))}
-        </ul>
+        <figure className="mueve__figura">
+          <img
+            src={panoramica}
+            alt={loQueMeMueveContent.altFoto}
+            width="1206"
+            height="500"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
       </div>
     </section>
   )
