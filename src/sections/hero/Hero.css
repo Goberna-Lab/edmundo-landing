@@ -1,0 +1,74 @@
+.hero {
+  padding-block: var(--seccion-y);
+  background: linear-gradient(
+    180deg,
+    var(--color-fondo-alt) 0%,
+    var(--color-fondo) 100%
+  );
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--espacio-16);
+}
+
+.hero__kicker {
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primario);
+  margin-bottom: var(--espacio-4);
+}
+
+.hero__titulo {
+  font-size: var(--texto-3xl);
+  margin-bottom: var(--espacio-6);
+}
+
+.hero__tagline {
+  display: block;
+  margin-top: var(--espacio-2);
+  font-size: var(--texto-xl);
+  font-weight: 400;
+  color: var(--color-texto-suave);
+}
+
+.hero__bajada {
+  max-width: var(--ancho-texto);
+  font-size: var(--texto-lg);
+  color: var(--color-texto-suave);
+  margin-bottom: var(--espacio-8);
+}
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-4);
+}
+
+.hero__figura img {
+  width: 100%;
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-lg);
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-12);
+  }
+
+  /* La foto primero en mobile. */
+  .hero__figura {
+    order: -1;
+  }
+
+  .hero__figura img {
+    max-height: 60vh;
+    object-position: top center;
+  }
+}

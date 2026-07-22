@@ -1,0 +1,11 @@
+{
+  "_comentario": "Relleno inicial. Los datos de Edmundo (nombre, cargo, distrito, trayectoria, propuestas, redes) están SIN completar a propósito: no se inventan datos de una persona real. Correr 'node setup.mjs --list' para ver qué falta.",
+
+  "slug": "edmundo",
+
+  "color-primario": "#1d4ed8",
+  "color-primario-oscuro": "#1e3a8a",
+  "color-acento": "#f59e0b",
+  "fuente-titulo": "'Inter'",
+  "fuente-texto": "'Inter'"
+}

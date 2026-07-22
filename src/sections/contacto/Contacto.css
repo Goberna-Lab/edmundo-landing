@@ -1,0 +1,58 @@
+.contacto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-16);
+  align-items: start;
+}
+
+.contacto__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-4);
+  padding: var(--espacio-8);
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-2);
+}
+
+.campo__label {
+  font-size: var(--texto-sm);
+  font-weight: 600;
+}
+
+.campo__input {
+  font: inherit;
+  padding: var(--espacio-3);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-sm);
+  background: var(--color-fondo);
+  color: inherit;
+  /* Evita el zoom automático de iOS al enfocar un input. */
+  font-size: max(16px, var(--texto-base));
+}
+
+.campo__input:focus {
+  border-color: var(--color-primario);
+}
+
+.contacto__estado:empty {
+  display: none;
+}
+
+.contacto__estado {
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+@media (max-width: 900px) {
+  .contacto {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-8);
+  }
+}

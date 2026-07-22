@@ -1,0 +1,45 @@
+{
+  "_comentario": "Copiá a landing.json, completá y corré: node setup.mjs landing.json",
+
+  "slug": "juana-perez",
+  "candidato": "Juana Pérez",
+  "inicial": "J",
+  "cargo": "Candidata a Diputada",
+  "distrito": "Lima",
+  "tagline": "Una gestión que se nota",
+  "descripcion": "Propuestas concretas en educación, seguridad y trabajo para los vecinos de Lima.",
+
+  "color-primario": "#1d4ed8",
+  "color-primario-oscuro": "#1e3a8a",
+  "color-acento": "#f59e0b",
+  "fuente-titulo": "'Bricolage Grotesque'",
+  "fuente-texto": "'Inter'",
+
+  "intro-trayectoria": "Veinte años de gestión pública, con resultados medibles.",
+  "hito-1-anio": "2015",
+  "hito-1-titulo": "Regidora de Lima",
+  "hito-1-detalle": "Impulsó el programa de recuperación de espacios públicos.",
+  "hito-2-anio": "2019",
+  "hito-2-titulo": "Gerenta de Desarrollo Social",
+  "hito-2-detalle": "Amplió la cobertura de comedores populares a 34 distritos.",
+  "hito-3-anio": "2023",
+  "hito-3-titulo": "Presidenta de la comisión de Educación",
+  "hito-3-detalle": "Sacó adelante la ley de infraestructura escolar.",
+
+  "intro-propuestas": "Tres ejes, con metas y plazos públicos.",
+  "propuesta-1-titulo": "Educación que llega",
+  "propuesta-1-resumen": "Conectividad y mantenimiento en las 400 escuelas del distrito.",
+  "propuesta-2-titulo": "Seguridad con presencia",
+  "propuesta-2-resumen": "Serenazgo integrado y cámaras con monitoreo real 24/7.",
+  "propuesta-3-titulo": "Trabajo joven",
+  "propuesta-3-resumen": "Formación técnica gratuita articulada con empresas locales.",
+
+  "intro-contacto": "Dejanos tus datos y sumate a la campaña.",
+  "endpoint-formulario": "https://api.grupogoberna.com/leads/juana-perez",
+  "whatsapp": "51999888777",
+
+  "instagram": "https://instagram.com/juanaperez",
+  "facebook": "https://facebook.com/juanaperez",
+  "x": "https://x.com/juanaperez",
+  "pie-legal": "© 2026 Juana Pérez. Publicidad electoral."
+}

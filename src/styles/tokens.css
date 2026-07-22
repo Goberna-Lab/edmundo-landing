@@ -1,0 +1,62 @@
+/*
+ * Tokens de la landing. TODO el color, la tipografía y el ritmo salen de acá.
+ *
+ * Re-skinear una landing para otro candidato debería ser, en el 80% de los
+ * casos, editar SOLO este archivo. Si estás poniendo un hex a mano dentro de
+ * una sección, casi seguro falta un token acá.
+ */
+:root {
+  /* ---- Marca [[POR-LANDING]] ---- */
+  --color-primario: #1d4ed8;
+  --color-primario-oscuro: #1e3a8a;
+  --color-acento: #f59e0b;
+
+  /* ---- Neutros ---- */
+  --color-texto: #14181f;
+  --color-texto-suave: #5a6473;
+  --color-fondo: #ffffff;
+  --color-fondo-alt: #f5f7fa;
+  --color-borde: #e2e8f0;
+  --color-blanco: #ffffff;
+
+  /* ---- Tipografía ---- */
+  --fuente-titulo: 'Inter', system-ui, sans-serif;
+  --fuente-texto: 'Inter', system-ui, sans-serif;
+
+  /* Escala fluida: el tamaño acompaña al viewport sin media queries. */
+  --texto-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.82rem);
+  --texto-sm: clamp(0.875rem, 0.84rem + 0.18vw, 0.95rem);
+  --texto-base: clamp(1rem, 0.96rem + 0.2vw, 1.08rem);
+  --texto-lg: clamp(1.15rem, 1.08rem + 0.35vw, 1.35rem);
+  --texto-xl: clamp(1.4rem, 1.25rem + 0.7vw, 1.85rem);
+  --texto-2xl: clamp(1.75rem, 1.45rem + 1.4vw, 2.6rem);
+  --texto-3xl: clamp(2.2rem, 1.6rem + 2.8vw, 4rem);
+
+  /* ---- Ritmo ---- */
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-6: 1.5rem;
+  --espacio-8: 2rem;
+  --espacio-12: 3rem;
+  --espacio-16: 4rem;
+  --espacio-24: 6rem;
+
+  /* Padding vertical de cada <section>. */
+  --seccion-y: clamp(3.5rem, 2rem + 6vw, 7rem);
+
+  /* ---- Layout ---- */
+  --ancho-contenido: 1200px;
+  --ancho-texto: 68ch;
+  --alto-header: 68px;
+
+  /* ---- Superficie ---- */
+  --radio-sm: 6px;
+  --radio: 12px;
+  --radio-lg: 20px;
+  --sombra: 0 1px 3px rgb(16 24 40 / 0.08), 0 4px 12px rgb(16 24 40 / 0.06);
+  --sombra-lg: 0 8px 32px rgb(16 24 40 / 0.12);
+
+  --transicion: 200ms ease;
+}

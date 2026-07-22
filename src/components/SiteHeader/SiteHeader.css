@@ -1,0 +1,138 @@
+/*
+ * Estilos del <Header> del kit. El kit define el markup y las clases;
+ * el diseño es todo tuyo. Contrato de clases en el README del kit.
+ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-fondo);
+  transition: box-shadow var(--transicion);
+}
+
+.header--scrolled {
+  box-shadow: var(--sombra);
+}
+
+.header__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-6);
+  height: var(--alto-header);
+  width: 100%;
+  max-width: var(--ancho-contenido);
+  margin-inline: auto;
+  padding-inline: var(--espacio-6);
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.header__logo {
+  height: 40px;
+  width: auto;
+}
+
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-8);
+  margin-left: auto;
+}
+
+.header__link {
+  position: relative;
+  font-weight: 500;
+  color: var(--color-texto-suave);
+  padding-block: var(--espacio-2);
+  transition: color var(--transicion);
+}
+
+.header__link:hover {
+  color: var(--color-texto);
+}
+
+.header__link--active {
+  color: var(--color-primario);
+}
+
+/* Subrayado de la sección activa. */
+.header__link--active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--color-primario);
+  border-radius: 2px;
+}
+
+/* Hamburguesa: oculta en desktop. */
+.header__toggle {
+  display: none;
+  order: 2;
+  margin-left: auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+.header__toggle-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin-inline: auto;
+  background: var(--color-texto);
+  border-radius: 2px;
+  transition: transform var(--transicion), opacity var(--transicion);
+}
+
+/* Hamburguesa → X. */
+.header--open .header__toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.header--open .header__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.header--open .header__toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 900px) {
+  .header__toggle {
+    display: flex;
+  }
+
+  .header__nav {
+    position: fixed;
+    inset: var(--alto-header) 0 0 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--espacio-8);
+    margin-left: 0;
+    background: var(--color-fondo);
+    font-size: var(--texto-xl);
+
+    /* Fuera de pantalla y fuera del árbol de foco mientras está cerrado. */
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform var(--transicion), visibility var(--transicion);
+  }
+
+  .header__nav--open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+}
