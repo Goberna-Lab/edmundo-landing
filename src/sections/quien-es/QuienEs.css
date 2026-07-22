@@ -1,71 +1,215 @@
-.quien-es__inner {
-  display: grid;
-  grid-template-columns: 0.85fr 1fr;
-  align-items: center;
-  gap: var(--espacio-16);
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366):
+ *   barra roja izquierda   0 → 52px       (3.81vw)
+ *   foto                   left 111px, 562×620   (8.13vw / 41.1vw)
+ *   columna de texto       arranca en 715px      (52.3vw)
+ *
+ * Todo en vw para que la composición acompañe al ancho, igual que el hero.
+ */
+
+.quien-es {
+  position: relative;
+  overflow: hidden;
+  padding-top: clamp(48px, 6.95vw, 130px);
+  background: var(--color-fondo);
 }
+
+/* Barra roja del borde izquierdo, a todo el alto de la sección. */
+.quien-es::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: clamp(18px, 3.81vw, 72px);
+  background: var(--color-primario);
+}
+
+/* Trama de puntos del ángulo superior derecho. */
+.quien-es__puntos {
+  position: absolute;
+  top: clamp(14px, 1.4vw, 30px);
+  right: clamp(14px, 1.6vw, 34px);
+  width: 78px;
+  height: 62px;
+  background-image: radial-gradient(
+    var(--color-primario) 1.8px,
+    transparent 1.9px
+  );
+  background-size: 18px 18px;
+}
+
+.quien-es__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 41.1vw) minmax(0, 1fr);
+  gap: clamp(24px, 3.07vw, 60px);
+  padding-left: clamp(32px, 8.13vw, 160px);
+  padding-right: clamp(24px, 5.6vw, 110px);
+  align-items: center;
+}
+
+/* ---- Foto ---- */
 
 .quien-es__figura {
   margin: 0;
-  position: relative;
+  /* Apoyada en el piso de la sección, como en el diseño. */
+  align-self: end;
 }
 
 .quien-es__figura img {
+  display: block;
   width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: var(--radio-lg);
-  box-shadow: var(--sombra-lg);
+  height: auto;
 }
 
-/* Bloque rojo detrás de la foto, como firma de marca. */
-.quien-es__figura::before {
-  content: '';
-  position: absolute;
-  inset: auto auto -18px -18px;
-  width: 55%;
-  height: 45%;
+/* ---- Kicker: 01 —— ¿QUIÉN ES? ---- */
+
+.quien-es__kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  margin-bottom: var(--espacio-6);
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.quien-es__numero {
+  color: var(--color-texto);
+}
+
+.quien-es__raya {
+  width: clamp(28px, 3.4vw, 60px);
+  height: 2px;
   background: var(--color-primario);
-  border-radius: var(--radio-lg);
-  z-index: -1;
 }
 
-.quien-es__parrafo {
-  color: var(--color-texto-suave);
-  font-size: var(--texto-lg);
+.quien-es__etiqueta {
+  color: var(--color-primario);
+}
+
+/* ---- Nombre ---- */
+
+.quien-es__nombre {
+  font-family: var(--fuente-display);
+  /* ~62px a 1366. */
+  font-size: clamp(2rem, 1.3rem + 3vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--espacio-6);
+}
+
+.quien-es__nombre-pila,
+.quien-es__nombre-apellido {
+  display: block;
+}
+
+.quien-es__nombre-pila {
+  font-weight: 800;
+  color: var(--color-texto);
+}
+
+.quien-es__nombre-apellido {
+  /* Más chico y menos pesado que el nombre, como en el hero. */
+  font-size: 0.78em;
+  font-weight: 700;
+  color: var(--color-primario);
+}
+
+/* ---- Textos ---- */
+
+.quien-es__lead {
+  max-width: 40ch;
+  font-weight: 700;
+  font-size: clamp(1rem, 0.92rem + 0.3vw, 1.15rem);
+  line-height: 1.45;
+  color: var(--color-texto);
   margin-bottom: var(--espacio-4);
 }
 
+.quien-es__lead-destacado {
+  color: var(--color-primario);
+}
+
+.quien-es__parrafo {
+  max-width: 48ch;
+  /* Open Sans Regular, según el diseño. */
+  font-weight: 400;
+  font-size: clamp(0.95rem, 0.9rem + 0.25vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--color-texto-suave);
+  margin-bottom: clamp(24px, 3.5vw, 56px);
+}
+
+/* ---- Datos ---- */
+
 .quien-es__datos {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
-  gap: var(--espacio-6);
-  margin-top: var(--espacio-8);
-  padding-top: var(--espacio-8);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: clamp(20px, 2.5vw, 44px);
+  margin: 0;
+  padding-top: clamp(24px, 3vw, 48px);
   border-top: 1px solid var(--color-borde);
 }
 
-.dato__valor {
-  font-family: var(--fuente-titulo);
-  font-weight: 800;
-  font-size: var(--texto-2xl);
-  color: var(--color-primario);
-  line-height: 1;
+.dato {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-3);
+}
+
+.dato__icono {
+  width: 38px;
+  height: auto;
+  /* Los iconos vienen en su tamaño real; no se agrandan. */
+  flex-shrink: 0;
 }
 
 .dato__etiqueta {
-  margin: var(--espacio-2) 0 0;
-  font-size: var(--texto-sm);
+  font-size: var(--texto-xs);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   color: var(--color-texto-suave);
 }
+
+.dato__valor {
+  position: relative;
+  /* El <dd> trae margen izquierdo del navegador. */
+  margin: 0;
+  padding-top: var(--espacio-3);
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+/* Rayita roja entre la etiqueta y el valor. */
+.dato__valor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  background: var(--color-primario);
+}
+
+/* ---- Mobile: la foto arriba, el texto abajo ---- */
 
 @media (max-width: 900px) {
   .quien-es__inner {
     grid-template-columns: 1fr;
-    gap: var(--espacio-12);
+    gap: clamp(24px, 5vw, 48px);
+    padding-left: clamp(40px, 10vw, 80px);
   }
 
   .quien-es__figura {
     max-width: 420px;
+  }
+
+  .quien-es__puntos {
+    /* Estorba al texto en pantallas chicas. */
+    display: none;
   }
 }
