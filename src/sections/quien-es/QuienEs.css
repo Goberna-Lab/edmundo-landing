@@ -141,13 +141,17 @@
   display: block;
 }
 
+/*
+ * Los dos renglones van en Montserrat Bold (700). Ojo que acá NO es como el
+ * hero: allá "Edmundo" es ExtraBold y el apellido Bold; en esta sección los
+ * dos pesan igual y solo cambia el tamaño.
+ */
 .quien-es__nombre-pila {
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-texto);
 }
 
 .quien-es__nombre-apellido {
-  /* Más chico y menos pesado que el nombre, como en el hero. */
   font-size: 0.78em;
   font-weight: 700;
   color: var(--color-primario);
@@ -180,10 +184,16 @@
 
 /* ---- Datos ---- */
 
+/*
+ * Columnas al ancho de su contenido, no repartidas en partes iguales: en el
+ * diseño arrancan en 727, 909 y 1112, o sea con separaciones distintas
+ * (182 y 203). Eso sale de columnas auto con un gap fijo de ~79px, no de
+ * tres columnas iguales.
+ */
 .quien-es__datos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
-  gap: clamp(20px, 2.5vw, 44px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 5.78vw, 110px);
   margin: 0;
   padding-top: clamp(24px, 3vw, 48px);
   border-top: 1px solid var(--color-borde);
@@ -210,12 +220,19 @@
   color: var(--color-texto-suave);
 }
 
+/*
+ * Diseño: Open Sans 600, 15px/27px, letter-spacing -0.3px, #2E3135.
+ * La clamp da 15px justos a 1366 y crece apenas en pantallas grandes.
+ */
 .dato__valor {
   position: relative;
   /* El <dd> trae margen izquierdo del navegador. */
   margin: 0;
   padding-top: var(--espacio-3);
   font-weight: 600;
+  font-size: clamp(0.9rem, 0.8rem + 0.16vw, 1.15rem);
+  line-height: 1.8;
+  letter-spacing: -0.3px;
   color: var(--color-texto);
 }
 
