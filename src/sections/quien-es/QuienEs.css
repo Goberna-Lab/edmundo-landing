@@ -25,9 +25,13 @@
    */
   min-height: calc(100svh - var(--alto-header));
   display: flex;
-  /* La foto se apoya en el borde inferior; el aire va solo arriba. */
-  align-items: end;
-  padding-top: var(--aire-min);
+  /*
+   * stretch, no end: la grilla ocupa TODO el alto de la sección. Así el
+   * texto puede centrarse en el total y la foto apoyarse en el piso, cada
+   * uno por su lado. Con un padding-top acá, el aire empujaba la grilla
+   * entera y el texto quedaba descentrado: mucho arriba, poco abajo.
+   */
+  align-items: stretch;
   background: var(--color-fondo);
 }
 
