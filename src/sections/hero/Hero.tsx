@@ -42,7 +42,9 @@ export function Hero() {
         decoding="async"
       />
 
-      <div className="hero__inner container">
+      {/* Sin .container a propósito: el hero se despega de la columna
+          centrada y usa un margen proporcional. Ver Hero.css. */}
+      <div className="hero__inner">
         <div className="hero__texto">
           <h1 className="hero__nombre">
             <span className="hero__nombre-pila">{heroContent.nombre}</span>

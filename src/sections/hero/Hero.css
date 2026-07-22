@@ -106,7 +106,9 @@
   right: 8.2%;
   bottom: 0;
   z-index: -1;
-  height: 37.1vw;
+  /* Tope a 820px: el nombre topa en 92px, así que sin este límite en un
+     monitor de 2560 el retrato llegaría a 950px y se comería la composición. */
+  height: min(37.1vw, 820px);
   width: auto;
   object-fit: contain;
   object-position: bottom;
@@ -116,10 +118,17 @@
  * En el diseño los botones terminan 110px antes del piso de la foto
  * (548 - 438). 110/1366 = 8.05vw, así que el bloque de texto queda siempre
  * a la misma altura relativa sobre la imagen.
+ *
+ * El margen izquierdo es proporcional (78/1366 = 5.71vw) y NO la columna
+ * centrada del resto de la página: así el hero conserva la composición del
+ * diseño al crecer, en vez de irse al medio.
+ *   1366 -> 78px      1920 -> 110px
+ * El max() con el espacio base evita que en móvil quede pegado al borde.
  */
 .hero__inner {
   position: relative;
   width: 100%;
+  padding-inline: max(5.71vw, var(--espacio-6));
   padding-top: var(--espacio-8);
   padding-bottom: clamp(28px, 8.05vw, 155px);
 }
