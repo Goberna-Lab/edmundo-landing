@@ -23,8 +23,13 @@
   isolation: isolate;
   display: flex;
   align-items: center;
-  /* 45.4vw = 620px a 1366. Con piso para móviles y techo para pantallas grandes. */
-  min-height: clamp(480px, 45.4vw, 760px);
+  /*
+   * 40.12vw = 548px a 1366, que es el alto REAL de la foto.
+   * El asset venía de 620px pero sus primeros 72px eran el área del header
+   * (transparente); se recortó. Mantener esta proporción hace que la foto
+   * entre justa a cualquier ancho, sin recorte ni zoom.
+   */
+  min-height: clamp(400px, 40.12vw, 820px);
   background: var(--color-fondo);
   overflow: hidden;
 }
@@ -59,7 +64,7 @@
 
 /*
  * Retrato: 504×507 apoyado en el piso del hero, a 112px del borde derecho.
- *   507 / 620 = 81.8% del alto de la sección
+ *   507 / 548 = 92.5% del alto de la sección (548 = alto real de la foto)
  *   112 / 1366 = 8.2% del ancho
  * En porcentajes y no en px para que acompañe al hero al escalar.
  */
@@ -68,7 +73,7 @@
   right: 8.2%;
   bottom: 0;
   z-index: -1;
-  height: 81.8%;
+  height: 92.5%;
   width: auto;
   object-fit: contain;
   object-position: bottom;
