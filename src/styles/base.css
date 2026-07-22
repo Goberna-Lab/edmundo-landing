@@ -94,7 +94,19 @@ button {
   padding-inline: var(--espacio-6);
 }
 
+/*
+ * Mismo criterio que el hero: cada sección ocupa al menos la pantalla menos
+ * el header, así a 1366×620 entra una sección completa por vista.
+ *
+ * min-height y no height: si el contenido es más alto, la sección crece en
+ * vez de recortarlo. Por eso el justify-content: center es seguro — solo
+ * actúa cuando sobra espacio, nunca empuja contenido fuera de la pantalla.
+ */
 .section {
+  min-height: calc(100svh - var(--alto-header));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding-block: var(--seccion-y);
 }
 
