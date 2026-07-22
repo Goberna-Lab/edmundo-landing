@@ -133,17 +133,20 @@
   margin-top: 2px;
 }
 
+/* Open Sans Regular para el detalle de cada hito. */
 .hito__texto {
   margin: 0;
   font-family: var(--fuente-texto);
+  font-weight: 400;
   font-size: 15px;
   line-height: 1.45;
   color: #2c2c2c;
 }
 
+/* Open Sans Bold para el título. */
 .hito__fuerte {
   font-weight: 700;
-  color: var(--color-texto);
+  color: #2c2c2c;
 }
 
 /* ---- Retrato y forma roja ---- */
