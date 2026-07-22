@@ -27,6 +27,8 @@
   --fuente-titulo: 'Open Sans', system-ui, sans-serif;
   --fuente-texto: 'Open Sans', system-ui, sans-serif;
   --fuente-header: 'Open Sans', system-ui, sans-serif;
+  /* Los kickers numerados de las secciones ("03 —— LO QUE ME MUEVE"). */
+  --fuente-kicker: 'Source Sans 3', system-ui, sans-serif;
 
   /* Escala fluida: el tamaño acompaña al viewport sin media queries. */
   --texto-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.82rem);
