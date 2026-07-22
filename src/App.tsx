@@ -6,6 +6,7 @@ import { Trayectoria } from '@/sections/trayectoria/Trayectoria'
 import { LoQueMeMueve } from '@/sections/lo-que-me-mueve/LoQueMeMueve'
 import { ModeloDeGestion } from '@/sections/modelo-de-gestion/ModeloDeGestion'
 import { EjesParaLaMolina } from '@/sections/ejes-para-la-molina/EjesParaLaMolina'
+import { Articulos } from '@/sections/articulos/Articulos'
 import { LaMolinaAdelante } from '@/sections/la-molina-adelante/LaMolinaAdelante'
 
 /**
@@ -25,6 +26,7 @@ export default function App() {
         <LoQueMeMueve />
         <ModeloDeGestion />
         <EjesParaLaMolina />
+        <Articulos />
         <LaMolinaAdelante />
       </main>
       <Footer />
