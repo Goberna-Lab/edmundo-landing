@@ -14,45 +14,121 @@
   display: flex;
   align-items: center;
   background: var(--color-texto);
+
+  /*
+   * La timeline del parallax se declara ACÁ y no con `view()` en la foto.
+   *
+   * NO ES UN CAPRICHO, es por el `overflow: hidden` de arriba: eso convierte
+   * a la sección en scroll container, y `view()` cuelga la timeline del
+   * scrollport más cercano —que pasa a ser esta misma sección, que nunca
+   * scrollea—. La foto quedaba congelada en un extremo, en TODOS los
+   * navegadores. Nombrando la timeline sobre la sección, el scrollport que
+   * se mide es el documento, que es el que de verdad se mueve.
+   *
+   * Si algún día sacás el `overflow: hidden`, esto sigue andando igual.
+   */
+  view-timeline-name: --adelante-parallax;
 }
 
 /* ---- Fondo con parallax ---- */
 
 /*
- * La foto es más alta que la sección (120%) y arranca corrida hacia arriba:
- * ese excedente es el recorrido que tiene para moverse sin dejar huecos.
+ * La foto es más alta que la sección (160%) y arranca corrida hacia arriba:
+ * ese excedente —30% arriba y 30% abajo— es el recorrido que tiene para
+ * moverse sin dejar huecos.
+ *
+ * ESTOS DOS NÚMEROS VAN ATADOS a los @keyframes de acá abajo: el translateY
+ * es un porcentaje de la ALTURA DE LA FOTO, así que el recorrido real es
+ * 18% × height = 18% × 160% = 28.8% del alto de la sección, y tiene que
+ * entrar en el 30% de excedente. Si tocás uno, rehacé la cuenta con el otro
+ * o la foto deja ver el fondo en un extremo.
+ *
+ * ACÁ SE TERMINA EL MARGEN PARA AGRANDARLO. El techo no es la cuenta sino
+ * el asset: el original es 1366×685 y a esta altura ya se escala ~1.6× en
+ * una pantalla de 1366 (más en pantallas grandes), además de recortar los
+ * costados porque `cover` ajusta por alto. Para un parallax más largo hay
+ * que re-exportar la foto al doble (2732×1370), no subir estos números.
  */
 .adelante__fondo {
   position: absolute;
-  top: -10%;
+  top: -30%;
   left: 0;
   z-index: -2;
   width: 100%;
-  height: 120%;
+  height: 160%;
   object-fit: cover;
-  will-change: transform;
 }
 
 /*
- * El parallax lo maneja el hook useParallax en el .tsx, no el CSS.
+ * Parallax ligado al scroll, sin JavaScript.
  *
- * Antes iba con `animation-timeline: view()` bajo un @supports, pero Firefox
- * parsea la propiedad sin implementar la funcionalidad: el @supports daba
- * verdadero, la animación se aplicaba sin timeline y la foto quedaba
- * congelada en un extremo. Una sola implementación evita ese tipo de falla.
+ * `animation-range: entry` y no el `cover` que viene por defecto: ésta es la
+ * ÚLTIMA sección de la landing y nunca termina de salir por arriba —abajo solo
+ * queda el footer—, así que con el rango completo el avance moría en ~0.6, el
+ * efecto se gastaba entero durante la entrada y la foto quedaba clavada justo
+ * cuando uno se planta a mirarla. `entry` termina cuando la sección queda
+ * entera en pantalla, a un par de cientos de píxeles del fin del documento: el
+ * desplazamiento se reparte sobre el scroll que de verdad existe, sin medir
+ * nada. Si algún día ésta deja de ser la última sección, revisá este rango.
+ *
+ * El @supports es la guarda de verdad, no un adorno: donde no está soportado
+ * (Firefox hasta la 155, Safari <26) no se aplica nada y la foto queda quieta
+ * y centrada, que es el fallback correcto. Prueba `view()` y no la timeline con
+ * nombre a propósito: es la sonda canónica de la feature y las dos cosas van
+ * juntas (verificado: da false en Firefox 152 y true en Chrome).
  */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .adelante__fondo {
+      /* Sin duración a propósito: sobre una timeline de progreso, el `auto`
+         que deja el shorthand es lo que estira la animación por todo el rango. */
+      animation: adelante-parallax linear both;
+      /* DESPUÉS del shorthand: `animation` resetea animation-timeline a auto.
+         Al revés, la animación corre sobre la timeline del documento, se
+         consume al instante y la foto queda congelada en un extremo. */
+      animation-timeline: --adelante-parallax;
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
 
-/* Oscurece la foto para que el texto blanco tenga contraste suficiente. */
+@keyframes adelante-parallax {
+  from {
+    transform: translateY(-18%);
+  }
+  to {
+    transform: translateY(18%);
+  }
+}
+
+/*
+ * Oscurece la foto para que el texto blanco tenga contraste suficiente.
+ *
+ * Es diagonal, no de lado a lado: el sol del atardecer cae arriba a la
+ * izquierda y un velo parejo lo apagaba justo a él, que es lo que hace
+ * linda a la foto. Éste carga abajo a la izquierda —donde caen título y
+ * botones— y suelta el cielo y todo el flanco derecho.
+ */
 .adelante__velo {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(
-    100deg,
-    rgb(23 23 23 / 0.62) 0%,
-    rgb(23 23 23 / 0.42) 45%,
-    rgb(23 23 23 / 0.18) 100%
-  );
+  background:
+    /*
+     * Las paradas están calibradas con el medidor de contraste, no a ojo:
+     * el kicker es de 16px y necesita 4.5:1, que es lo que fija el 0.54 del
+     * 42%. El título, al ser 69px bold, se conforma con 3:1. Aflojar el
+     * tramo 0-42% vuelve a reprobar el kicker.
+     */
+    linear-gradient(
+      38deg,
+      rgb(23 23 23 / 0.82) 0%,
+      rgb(23 23 23 / 0.54) 42%,
+      rgb(23 23 23 / 0.14) 66%,
+      rgb(23 23 23 / 0) 82%
+    ),
+    /* Asienta el pie para que los botones no floten sobre el agua clara. */
+    linear-gradient(to top, rgb(23 23 23 / 0.3) 0%, rgb(23 23 23 / 0) 26%);
 }
 
 /* ---- Contenido ---- */
@@ -62,7 +138,13 @@
   width: 100%;
   /* left 80px → 5.86vw. */
   padding-inline: clamp(24px, 5.86vw, 110px);
-  padding-block: clamp(40px, 6vw, 110px);
+  /*
+   * Asimétrico porque el diseño no centra el bloque: deja 78px arriba y
+   * 108px abajo. Y la cuenta cierra sola —78 + 499 de contenido + 108 = 685,
+   * el alto de la sección—, así que a 1366 el `align-items: center` no mueve
+   * nada; recién reparte el sobrante en pantallas más altas que la maqueta.
+   */
+  padding-block: clamp(40px, 5.71vw, 78px) clamp(40px, 7.91vw, 108px);
   color: var(--color-blanco);
 }
 
@@ -70,7 +152,8 @@
   display: flex;
   align-items: center;
   gap: var(--espacio-3);
-  margin-bottom: clamp(24px, 3.4vw, 60px);
+  /* Del pie del kicker al tope del título: 170 - 104 = 66px. */
+  margin-bottom: clamp(24px, 4.83vw, 66px);
   font-family: var(--fuente-texto);
   font-weight: 400;
   font-size: 16px;
@@ -80,8 +163,21 @@
   color: var(--color-blanco);
 }
 
+/*
+ * El número va más grande que la etiqueta: 18px contra 16px, en Source Sans 3
+ * como pide Figma. `--fuente-kicker` es justamente ese token —existe para los
+ * kickers numerados de las secciones— y la familia ya viene cargada.
+ */
+.adelante__numero {
+  font-family: var(--fuente-kicker);
+  font-size: 18px;
+  line-height: 26px;
+  letter-spacing: 2.52px;
+}
+
 .adelante__raya {
-  width: clamp(28px, 4vw, 70px);
+  /* 63px en el diseño (de x=113 a x=176). */
+  width: clamp(28px, 4.61vw, 63px);
   height: 1px;
   background: currentColor;
 }
@@ -93,11 +189,17 @@
   font-weight: 700;
   /* 69px exactos a 1366: 1.2rem (19.2) + 3.65vw (49.9). */
   font-size: clamp(2.2rem, 1.2rem + 3.65vw, 5.5rem);
-  /* 61/69 del diseño. */
-  line-height: 0.884;
+  /*
+   * 84/69 = 1.219. En Figma el interlineado del título es AUTOMÁTICO, que en
+   * Montserrat 69px calcula 84.11px: el bloque «Construyamos/Juntos» mide
+   * 168px justos, o sea 84 por renglón. (El «69px/61px» que decía el
+   * encabezado de este archivo estaba mal y apretaba el título 23px de más.)
+   */
+  line-height: 1.219;
   letter-spacing: -0.01em;
   color: var(--color-blanco);
-  margin-bottom: clamp(28px, 3.7vw, 66px);
+  /* Del pie del último renglón al tope de los botones: 521 - 445 = 76px. */
+  margin-bottom: clamp(28px, 5.56vw, 76px);
 }
 
 /* Cada renglón del diseño es un bloque: el corte no depende del ancho. */
@@ -107,6 +209,12 @@
 
 .adelante__titulo-linea--suave {
   color: #b4b2b1;
+  /*
+   * El gris no sigue el ritmo del interlineado: en el diseño arranca en 361
+   * y el blanco termina en 338, o sea 23px de aire extra entre los dos
+   * bloques. Sin esto, los tres renglones quedan pegados a 84px parejos.
+   */
+  margin-top: clamp(8px, 1.68vw, 23px);
 }
 
 /* ---- CTAs ---- */
@@ -114,33 +222,63 @@
 .adelante__acciones {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  /* 356 - (80 + 260) = 16px entre los dos botones. */
+  gap: 16px;
 }
 
-/* Los dos van en blanco, a diferencia del hero. */
+/*
+ * 260×56 del diseño. El `min-` y no `width` fijo para que el texto mande si
+ * alguna vez crece; a 320px de ancho entran los 260 dentro del padding de 24.
+ */
 .adelante__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--espacio-3);
-  min-width: 190px;
-  min-height: 48px;
+  min-width: 260px;
+  min-height: 56px;
   padding-inline: var(--espacio-6);
   border-radius: 30px;
-  background: var(--color-blanco);
-  color: var(--color-texto);
-  font-family: var(--fuente-texto);
-  font-weight: 600;
-  font-size: var(--texto-sm);
-  box-shadow: 0 3px 6px rgb(0 0 0 / 0.161);
-  transition: color var(--transicion), transform var(--transicion),
+  /* Montserrat 500 16px, no la fuente de texto: así está en Figma. */
+  font-family: var(--fuente-display);
+  font-weight: 500;
+  font-size: 16px;
+  transition: color var(--transicion), background var(--transicion),
+    border-color var(--transicion), transform var(--transicion),
     box-shadow var(--transicion);
 }
 
+/*
+ * Los dos NO son iguales: en Figma el primero es sólido y el segundo es
+ * fantasma —el relleno rojo #C51F25 está en el archivo pero apagado
+ * (`visible: false`), y lo que se ve es un borde blanco de 1.5px—.
+ */
+.adelante__cta--solido {
+  background: var(--color-blanco);
+  color: var(--color-texto);
+  border: 1.5px solid transparent;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.161);
+}
+
+.adelante__cta--fantasma {
+  background: transparent;
+  color: var(--color-blanco);
+  border: 1.5px solid var(--color-blanco);
+}
+
 .adelante__cta:hover {
-  color: var(--color-primario);
   transform: translateY(-2px);
+}
+
+.adelante__cta--solido:hover {
+  color: var(--color-primario);
   box-shadow: 0 6px 14px rgb(0 0 0 / 0.24);
+}
+
+/* El fantasma se llena al pasar por encima: no tiene sombra que crecer. */
+.adelante__cta--fantasma:hover {
+  background: var(--color-blanco);
+  color: var(--color-texto);
 }
 
 .adelante__cta-icono {

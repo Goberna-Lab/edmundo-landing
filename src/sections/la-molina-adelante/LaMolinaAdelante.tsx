@@ -1,90 +1,14 @@
-import { useEffect, useRef } from 'react'
 import { adelanteContent } from './la-molina-adelante.content'
 import './LaMolinaAdelante.css'
 
 const { titulo, ctaPrimario, ctaSecundario } = adelanteContent
 
-/**
- * Mueve la foto de fondo mientras la sección pasa por pantalla.
- *
- * Anda en todos los navegadores: no depende de `animation-timeline: view()`,
- * que Firefox parsea pero no implementa.
- *
- * @param desplazamiento Porcentaje que se mueve la foto en cada extremo.
- */
-function useParallax(desplazamiento = 8) {
-  const ref = useRef<HTMLImageElement>(null)
-
-  useEffect(() => {
-    const foto = ref.current
-    // La sección es la que se mide; ver el comentario de `pintar`.
-    const seccion = foto?.parentElement
-    if (!foto || !seccion) return
-
-    // El parallax es de los efectos que marean a quien pide menos movimiento.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    let cuadro = 0
-    let visible = false
-
-    const pintar = () => {
-      cuadro = 0
-      /*
-       * Se mide la SECCIÓN, no la foto: getBoundingClientRect devuelve la
-       * caja YA transformada, así que medir la foto que estamos moviendo
-       * realimenta el cálculo y el movimiento sale amortiguado.
-       */
-      const caja = seccion.getBoundingClientRect()
-      const alto = window.innerHeight
-      // 0 cuando la sección asoma por abajo, 1 cuando termina de salir arriba.
-      const avance = (alto - caja.top) / (alto + caja.height)
-      const acotado = Math.min(Math.max(avance, 0), 1)
-      const y = (acotado - 0.5) * 2 * desplazamiento
-      foto.style.transform = `translateY(${y.toFixed(2)}%)`
-    }
-
-    // rAF: agrupa los eventos de scroll en un repintado por cuadro.
-    const alScrollear = () => {
-      if (!visible || cuadro) return
-      cuadro = requestAnimationFrame(pintar)
-    }
-
-    // Solo escucha el scroll mientras la sección está en pantalla.
-    const observador = new IntersectionObserver(
-      ([entrada]) => {
-        visible = entrada.isIntersecting
-        if (visible) pintar()
-      },
-      { rootMargin: '100px' },
-    )
-    observador.observe(seccion)
-
-    // Primera pasada: si al cargar la sección ya está en pantalla, la foto
-    // tiene que arrancar en su posición, no en el centro.
-    pintar()
-
-    window.addEventListener('scroll', alScrollear, { passive: true })
-    window.addEventListener('resize', alScrollear, { passive: true })
-
-    return () => {
-      observador.disconnect()
-      window.removeEventListener('scroll', alScrollear)
-      window.removeEventListener('resize', alScrollear)
-      if (cuadro) cancelAnimationFrame(cuadro)
-    }
-  }, [desplazamiento])
-
-  return ref
-}
-
 export function LaMolinaAdelante() {
-  const fondo = useParallax()
-
   return (
     <section className="adelante" id="la-molina-adelante">
-      {/* Fondo con parallax. Va más alto que la sección para tener recorrido. */}
+      {/* Fondo con parallax. Va más alto que la sección para tener recorrido;
+          el movimiento lo maneja el CSS con animation-timeline. */}
       <img
-        ref={fondo}
         className="adelante__fondo"
         src={adelanteContent.imagen}
         alt={adelanteContent.altImagen}
@@ -96,7 +20,7 @@ export function LaMolinaAdelante() {
 
       <div className="adelante__inner">
         <p className="adelante__kicker">
-          <span>{adelanteContent.numero}</span>
+          <span className="adelante__numero">{adelanteContent.numero}</span>
           <span className="adelante__raya" aria-hidden="true" />
           <span>{adelanteContent.kicker}</span>
         </p>
@@ -117,7 +41,10 @@ export function LaMolinaAdelante() {
         </h2>
 
         <div className="adelante__acciones">
-          <a className="adelante__cta" href={ctaPrimario.href}>
+          <a
+            className="adelante__cta adelante__cta--solido"
+            href={ctaPrimario.href}
+          >
             <svg
               className="adelante__cta-icono"
               viewBox="0 0 26 26"
@@ -140,7 +67,10 @@ export function LaMolinaAdelante() {
             {ctaPrimario.label}
           </a>
 
-          <a className="adelante__cta" href={ctaSecundario.href}>
+          <a
+            className="adelante__cta adelante__cta--fantasma"
+            href={ctaSecundario.href}
+          >
             <svg
               className="adelante__cta-icono adelante__cta-icono--plan"
               viewBox="0 0 21 26"

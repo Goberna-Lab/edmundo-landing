@@ -1,0 +1,291 @@
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección de 676 de alto):
+ *   fondo      izquierda 870 con foto velada, derecha 496 en rojo
+ *   candidato  502×617 en x=145, pegado al pie
+ *   tarjeta    536×541 en x=705 y=68, radio 20
+ *   columnas   220 + 220 con 20 de separación, 38 de padding
+ *   botón      235×56 en y=516
+ */
+
+.formulario {
+  position: relative;
+  isolation: isolate;
+  /* 676/1366 = 49.5vw. */
+  min-height: 49.5vw;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--color-texto);
+}
+
+/* ---- Fondo ---- */
+
+.formulario__fondo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+/* 870/1366 = 63.7% del ancho. */
+.formulario__ciudad {
+  position: absolute;
+  inset: 0 36.3% 0 0;
+  width: 63.7%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * `darken` al 67.7%, como en Figma, y no un velo plano: mezclando por mínimo
+ * el cielo y el asfalto bajan pero la ciudad no se borra. Con opacidad plana
+ * quedaba una mancha gris donde el diseño todavía deja ver la avenida.
+ */
+.formulario__velo {
+  position: absolute;
+  inset: 0 36.3% 0 0;
+  background: var(--color-texto);
+  opacity: 0.677;
+  mix-blend-mode: darken;
+}
+
+.formulario__franja {
+  position: absolute;
+  inset: 0 0 0 63.7%;
+  background: var(--color-primario);
+}
+
+/* La textura ya es roja y va opaca, como en Figma: el color del token queda
+   abajo como respaldo por si la imagen no carga. */
+.formulario__franja img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- Contenido ---- */
+
+/*
+ * Todo se ubica en porcentajes de la sección entera, no de un contenedor con
+ * márgenes: en el diseño las posiciones están medidas contra los 1366 de la
+ * mesa (foto en 145, tarjeta en 705) y el fondo va a sangre.
+ */
+.formulario__inner {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 49.5vw;
+}
+
+/*
+ * El marco es la "ventana" de la máscara de Figma: 502×617 en x=145, pegada
+ * al pie (145/1366=10.6%, 617/676=91.3%). Recorta lo que sobresale.
+ */
+.formulario__candidato {
+  position: absolute;
+  left: 10.6%;
+  bottom: 0;
+  width: 36.8%;
+  height: 91.3%;
+  overflow: hidden;
+}
+
+/*
+ * La foto adentro, con el encuadre EXACTO del diseño: en Figma la imagen mide
+ * 612×882 dentro de una ventana de 502×617 y arranca en (-73, -16). O sea va
+ * ~22% más grande que la ventana y corrida, así el candidato se ve ampliado y
+ * cortado a mitad de pierna —no entero y flotando como quedaba con cover—.
+ * El pie de la foto cae 40% por debajo del marco: eso es lo que sangra.
+ */
+.formulario__candidato-foto {
+  position: absolute;
+  left: -14.54%;
+  top: -2.59%;
+  /* `max-width: none` clave: el reset global de base.css capa las <img> al
+     100% del contenedor y anulaba este 121.91%, dejando al candidato sin
+     ampliar (se veía chico, con las piernas de más). */
+  width: 121.91%;
+  max-width: none;
+  height: auto;
+}
+
+/* ---- Tarjeta ---- */
+
+/* 705/1366 = 51.6% desde el borde izquierdo; centrada en vertical (68 arriba,
+   67 abajo en el diseño). */
+.formulario__tarjeta {
+  position: relative;
+  margin-left: 51.6%;
+  width: 39.2%;
+  padding: clamp(24px, 3.2vw, 44px) clamp(24px, 2.8vw, 38px);
+  border-radius: var(--radio-lg);
+  background: var(--color-blanco);
+  box-shadow: var(--sombra-lg);
+}
+
+.formulario__campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  row-gap: clamp(18px, 2.2vw, 30px);
+}
+
+/* Motivo y mensaje ocupan las dos columnas. */
+.formulario__campo--ancho {
+  grid-column: 1 / -1;
+}
+
+.formulario__label {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--fuente-display);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-oscuro-formulario);
+}
+
+/*
+ * Sin caja: solo el subrayado del diseño.
+ *
+ * OJO CON EL TAMAÑO: 16px y no los 12px del diseño. Abajo de 16px iOS hace
+ * zoom solo al enfocar el campo y descuadra la página entera. Está en la guía
+ * del proyecto y no es negociable; el label de 11px sí queda como el diseño.
+ */
+.formulario__control {
+  width: 100%;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--color-borde-campo);
+  border-radius: 0;
+  background: transparent;
+  font-family: var(--fuente-display);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--color-oscuro-formulario);
+}
+
+.formulario__control::placeholder {
+  color: var(--color-oscuro-formulario);
+  opacity: 0.55;
+}
+
+.formulario__control:focus {
+  outline: 0;
+  border-bottom-color: var(--color-primario);
+}
+
+.formulario__control:focus-visible {
+  /* El borde inferior solo no alcanza para marcar foco por teclado. */
+  outline: 2px solid var(--color-primario);
+  outline-offset: 4px;
+}
+
+.formulario__control--area {
+  resize: vertical;
+  min-height: 72px;
+}
+
+/* El select vacío se ve como placeholder hasta que se elige algo. */
+.formulario__control:has(option[value='']:checked) {
+  color: rgb(27 31 40 / 0.55);
+}
+
+/* ---- Botón ---- */
+
+.formulario__enviar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-width: 235px;
+  min-height: 56px;
+  margin-top: clamp(20px, 2.3vw, 32px);
+  padding-inline: 24px;
+  border: 0;
+  border-radius: var(--radio-sm);
+  background: var(--color-oscuro-formulario);
+  color: var(--color-blanco);
+  font-family: var(--fuente-display);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--transicion), transform var(--transicion);
+}
+
+.formulario__enviar svg {
+  width: 13px;
+  height: 11px;
+}
+
+.formulario__enviar:hover {
+  background: var(--color-primario);
+  transform: translateY(-2px);
+}
+
+/* Al presionar vuelve a su lugar: da la sensación de botón que se hunde. */
+.formulario__enviar:active {
+  transform: translateY(0);
+}
+
+.formulario__enviar:focus-visible {
+  outline: 2px solid var(--color-blanco);
+  outline-offset: 3px;
+}
+
+/* ---- Tablet y mobile ---- */
+
+@media (max-width: 1024px) {
+  .formulario {
+    min-height: 0;
+    padding-block: clamp(40px, 6vw, 72px);
+  }
+
+  /*
+   * La foto pasa a ser fondo y la tarjeta toma el ancho: montarlas en poco
+   * espacio dejaba al candidato tapado hasta la nariz.
+   */
+  .formulario__inner {
+    flex-direction: column;
+    align-items: center;
+    min-height: 0;
+  }
+
+  /* Vuelve al flujo: en absoluto y con el ancho de un teléfono, la tarjeta
+     le tapaba la cara. Sin recorte de máscara, la foto entera. */
+  .formulario__candidato {
+    position: static;
+    width: min(60%, 320px);
+    height: auto;
+    overflow: visible;
+  }
+
+  .formulario__candidato-foto {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+  }
+
+  .formulario__tarjeta {
+    width: min(100%, 536px);
+    margin-left: 0;
+    margin-top: -24px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* Una columna: 220px por campo no entran en un teléfono. */
+  .formulario__campos {
+    grid-template-columns: 1fr;
+  }
+
+  .formulario__enviar {
+    width: 100%;
+  }
+}

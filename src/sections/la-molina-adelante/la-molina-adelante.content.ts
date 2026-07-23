@@ -7,14 +7,14 @@ export interface LineaTitulo {
 }
 
 /*
- * Cuatro renglones: los dos primeros en blanco y los dos últimos en gris.
- * El corte es del diseño, no del ancho de la caja.
+ * Tres renglones: los dos primeros en blanco y el último en gris.
+ * El corte es del diseño, no del ancho de la caja: en Figma el gris va en
+ * UNA sola línea de 767px («La Molina adelante.»), no partido en dos.
  */
 const titulo: LineaTitulo[] = [
   { texto: 'Construyamos' },
   { texto: 'Juntos' },
-  { texto: 'La Molina', suave: true },
-  { texto: 'adelante.', suave: true },
+  { texto: 'La Molina adelante.', suave: true },
 ]
 
 export const adelanteContent = {

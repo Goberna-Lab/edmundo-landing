@@ -16,6 +16,6 @@ export const headerContent = {
     // formulario), pero en el nav va antes, como pide el diseño.
     { label: 'Propuestas', href: '#la-molina-adelante' },
     { label: 'Escuchar', href: '#escuchar-para-decidir' },
-    { label: 'Artículos', href: '#articulos' },
+    { label: 'Artículos', href: '#la-voz-de-la-molina' },
   ],
 }

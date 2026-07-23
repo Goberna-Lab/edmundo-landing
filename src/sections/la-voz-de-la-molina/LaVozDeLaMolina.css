@@ -1,0 +1,347 @@
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, sección de 771 de alto):
+ *   título    x=129 y=105, Montserrat Bold 48/55, ls -0.96
+ *   tarjetas  x=128 / 513 / 898 — 343 de ancho, 42 de separación
+ *   foto      343×265 en y=181, borde 1px
+ *   placa     310×40 en y=410, montada sobre el pie de la foto
+ *   fecha 471 · raya roja 501 · bajada 516 · "leer nota" 612
+ *   flechas   48px en x=52 y x=1275 (fuera de las tarjetas)
+ */
+
+/* 105 arriba y 142 abajo: 105 + 524 de contenido + 142 = 771, el alto exacto
+   de la sección en el diseño. */
+.voz {
+  padding-block: clamp(48px, 7.69vw, 105px) clamp(48px, 10.39vw, 142px);
+  background: var(--color-fondo);
+}
+
+/*
+ * 1113 = las tres tarjetas (343×3) más sus dos separaciones (42×2). Es más
+ * angosto que el `--ancho-contenido` general del proyecto: en esta sección el
+ * diseño mete las tarjetas hacia adentro para dejarle lugar a las flechas.
+ */
+.voz__inner {
+  width: min(100% - 2 * clamp(24px, 5.86vw, 80px), 1113px);
+  margin-inline: auto;
+}
+
+.voz__titulo {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  /* 48px exactos a 1366: 0.9rem (14.4) + 2.46vw (33.6). */
+  font-size: clamp(1.8rem, 0.9rem + 2.46vw, 3rem);
+  line-height: 1.146;
+  letter-spacing: -0.02em;
+  color: var(--color-oscuro-titular);
+  /* Del pie del título (160) al tope de las fotos (181). */
+  margin-bottom: clamp(16px, 1.54vw, 21px);
+}
+
+/* ---- Carrusel ---- */
+
+.voz__carrusel {
+  position: relative;
+}
+
+/*
+ * El scroll-snap hace todo el trabajo: los botones solo llaman a scrollTo.
+ * Si el JS no corre, esto se sigue pudiendo scrollear con dedo, rueda o
+ * teclado —por eso la pista es la que scrollea y no un contenedor externo—.
+ */
+.voz__pista {
+  display: flex;
+  gap: 42px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  /* Sin barra visible: la navegación son las flechas y los puntitos. */
+  scrollbar-width: none;
+  /*
+   * `padding: 2px 0` y no `padding-block`: el `padding-inline-start: 40px`
+   * que el navegador le pone a todo <ul> desbordaba la pista 40px y le hacía
+   * creer al carrusel que había algo para scrollear.
+   */
+  padding: 2px 0;
+  list-style: none;
+  margin: 0;
+}
+
+.voz__pista::-webkit-scrollbar {
+  display: none;
+}
+
+.voz__slide {
+  flex: 0 0 343px;
+  scroll-snap-align: start;
+}
+
+/* ---- Flechas ---- */
+
+.voz__flecha {
+  position: absolute;
+  /* Centro del círculo (312+24=336) medido desde el tope de la pista. */
+  top: 155px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-oscuro-titular);
+  color: var(--color-blanco);
+  cursor: pointer;
+  transition: background var(--transicion), opacity var(--transicion);
+}
+
+.voz__flecha svg {
+  width: 16px;
+  height: 13px;
+}
+
+.voz__flecha:hover:not(:disabled) {
+  background: var(--color-primario);
+}
+
+.voz__flecha:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/*
+ * Por defecto van MONTADAS sobre la foto, no afuera.
+ *
+ * Afuera necesitan 76px de margen lateral (48 de la flecha + 28 de aire) y el
+ * margen recién llega a eso arriba de 1297px de viewport. Abajo de ahí se
+ * salían del documento y metían scroll horizontal.
+ */
+.voz__flecha--atras {
+  left: 8px;
+}
+
+.voz__flecha--adelante {
+  right: 8px;
+}
+
+/* Recién acá entran afuera de las tarjetas, como en el diseño. */
+@media (min-width: 1297px) {
+  .voz__flecha--atras {
+    left: auto;
+    right: calc(100% + 28px);
+  }
+
+  .voz__flecha--adelante {
+    right: auto;
+    left: calc(100% + 28px);
+  }
+}
+
+/* ---- Puntitos ---- */
+
+.voz__puntos {
+  display: flex;
+  justify-content: center;
+  /* Del pie de "Leer nota completa" (629) al centro de los puntitos (666). */
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+/*
+ * El puntito visible mide 9px, pero el botón es de 28px con el punto dibujado
+ * al medio: un target de 9px es imposible de pegarle con el dedo o el mouse.
+ * El área de más es transparente y sin margen, así que no cambia el diseño.
+ */
+.voz__punto {
+  display: grid;
+  place-items: center;
+  /* 18px de ancho mantiene los puntos a ~18px de centro a centro, casi como
+     el diseño (17), pero con 26 de alto el target deja de ser de 9px. */
+  width: 18px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.voz__punto::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border: 1px solid #767c6c;
+  border-radius: 50%;
+  transition: background var(--transicion), border-color var(--transicion),
+    transform var(--transicion);
+}
+
+/* Al pasar por encima, el puntito inactivo se agranda y se tiñe: da a
+   entender que es clicable, no un adorno. */
+.voz__punto:hover:not(.voz__punto--activo)::before {
+  border-color: var(--color-oscuro-titular);
+  transform: scale(1.3);
+}
+
+.voz__punto--activo::before {
+  border-color: var(--color-oscuro-titular);
+  background: var(--color-oscuro-titular);
+}
+
+/* ---- Tarjeta ---- */
+
+.nota__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--transicion);
+}
+
+/* La tarjeta entera es el enlace: al pasar por encima se levanta un poco,
+   la foto hace un zoom sutil y la flecha del "leer nota" avanza. Sin esto
+   solo se subrayaba el texto y no se leía como algo clicable. */
+.nota__link:hover {
+  transform: translateY(-4px);
+}
+
+/*
+ * La placa del título va absoluta acá adentro: en el diseño monta sobre el
+ * pie de la foto y sobresale 4px por debajo (foto 181-446, placa 410-450).
+ */
+.nota__figura {
+  position: relative;
+  /* 265/343 del diseño. */
+  aspect-ratio: 343 / 265;
+  margin-bottom: 25px;
+}
+
+/* Caja de la foto: recorta el zoom del hover sin comerse la placa ni el chip,
+   que son hermanos de este contenedor, no hijos. */
+.nota__foto {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-borde-foto);
+}
+
+.nota__foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 450ms ease;
+}
+
+.nota__link:hover .nota__foto img {
+  transform: scale(1.05);
+}
+
+/* Chip del mes: 26px adentro del borde izquierdo, 52 del tope. */
+.nota__mes {
+  position: absolute;
+  top: 52px;
+  left: 26px;
+  font-family: var(--fuente-texto);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--color-blanco);
+  /* La foto no siempre es oscura en esa esquina: sin esto el mes se pierde. */
+  text-shadow: 0 1px 4px rgb(0 0 0 / 0.55);
+}
+
+.nota__titulo {
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  /* 310 de 343: la placa no llega al borde derecho de la foto. */
+  width: 90.4%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  /*
+   * Sin padding vertical: el título son dos renglones de 17/20, o sea 40px
+   * justos, que es el alto de la placa en el diseño. Agregarle aire la hacía
+   * crecer y le comía otros 12px a la foto.
+   */
+  padding: 0 10px;
+  background: var(--color-blanco);
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 20px;
+  color: var(--color-texto);
+}
+
+.nota__fecha {
+  font-family: var(--fuente-texto);
+  font-size: 11px;
+  line-height: 13px;
+  letter-spacing: 0.02em;
+  color: var(--color-texto);
+}
+
+/* La raya roja del diseño: 43×2 entre la fecha y la bajada. */
+.nota__fecha::after {
+  content: '';
+  display: block;
+  width: 43px;
+  height: 2px;
+  margin-top: 15px;
+  background: var(--color-primario);
+}
+
+.nota__bajada {
+  margin-top: 13px;
+  /* 327 de 343: la bajada no llega al borde de la tarjeta. */
+  width: 95.3%;
+  font-family: var(--fuente-texto);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--color-texto);
+}
+
+.nota__mas {
+  display: inline-flex;
+  align-items: center;
+  gap: 19px;
+  margin-top: 16px;
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  line-height: 17px;
+  /*
+   * El diseño usa un rojo más claro (#E74942), pero a 14px sobre blanco da
+   * 3.87:1 y la guía del proyecto pide 4.5:1 para texto chico. El primario
+   * llega a 5.84:1 y la diferencia entre los dos rojos no se nota.
+   */
+  color: var(--color-primario);
+}
+
+.nota__mas svg {
+  width: 14px;
+  height: 10px;
+  transition: transform var(--transicion);
+}
+
+.nota__link:hover .nota__mas {
+  text-decoration: underline;
+}
+
+/* La flecha del "leer nota" avanza al pasar por la tarjeta. */
+.nota__link:hover .nota__mas svg {
+  transform: translateX(4px);
+}
+
+.voz :where(a, button):focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 3px;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 760px) {
+  /*
+   * Una nota por pantalla. `flex-basis: 100%` y no un ancho fijo: así el
+   * snap cae siempre en el borde de la tarjeta.
+   */
+  .voz__slide {
+    flex-basis: 100%;
+  }
+}

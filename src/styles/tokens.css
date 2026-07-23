@@ -20,6 +20,20 @@
   --color-borde: #e2e8f0;
   --color-blanco: #ffffff;
 
+  /*
+   * Los cuatro oscuros del cierre de la landing. El diseño usa uno distinto
+   * por sección y no son intercambiables: mezclarlos se nota en el empalme
+   * entre el formulario y el footer, que van pegados.
+   */
+  --color-oscuro-titular: #1d1616; /* título y flechas de La Voz */
+  --color-oscuro-formulario: #1b1f28; /* labels y botón del formulario */
+  --color-oscuro-footer: #21262c; /* fondo del footer */
+  --color-superficie-redes: #454a50; /* círculos de las redes */
+
+  /* Bordes finos del cierre: foto de la nota e input subrayado. */
+  --color-borde-foto: #cbccca;
+  --color-borde-campo: #c0c1c7;
+
   /* ---- Tipografía ---- */
   /* Montserrat solo para el lockup del nombre en el hero. */
   --fuente-display: 'Montserrat', system-ui, sans-serif;

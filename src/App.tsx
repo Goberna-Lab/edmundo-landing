@@ -7,8 +7,9 @@ import { LoQueMeMueve } from '@/sections/lo-que-me-mueve/LoQueMeMueve'
 import { ModeloDeGestion } from '@/sections/modelo-de-gestion/ModeloDeGestion'
 import { EjesParaLaMolina } from '@/sections/ejes-para-la-molina/EjesParaLaMolina'
 import { EscucharParaDecidir } from '@/sections/escuchar-para-decidir/EscucharParaDecidir'
-import { Articulos } from '@/sections/articulos/Articulos'
 import { LaMolinaAdelante } from '@/sections/la-molina-adelante/LaMolinaAdelante'
+import { LaVozDeLaMolina } from '@/sections/la-voz-de-la-molina/LaVozDeLaMolina'
+import { Formulario } from '@/sections/formulario/Formulario'
 
 /**
  * El orden de las secciones es el guion de la landing:
@@ -28,8 +29,9 @@ export default function App() {
         <ModeloDeGestion />
         <EjesParaLaMolina />
         <EscucharParaDecidir />
-        <Articulos />
         <LaMolinaAdelante />
+        <LaVozDeLaMolina />
+        <Formulario />
       </main>
       <Footer />
     </>

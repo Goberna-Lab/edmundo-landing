@@ -1,34 +1,228 @@
+/*
+ * MEDIDAS DEL DISEÑO (mesa de 1366, footer de 249 de alto):
+ *   lockup    x=110 y=94, "EDMUNDO" 38/46 y "DEL AGUILA" 33/40 (se solapan)
+ *   columnas  x=612 y x=745, título 11/22 en y=64, ítems 10/23 en y=100
+ *   redes     x=928, cuatro filas de 41 en y=50/91/133/175, círculo de 26
+ *   cuadro    108×108 en x=1076
+ *   subir     31px en x=1288 y=105
+ */
+
 .footer {
-  padding-block: var(--espacio-12);
-  background: var(--color-texto);
+  padding-block: clamp(36px, 3.7vw, 50px);
+  background: var(--color-oscuro-footer);
   color: var(--color-blanco);
 }
 
+/*
+ * El lockup se lleva el sobrante (1fr) y el resto va pegado a la derecha,
+ * como en el diseño: la marca arranca en 110 y las columnas recién en 612.
+ * Con `space-between` el reparto era parejo y quedaba todo al medio.
+ */
 .footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--espacio-6);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(5, auto);
+  align-items: stretch;
+  column-gap: clamp(20px, 4.2vw, 58px);
+  row-gap: var(--espacio-8);
 }
 
+/* Los bloques de la derecha arrancan arriba; solo el de la marca se estira. */
+.footer__inner > :not(.footer__bloque-marca) {
+  align-self: start;
+}
+
+/* ---- Lockup ---- */
+
+/*
+ * Interlineado apretado a propósito: en el diseño las dos cajas se montan
+ * 12px (94-140 y 128-168), o sea ~0.9 de la primera línea.
+ */
 .footer__marca {
-  font-family: var(--fuente-titulo);
-  font-weight: 700;
-  font-size: var(--texto-lg);
-}
-
-.footer__redes {
   display: flex;
-  gap: var(--espacio-6);
+  flex-direction: column;
+  font-family: var(--fuente-display);
+  line-height: 0.9;
+  text-transform: uppercase;
 }
 
-.footer__redes a:hover {
+.footer__marca-linea1 {
+  font-weight: 700;
+  font-size: clamp(1.6rem, 1rem + 1.6vw, 2.375rem);
+}
+
+.footer__marca-linea2 {
+  font-weight: 600;
+  /* 33/38 de la primera línea. */
+  font-size: clamp(1.4rem, 0.9rem + 1.4vw, 2.06rem);
+}
+
+/* ---- Columnas de enlaces ---- */
+
+.footer__columna-titulo {
+  margin-bottom: 8px;
+  font-family: var(--fuente-texto);
+  font-weight: 700;
+  /* 11px del diseño: es un rótulo, no texto de lectura. */
+  font-size: 11px;
+  line-height: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer__columna ul {
+  list-style: none;
+  padding: 0;
+}
+
+/*
+ * 13px y no los 10px del diseño: son enlaces reales, hay que poder leerlos y
+ * pegarles con el dedo. Sube el tamaño, no el layout.
+ */
+.footer__columna a {
+  display: block;
+  padding-block: 3px;
+  font-family: var(--fuente-texto);
+  font-size: 13px;
+  line-height: 23px;
+  color: var(--color-blanco);
+  text-decoration: none;
+  opacity: 0.85;
+  transition: opacity var(--transicion);
+}
+
+.footer__columna a:hover {
+  opacity: 1;
   text-decoration: underline;
 }
 
+/* ---- Redes ---- */
+
+.footer__redes {
+  display: grid;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+}
+
+.footer__redes a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-blanco);
+  text-decoration: none;
+}
+
+.footer__red-icono {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--color-superficie-redes);
+  transition: background var(--transicion);
+}
+
+.footer__red-icono svg {
+  width: 13px;
+  height: 13px;
+}
+
+.footer__redes a:hover .footer__red-icono {
+  background: var(--color-primario);
+}
+
+/* 14px contra los 11px del diseño, por el mismo motivo que los enlaces. */
+.footer__red-handle {
+  font-family: var(--fuente-texto);
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.footer__redes a:hover .footer__red-handle {
+  text-decoration: underline;
+}
+
+/* ---- Cuadro (QR) ---- */
+
+.footer__qr {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+  background: var(--color-blanco);
+}
+
+/* ---- Volver arriba ---- */
+
+.footer__subir {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  align-self: center;
+  border-radius: 50%;
+  background: linear-gradient(
+    160deg,
+    var(--color-primario) 0%,
+    var(--color-primario-oscuro) 100%
+  );
+  color: var(--color-blanco);
+  transition: transform var(--transicion);
+}
+
+.footer__subir svg {
+  width: 8px;
+  height: 10px;
+}
+
+.footer__subir:hover {
+  transform: translateY(-2px);
+}
+
+.footer__subir:active {
+  transform: translateY(0);
+}
+
+/* Lockup arriba y línea legal abajo, dentro de la misma celda de la grilla. */
+.footer__bloque-marca {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: var(--espacio-8);
+}
+
 .footer__legal {
-  width: 100%;
+  font-family: var(--fuente-texto);
   font-size: var(--texto-xs);
-  opacity: 0.7;
+  opacity: 0.6;
+}
+
+.footer :where(a):focus-visible {
+  outline: 2px solid var(--color-blanco);
+  outline-offset: 3px;
+}
+
+/* ---- Mobile ---- */
+
+@media (max-width: 900px) {
+  /*
+   * De seis columnas a dos: el lockup arriba a todo el ancho y el resto en
+   * pares. El QR y el botón de subir van juntos al final.
+   */
+  .footer__inner {
+    grid-template-columns: 1fr 1fr;
+    justify-content: start;
+    row-gap: var(--espacio-6);
+  }
+
+  .footer__bloque-marca {
+    grid-column: 1 / -1;
+    height: auto;
+    gap: var(--espacio-4);
+  }
+
+  .footer__redes {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr 1fr;
+  }
 }
