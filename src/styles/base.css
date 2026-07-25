@@ -80,10 +80,23 @@ button {
   cursor: pointer;
 }
 
+a[href] {
+  cursor: pointer;
+}
+
 :where(a, button, input, textarea, [tabindex]):focus-visible {
   outline: 3px solid var(--color-acento);
   outline-offset: 2px;
   border-radius: var(--radio-sm);
+}
+
+/* Feedback táctil: todos los botones se contraen un poco al apretar. */
+button:active {
+  transform: scale(0.97);
+}
+
+a:active {
+  opacity: 0.85;
 }
 
 /* ---- Utilidades ---- */
@@ -158,6 +171,8 @@ button {
   --alto: 55px;
   --columnas: 4;
   --filas: 4;
+  /* Es una perilla: la trama chica del mobile la baja a ~1px. */
+  --radio-punto: 1.7px;
 
   position: absolute;
   top: 22px;
@@ -165,8 +180,8 @@ button {
   width: var(--ancho);
   height: var(--alto);
   background-image: radial-gradient(
-    var(--color-primario) 1.7px,
-    transparent 1.8px
+    var(--color-primario) var(--radio-punto),
+    transparent calc(var(--radio-punto) + 0.1px)
   );
   background-size: calc(var(--ancho) / var(--columnas))
     calc(var(--alto) / var(--filas));

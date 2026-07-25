@@ -317,3 +317,204 @@
     flex: 1 1 175px;
   }
 }
+
+/* ---- Mobile ----
+ *
+ * ES OTRA COMPOSICIÓN, no el escritorio angosto. El frame de 430×1625
+ * apila todo: foto → kicker → título → bajada → pasos verticales →
+ * tarjetas apiladas → CTAs apilados.
+ */
+
+@media (max-width: 760px) {
+  .escuchar {
+    --u: min(0.2326vw, 1.15px);
+    --margen: max(calc(24 * var(--u)), 16px);
+
+    min-height: 0;
+    align-items: start;
+  }
+
+  .escuchar__inner {
+    padding-inline: var(--margen);
+    padding-top: calc(56 * var(--u));
+    padding-bottom: calc(40 * var(--u));
+    gap: 0;
+  }
+
+  /* Foto arriba, borde redondo grande. */
+  .escuchar__figura {
+    max-width: none;
+    margin-bottom: calc(56 * var(--u));
+  }
+
+  .escuchar__figura img {
+    border-radius: calc(16 * var(--u));
+  }
+
+  /* ---- Kicker ---- */
+
+  .escuchar__kicker {
+    gap: calc(4 * var(--u));
+    margin-bottom: calc(12 * var(--u));
+    font-family: var(--fuente-kicker);
+    font-size: max(calc(14 * var(--u)), 12px);
+    font-weight: 400;
+    line-height: 1.362;
+    letter-spacing: 0.14em;
+    color: var(--color-texto);
+  }
+
+  .escuchar__raya {
+    width: calc(32 * var(--u));
+    background: var(--color-texto);
+  }
+
+  /* ---- Título ---- */
+
+  .escuchar__titulo {
+    font-size: max(calc(29 * var(--u)), 20px);
+    line-height: 1.172;
+    margin-bottom: calc(12 * var(--u));
+  }
+
+  /* ---- Bajada ---- */
+
+  .escuchar__bajada {
+    font-size: max(calc(16 * var(--u)), 13px);
+    line-height: 2;
+    margin-bottom: calc(28 * var(--u));
+  }
+
+  /* ---- Pasos: verticales, con el círculo al costado ---- */
+
+  .escuchar__pasos {
+    display: flex;
+    flex-direction: column;
+    gap: calc(40 * var(--u));
+    margin-bottom: calc(28 * var(--u));
+    /* Línea separadora arriba del primer paso. */
+    padding-top: calc(28 * var(--u));
+    position: relative;
+  }
+
+  .escuchar__pasos::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(24.5 * var(--u));
+    right: calc(24.5 * var(--u));
+    height: 1px;
+    background: var(--color-borde);
+  }
+
+  .paso {
+    flex-direction: row;
+    align-items: center;
+    gap: calc(14 * var(--u));
+    text-align: left;
+  }
+
+  /* Sin línea conectora entre pasos en mobile. */
+  .paso:not(:last-child)::after {
+    display: none;
+  }
+
+  .paso__circulo {
+    width: calc(48 * var(--u));
+    height: calc(48 * var(--u));
+    flex-shrink: 0;
+    font-family: var(--fuente-kicker);
+    font-size: max(calc(17 * var(--u)), 13px);
+    letter-spacing: 0.14em;
+  }
+
+  .paso__texto {
+    font-size: max(calc(16 * var(--u)), 13px);
+    line-height: 1.125;
+  }
+
+  /* ---- Tarjetas ---- */
+
+  .escuchar__tarjetas {
+    grid-template-columns: 1fr;
+    gap: calc(12 * var(--u));
+    margin-bottom: calc(18 * var(--u));
+  }
+
+  .compromiso {
+    padding: calc(24 * var(--u));
+    border-radius: calc(16 * var(--u));
+  }
+
+  .compromiso__titulo {
+    font-size: max(calc(14 * var(--u)), 11px);
+    letter-spacing: 0.14em;
+    margin-bottom: calc(12 * var(--u));
+  }
+
+  .compromiso__lista {
+    gap: calc(8 * var(--u));
+  }
+
+  .compromiso__punto {
+    font-size: max(calc(16 * var(--u)), 13px);
+    line-height: 1.5;
+  }
+
+  .compromiso__tilde {
+    width: max(calc(19 * var(--u)), 14px);
+    height: max(calc(14 * var(--u)), 10px);
+    margin-top: calc(2 * var(--u));
+  }
+
+  /* ---- Plazo ---- */
+
+  .plazo {
+    flex-direction: row;
+    align-items: center;
+    gap: calc(12 * var(--u));
+    padding: calc(16 * var(--u)) calc(24 * var(--u));
+    border-radius: calc(16 * var(--u));
+  }
+
+  .plazo__numero {
+    font-size: max(calc(71 * var(--u)), 46px);
+    line-height: 1;
+    margin-bottom: 0;
+  }
+
+  .plazo__etiqueta {
+    font-size: max(calc(14 * var(--u)), 11px);
+    letter-spacing: 0.14em;
+    line-height: 1.362;
+  }
+
+  /* ---- CTAs: apilados ---- */
+
+  .escuchar__acciones {
+    flex-direction: column;
+    gap: calc(12 * var(--u));
+  }
+
+  .escuchar__cta {
+    width: 100%;
+    min-width: 0;
+    min-height: max(calc(56 * var(--u)), 48px);
+    padding-inline: calc(24 * var(--u));
+    border-radius: calc(30 * var(--u));
+    font-size: max(calc(16 * var(--u)), 13px);
+  }
+
+  .escuchar__cta--primario {
+    width: calc(260 * var(--u));
+  }
+
+  .escuchar__cta--secundario {
+    width: calc(160 * var(--u));
+  }
+
+  .escuchar__cta-icono {
+    width: max(calc(29 * var(--u)), 22px);
+    height: max(calc(29 * var(--u)), 22px);
+  }
+}

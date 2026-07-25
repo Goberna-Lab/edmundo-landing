@@ -2,7 +2,8 @@ import { footerContent } from './footer.content'
 import type { Red } from './footer.content'
 import './Footer.css'
 
-const { marca, columnas, redes, imagenQr, altQr, subir, legal } = footerContent
+const { marca, columnas, enlacesMobile, redes, imagenQr, altQr, subir, legal } =
+  footerContent
 
 /** Los íconos van inline: el sprite de public/icons.svg es de temas, no de redes. */
 const iconos: Record<Red, { nombre: string; path: string }> = {
@@ -57,6 +58,20 @@ export function Footer() {
             </ul>
           </nav>
         ))}
+
+        {/*
+          Mobile: una sola lista centrada de secciones, sin título. Reemplaza a
+          las columnas de arriba (se ocultan por CSS bajo el breakpoint mobile).
+        */}
+        <nav className="footer__nav-mobile" aria-label="Secciones del sitio">
+          <ul>
+            {enlacesMobile.map((enlace) => (
+              <li key={enlace.href}>
+                <a href={enlace.href}>{enlace.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
         <ul className="footer__redes">
           {redes.map(({ red, handle, href }) => (

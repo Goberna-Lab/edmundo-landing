@@ -232,7 +232,7 @@
   background: var(--color-primario);
 }
 
-/* ---- Mobile: la foto arriba, el texto abajo ---- */
+/* ---- Tablet: la foto arriba, el texto abajo ---- */
 
 @media (max-width: 900px) {
   .quien-es__inner {
@@ -243,5 +243,230 @@
 
   .quien-es__figura {
     max-width: 420px;
+  }
+}
+
+/* ---- Mobile ----
+ *
+ * ES OTRA COMPOSICIÓN, no el escritorio angosto. Arriba manda el diseño de
+ * 1366; de acá abajo, el frame de 430×1184, que reordena todo:
+ *
+ *   - el texto va PRIMERO y la foto abajo (en escritorio es al revés);
+ *   - los tres datos se apilan con el icono al costado, no en fila;
+ *   - la barra roja deja de ser un filete a la izquierda y pasa a ser una
+ *     banda al pie que el recorte de Edmundo pisa por el medio;
+ *   - la trama de puntos vuelve a aparecer (base.css la apaga en ≤900).
+ *
+ * Todas las medidas salen de ese frame y se escriben en `--u`.
+ */
+
+@media (max-width: 760px) {
+  .quien-es {
+    /*
+     * UNIDAD DE DISEÑO: 1u = 1px del frame de 430. 100/430 = 0.2326vw.
+     *
+     * A diferencia del hero, acá NO entra el alto en la cuenta: esa sección
+     * pelea contra el fold y por eso mira `svh`; ésta scrollea, así que atarla
+     * al alto la achicaría en teléfonos bajos sin ninguna razón.
+     *
+     * El tope de 1.15px es el mismo que el hero, para que las dos secciones
+     * cambien de escala igual: sin él, cerca de 760 de ancho la unidad se iría
+     * a 1.77 y «Edmundo» saldría de 110px.
+     */
+    --u: min(0.2326vw, 1.15px);
+    --margen: max(calc(24 * var(--u)), 16px);
+
+    /* El alto lo da el contenido: la sección ya no llena la pantalla. */
+    min-height: 0;
+  }
+
+  /*
+   * La banda roja del pie. El recorte va con fondo transparente, así que el
+   * rojo asoma a los costados de la figura y hace de piso. Va antes que
+   * .quien-es__inner en el árbol, y las dos son posicionadas con z-index auto:
+   * por eso la foto le queda encima sin necesidad de z-index.
+   */
+  .quien-es::before {
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: calc(40 * var(--u));
+  }
+
+  /* Trama de 40×32.33 arriba a la derecha, la misma grilla de 4×4 en chico. */
+  .quien-es .puntos {
+    display: block;
+    --ancho: calc(40 * var(--u));
+    --alto: calc(32.33 * var(--u));
+    --radio-punto: 1px;
+    top: calc(13 * var(--u));
+    right: calc(10 * var(--u));
+  }
+
+  .quien-es__inner {
+    /* 768 - 712: del pie de los datos al tope de la foto. */
+    gap: calc(56 * var(--u));
+    align-items: start;
+    padding-inline: var(--margen);
+    /* 56 del diseño al kicker; abajo nada, la foto toca el borde. */
+    padding-top: calc(56 * var(--u));
+    padding-bottom: 0;
+  }
+
+  /* El orden del diseño mobile es al revés que el del DOM. */
+  .quien-es__texto {
+    order: 1;
+  }
+
+  .quien-es__figura {
+    order: 2;
+    /* En escritorio se apoya en el piso de la grilla; acá el `end` la mandaría
+       contra el borde derecho, que es el eje transversal de esta columna. */
+    align-self: start;
+    max-width: none;
+    /* La foto arranca 3px más adentro que el texto (27 contra 24). */
+    margin-left: calc(3 * var(--u));
+    width: calc(377 * var(--u));
+  }
+
+  /* ---- Kicker: acá el «01» también es rojo, no gris ---- */
+
+  .quien-es__kicker {
+    /* 44.5 - 42 y 82 - 76.5: 2.5 de un lado, 5.5 del otro. */
+    gap: calc(4 * var(--u));
+    /* 123 - 75: del pie del kicker al tope de «Edmundo». */
+    margin-bottom: calc(48 * var(--u));
+    font-size: max(calc(14 * var(--u)), 12px);
+    font-weight: 400;
+    line-height: 1.362;
+    letter-spacing: 0.14em;
+  }
+
+  .quien-es__numero {
+    color: var(--color-primario);
+  }
+
+  .quien-es__raya {
+    width: calc(32 * var(--u));
+    height: 1px;
+  }
+
+  /* ---- Nombre ---- */
+
+  .quien-es__nombre {
+    font-size: calc(62 * var(--u));
+    /* 267 - 234: del pie de «del Águila» al tope de la bajada. */
+    margin-bottom: calc(33 * var(--u));
+  }
+
+  /*
+   * El interlineado va sobre la clase de cada renglón y no sobre el h2: la
+   * regla de escritorio ya pisa `line-height` ahí, y heredar desde el padre no
+   * le gana. Mismo detalle que en el hero.
+   *
+   * OJO CON EL AVANCE. Los dos renglones se pisan en el diseño: «Edmundo»
+   * ocupa 75.578 de interlineado pero «del Águila» arranca 61 más abajo. La
+   * tentación es poner line-height 61/62 y listo, pero el interlineado también
+   * centra el glifo dentro de su caja: comprimirlo 14.5px levanta el texto la
+   * mitad de eso y «Edmundo» queda 8px arriba de donde va (medido contra el
+   * render de Figma). Así que cada renglón lleva SU interlineado real y el
+   * solapamiento lo hace un margen negativo:
+   *   184 - (123 + 75.578) = -14.578
+   */
+  .quien-es__nombre-pila {
+    /* 75.578/62 del diseño. */
+    line-height: 1.219;
+  }
+
+  .quien-es__nombre-apellido {
+    /* 44/62 del diseño. */
+    font-size: 0.71em;
+    /* 50/44 del diseño. */
+    line-height: 1.136;
+    margin-top: calc(-14.578 * var(--u));
+  }
+
+  /* ---- Textos ---- */
+
+  /*
+   * Los `max-width` en ch de escritorio se quedan: a 430 no llegan a apretar
+   * (48ch a 17px son ~454, más que los 382 de caja), así que los cortes de
+   * línea salen los del diseño; y de 580 para arriba, donde `--u` ya topó y la
+   * caja sigue creciendo, son los que evitan renglones de 70 caracteres.
+   */
+  .quien-es__lead {
+    font-size: max(calc(22 * var(--u)), 16px);
+    line-height: 1.455;
+    letter-spacing: -0.02em;
+    /* 337 - 331: la bajada y el párrafo van casi pegados. */
+    margin-bottom: calc(6 * var(--u));
+  }
+
+  .quien-es__parrafo {
+    font-size: max(calc(17 * var(--u)), 14px);
+    line-height: 1.647;
+    letter-spacing: -0.02em;
+    /* 451 - 421: del pie del párrafo al primer dato. */
+    margin-bottom: calc(30 * var(--u));
+  }
+
+  /* ---- Datos: apilados, con el icono al costado ---- */
+
+  .quien-es__datos {
+    flex-direction: column;
+    /* 546 - 522: entre el pie de un valor y la etiqueta del siguiente. */
+    gap: calc(24 * var(--u));
+    /* En mobile el diseño no lleva la línea separadora de escritorio. */
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  /*
+   * 45 = 69 - 24: el icono ocupa su propia columna y el texto arranca siempre
+   * en el mismo x, aunque los tres iconos tengan anchos distintos.
+   */
+  .dato {
+    display: grid;
+    grid-template-columns: calc(45 * var(--u)) minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .dato__icono {
+    grid-row: 1 / 3;
+    align-self: start;
+    /* Sin piso en px a propósito: son decorativos y encogen con la columna;
+       un mínimo los haría desbordar sobre el texto en pantallas chicas. */
+    width: calc(33 * var(--u));
+    /* Los iconos quedan unos pocos px por debajo del tope de la etiqueta. */
+    margin-top: calc(5 * var(--u));
+  }
+
+  .dato__etiqueta {
+    font-family: var(--fuente-kicker);
+    font-size: max(calc(16 * var(--u)), 12px);
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  .dato__valor {
+    /* 482 - 473.8: de la etiqueta a la rayita, que es el borde del elemento. */
+    margin-top: calc(8.2 * var(--u));
+    /* 490 - 482: de la rayita al valor. */
+    padding-top: calc(8 * var(--u));
+    font-size: max(calc(18 * var(--u)), 14px);
+    /*
+     * Regular, no la semibold de escritorio: el frame de 430 lo pide así y a
+     * 18px la semibold pesa demasiado al lado de la etiqueta gris.
+     */
+    font-weight: 400;
+    line-height: 1.778;
+    letter-spacing: -0.02em;
+  }
+
+  /* Acá la rayita mide 40 fijos, no el ancho del dato como en escritorio. */
+  .dato__valor::before {
+    width: calc(40 * var(--u));
   }
 }

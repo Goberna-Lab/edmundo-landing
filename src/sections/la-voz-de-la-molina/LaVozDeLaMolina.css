@@ -37,6 +37,13 @@
   margin-bottom: clamp(16px, 1.54vw, 21px);
 }
 
+/* ---- Ver todo (solo mobile) ---- */
+
+/* El diseño solo lo trae en mobile; en desktop las tres notas se ven juntas. */
+.voz__ver-todo {
+  display: none;
+}
+
 /* ---- Carrusel ---- */
 
 .voz__carrusel {
@@ -343,5 +350,32 @@
    */
   .voz__slide {
     flex-basis: 100%;
+  }
+
+  /* Pill de borde rojo, texto rojo en mayúsculas, alineado a la izquierda
+     debajo del título (diseño: 131×29 en x=26, y=96). */
+  .voz__ver-todo {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 44px;
+    padding: 8px 39px;
+    border: 1.5px solid var(--color-primario);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-primario);
+    font-family: var(--fuente-texto);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background var(--transicion), color var(--transicion);
+  }
+
+  .voz__ver-todo:hover {
+    background: var(--color-primario);
+    color: var(--color-blanco);
   }
 }

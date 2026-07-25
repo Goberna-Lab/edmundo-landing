@@ -21,6 +21,8 @@ export const laVozContent = {
   anterior: 'Ver notas anteriores',
   siguiente: 'Ver notas siguientes',
   leerMas: 'Leer nota completa',
+  /* Botón del diseño mobile: lleva al listado completo de notas. */
+  verTodo: { label: 'Ver todo', url: '[[voz-ver-todo-url]]' },
 
   notas: [
     {
@@ -36,7 +38,8 @@ export const laVozContent = {
     {
       id: 'nota-2',
       titulo: 'El deporte como punto de encuentro para nuestros vecinos',
-      bajada: '[[nota-2-bajada]]',
+      bajada:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since 1966, when designers',
       fecha: '2026-07-20',
       imagen: nota2,
       altImagen: 'Chicos jugando fútbol en una losa deportiva del distrito',
@@ -45,7 +48,8 @@ export const laVozContent = {
     {
       id: 'nota-3',
       titulo: 'Nuestros parques, el mejor lugar para volver a encontrarnos',
-      bajada: '[[nota-3-bajada]]',
+      bajada:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s standard dummy text ever since 1966, when designers',
       fecha: '2026-07-20',
       imagen: nota3,
       altImagen: 'Alameda arbolada de La Molina con vecinos caminando',

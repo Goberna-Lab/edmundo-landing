@@ -25,6 +25,12 @@
   padding-block: clamp(40px, 7.4vw, 130px);
 }
 
+/* Desktop: el orden visual es intro → ficha → navegación → miniaturas. */
+.ejes__intro { order: 1; }
+.ejes__ficha { order: 2; }
+.ejes__navegacion { order: 3; }
+.ejes__miniaturas { order: 4; }
+
 /* ---- Kicker ---- */
 
 .ejes__kicker {
@@ -88,7 +94,7 @@
   margin: 0;
 }
 
-.ejes__flechas {
+.ejes__navegacion {
   display: flex;
   /* 1241 - 1186 - 45 = 10px entre las dos. */
   gap: 10px;
@@ -294,5 +300,138 @@
   .ejes__miniaturas > li {
     flex: 0 0 60%;
     scroll-snap-align: start;
+  }
+}
+
+/* ---- Mobile ----
+ *
+ * ES OTRA COMPOSICIÓN, no el escritorio angosto. El frame de 430×1397
+ * reordena intro → ficha → miniaturas → flechas, con tipografías y
+ * espacios escalados en --u.
+ */
+
+@media (max-width: 760px) {
+  .ejes {
+    --u: min(0.2326vw, 1.15px);
+    --margen: max(calc(24 * var(--u)), 16px);
+
+    min-height: 0;
+    align-items: start;
+  }
+
+  .ejes__inner {
+    padding-inline: var(--margen);
+    padding-top: calc(56 * var(--u));
+    padding-bottom: calc(32 * var(--u));
+  }
+
+  /* ---- Orden mobile: intro → ficha → miniaturas → flechas ---- */
+
+  .ejes__intro { order: 1; }
+  .ejes__ficha { order: 2; }
+  .ejes__miniaturas { order: 3; }
+  .ejes__navegacion { order: 4; }
+
+  /* ---- Kicker ---- */
+
+  .ejes__kicker {
+    gap: calc(4 * var(--u));
+    margin-bottom: calc(20 * var(--u));
+    font-family: var(--fuente-kicker);
+    font-size: max(calc(14 * var(--u)), 12px);
+    font-weight: 400;
+    line-height: 1.362;
+    letter-spacing: 0.14em;
+    color: var(--color-texto);
+  }
+
+  .ejes__raya {
+    width: calc(32 * var(--u));
+    background: var(--color-texto);
+  }
+
+  /* ---- Título ---- */
+
+  .ejes__titulo {
+    font-size: max(calc(29 * var(--u)), 20px);
+    line-height: 1.172;
+    margin-bottom: calc(20 * var(--u));
+  }
+
+  /* ---- Bajada ---- */
+
+  .ejes__intro {
+    margin-bottom: calc(29 * var(--u));
+  }
+
+  .ejes__bajada {
+    font-size: max(calc(16 * var(--u)), 13px);
+    line-height: 1.75;
+  }
+
+  /* ---- Ficha ---- */
+
+  .ejes__ficha {
+    grid-template-columns: 1fr;
+    gap: calc(32 * var(--u));
+    margin-bottom: calc(32 * var(--u));
+  }
+
+  .ejes__figura img {
+    border-radius: calc(16 * var(--u));
+  }
+
+  /* Número marca de agua */
+  .ejes__marca {
+    font-size: max(calc(80 * var(--u)), 52px);
+    margin-bottom: calc(8 * var(--u));
+  }
+
+  .ejes__eje-titulo {
+    font-size: max(calc(28 * var(--u)), 20px);
+    line-height: 1.964;
+    letter-spacing: -0.02em;
+    margin-bottom: calc(8 * var(--u));
+  }
+
+  .ejes__eje-descripcion {
+    font-size: max(calc(16 * var(--u)), 13px);
+    line-height: 2;
+  }
+
+  .ejes__pie {
+    gap: clamp(16px, 8vw, 56px);
+    padding-top: calc(16 * var(--u));
+  }
+
+  .ejes__mas {
+    font-size: max(calc(18 * var(--u)), 14px);
+    font-weight: 600;
+  }
+
+  .ejes__contador {
+    font-size: max(calc(18 * var(--u)), 14px);
+    font-weight: 600;
+  }
+
+  /* ---- Miniaturas ---- */
+
+  .ejes__miniaturas {
+    margin-bottom: calc(20 * var(--u));
+  }
+
+  .mini__nombre {
+    font-size: max(calc(14 * var(--u)), 11px);
+  }
+
+  /* ---- Navegación: centrada debajo de las miniaturas ---- */
+
+  .ejes__navegacion {
+    justify-content: center;
+  }
+
+  .ejes__flecha img {
+    width: calc(45 * var(--u));
+    height: calc(45 * var(--u));
   }
 }

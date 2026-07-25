@@ -2,7 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { laVozContent } from './la-voz.content'
 import './LaVozDeLaMolina.css'
 
-const { titulo, etiquetaCarrusel, anterior, siguiente, leerMas } = laVozContent
+const { titulo, etiquetaCarrusel, anterior, siguiente, leerMas, verTodo } =
+  laVozContent
 
 /**
  * "2026-07-20" → Date del 20 de julio EN HORA LOCAL.
@@ -152,6 +153,11 @@ export function LaVozDeLaMolina() {
     <section className="voz" id="la-voz-de-la-molina">
       <div className="voz__inner">
         <h2 className="voz__titulo">{titulo}</h2>
+
+        {/* Botón del diseño mobile; en desktop se ven las tres notas juntas. */}
+        <a className="voz__ver-todo" href={verTodo.url}>
+          {verTodo.label}
+        </a>
 
         <div className="voz__carrusel">
           {desborda && (

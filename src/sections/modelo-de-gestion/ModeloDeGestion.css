@@ -105,6 +105,16 @@
   align-items: start;
 }
 
+.modelo__lista {
+  order: 1;
+}
+
+.modelo__figura {
+  order: 2;
+  grid-column: 2;
+  grid-row: 1;
+}
+
 /* ---- Lista ---- */
 
 .modelo__lista {
@@ -183,6 +193,11 @@
   border-radius: var(--radio);
 }
 
+/* La foto inline solo existe en mobile; arriba se usa .modelo__figura. */
+.modelo__figura-inline {
+  display: none;
+}
+
 /* ---- Mobile ---- */
 
 @media (max-width: 900px) {
@@ -196,9 +211,170 @@
     gap: var(--espacio-8);
   }
 
+  .modelo__figura {
+    order: 2;
+    grid-column: 1;
+    grid-row: auto;
+  }
+
   .modelo__cabecera {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--espacio-4);
+  }
+}
+
+/* ---- Mobile ----
+ *
+ * ES OTRA COMPOSICIÓN, no el escritorio angosto. La foto pasa a ir entre
+ * el item activo y el resto de la lista, y todo usa --u para acompañar
+ * el ancho del frame de 430×1092.
+ */
+
+@media (max-width: 760px) {
+  .modelo {
+    --u: min(0.2326vw, 1.15px);
+    --margen: max(calc(24 * var(--u)), 16px);
+
+    min-height: 0;
+    padding-block: 0;
+    align-items: start;
+  }
+
+  .modelo__inner {
+    padding-inline: var(--margen);
+    padding-top: calc(56 * var(--u));
+    padding-bottom: calc(40 * var(--u));
+  }
+
+  /* Trama de 40×32.33 arriba a la derecha. */
+  .modelo .puntos {
+    display: block;
+    --ancho: calc(40 * var(--u));
+    --alto: calc(32.33 * var(--u));
+    --radio-punto: 1px;
+    top: calc(10 * var(--u));
+    right: calc(10 * var(--u));
+  }
+
+  /* ---- Kicker ---- */
+
+  .modelo__kicker {
+    gap: calc(4 * var(--u));
+    margin-bottom: calc(20 * var(--u));
+    font-family: var(--fuente-kicker);
+    font-size: max(calc(14 * var(--u)), 12px);
+    font-weight: 400;
+    line-height: 1.362;
+    letter-spacing: 0.14em;
+    color: var(--color-texto);
+  }
+
+  .modelo__raya {
+    width: calc(32 * var(--u));
+    background: var(--color-texto);
+  }
+
+  /* ---- Cabecera ---- */
+
+  .modelo__cabecera {
+    gap: calc(4 * var(--u));
+    margin-bottom: calc(20 * var(--u));
+  }
+
+  .modelo__titulo {
+    font-size: max(calc(29 * var(--u)), 20px);
+    line-height: 1.172;
+    letter-spacing: -0.02em;
+    color: var(--color-texto);
+  }
+
+  .modelo__titulo-suave {
+    color: #404040;
+  }
+
+  .modelo__contador {
+    /* El diseño mobile no muestra el contador: la lista arranca tras el título. */
+    display: none;
+  }
+
+  /* ---- Cuerpo: lista con la foto del activo inline ---- */
+
+  .modelo__cuerpo {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* La foto de la columna se oculta; la del punto elegido va inline. */
+  .modelo__figura {
+    display: none;
+  }
+
+  .modelo__figura-inline {
+    display: block;
+    /* Ancho completo del item (24px de margen a cada lado → 382 en el frame). */
+    width: 100%;
+    /* 14px del texto activo a la foto (274−260) y 33px de la foto al siguiente
+       punto (586−553), según el frame de 430. */
+    margin: calc(14 * var(--u)) 0 calc(33 * var(--u));
+  }
+
+  .modelo__figura-inline img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: calc(16 * var(--u));
+  }
+
+  /* ---- Lista y items ---- */
+
+  /*
+   * Las líneas van como borde SUPERIOR de cada punto: así la del punto que
+   * sigue al activo cae DEBAJO de su foto, y no queda raya entre el texto
+   * activo y su imagen. El cierre de abajo lo pone la lista.
+   */
+  .modelo__lista {
+    border-top: 0;
+    border-bottom: 1px solid var(--color-borde);
+  }
+
+  .punto {
+    grid-template-columns:
+      calc(28 * var(--u))
+      minmax(0, 1fr)
+      calc(13 * var(--u));
+    gap: calc(4 * var(--u));
+    min-height: calc(56 * var(--u));
+    padding: 0;
+    border-top: 1px solid var(--color-borde);
+    border-bottom: 0;
+  }
+
+  .punto__numero {
+    font-family: var(--fuente-texto);
+    font-weight: 600;
+    font-size: max(calc(12 * var(--u)), 10px);
+    color: var(--color-texto-suave);
+  }
+
+  .punto--activo .punto__numero {
+    color: var(--color-primario);
+  }
+
+  .punto:not(.punto--activo) .punto__numero {
+    font-size: max(calc(11 * var(--u)), 9px);
+  }
+
+  .punto__texto {
+    font-family: var(--fuente-display);
+    font-weight: 500;
+    font-size: max(calc(16 * var(--u)), 13px);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .punto__flecha {
+    width: calc(13 * var(--u));
+    height: calc(13 * var(--u));
   }
 }

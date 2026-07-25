@@ -167,27 +167,43 @@
 @media (max-width: 900px) {
   .trayectoria {
     min-height: auto;
-    padding-block: clamp(40px, 8vw, 80px);
+    /* Sin padding abajo: la foto se apoya al piso de la sección como en el
+       diseño (el frame mobile termina donde termina la foto). */
+    padding-block: clamp(40px, 8vw, 80px) 0;
   }
 
   .trayectoria__inner {
     grid-template-columns: 1fr;
+    /* Sin padding lateral: la foto y la forma sangran a los bordes de la
+       pantalla como en el diseño. El padding lo lleva solo el texto. */
+    padding-inline: 0;
+  }
+
+  .trayectoria__texto {
     padding-inline: clamp(24px, 6vw, 60px);
   }
 
   .trayectoria__figura {
-    /* En una columna el retrato ya no flota: ocupa su propio alto. */
+    /* En una columna el retrato define el alto (queda en flujo), así nunca
+       se recorta ni deja hueco. La forma roja va detrás, apoyada al piso. */
     position: relative;
-    height: min(70vw, 420px);
     margin-top: var(--espacio-8);
   }
 
   .trayectoria__forma {
-    width: 90%;
+    /* Triángulo detrás, sangrando al borde derecho (94vw ≈ los 406/430 del
+       diseño; su alto sale del propio ratio del PNG). */
+    width: 94%;
   }
 
   .trayectoria__retrato {
-    right: 5%;
-    width: 65%;
+    /* En flujo, grande (~88% ≈ 384/430 del diseño) y apoyado al borde
+       izquierdo: la foto llena el ancho y se ve ENTERA, cabeza y tablet.
+       El tope evita que en mobiles anchos se agigante. */
+    position: relative;
+    right: auto;
+    bottom: auto;
+    display: block;
+    width: min(88%, 440px);
   }
 }

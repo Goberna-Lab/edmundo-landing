@@ -35,7 +35,8 @@
   --color-borde-campo: #c0c1c7;
 
   /* ---- Tipografía ---- */
-  /* Montserrat solo para el lockup del nombre en el hero. */
+  /* Montserrat para los lockups de marca: el nombre del hero y el logo del
+     header (EDMUNDO / DEL AGUILA). */
   --fuente-display: 'Montserrat', system-ui, sans-serif;
   /* Open Sans para todo lo demás: títulos de sección, texto y nav. */
   --fuente-titulo: 'Open Sans', system-ui, sans-serif;

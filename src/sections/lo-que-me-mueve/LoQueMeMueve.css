@@ -152,7 +152,7 @@
   color: var(--color-texto-suave);
 }
 
-/* ---- Mobile ---- */
+/* ---- Tablet ---- */
 
 @media (max-width: 900px) {
   .mueve__cabecera {
@@ -162,5 +162,136 @@
 
   .mueve__pie {
     justify-content: flex-start;
+  }
+}
+
+/* ---- Mobile ----
+ *
+ * Arriba manda el diseño de 1366; de acá abajo, el frame de 430×756. La
+ * estructura es la misma —el orden del DOM ya es el del diseño— pero la
+ * sección se vuelve una sola columna:
+ *
+ *   - el título y las creencias dejan de ir lado a lado;
+ *   - la foto pasa de panorámica de 1206×500 a una tira de 382×171, o sea
+ *     un recorte más alto: por eso va con `cover` y no estirando el asset;
+ *   - el pie se apila en dos renglones en vez de repartirse a los extremos.
+ *
+ * Todas las medidas salen de ese frame y se escriben en `--u`.
+ */
+
+@media (max-width: 760px) {
+  .mueve {
+    /*
+     * 1u = 1px del frame de 430, igual que en el hero y en «¿Quién es?».
+     * Sin `svh` en la cuenta: esta sección scrollea, no pelea contra el fold.
+     */
+    --u: min(0.2326vw, 1.15px);
+    --margen: max(calc(24 * var(--u)), 16px);
+
+    /* El alto lo da el contenido: en el diseño la sección mide 756 de 932,
+       o sea que la siguiente ya asoma. */
+    min-height: 0;
+    padding-block: calc(56 * var(--u));
+  }
+
+  .mueve .puntos {
+    display: block;
+    --ancho: calc(40 * var(--u));
+    --alto: calc(32.33 * var(--u));
+    --radio-punto: 1px;
+    top: calc(10 * var(--u));
+    right: calc(10 * var(--u));
+  }
+
+  .mueve__inner {
+    padding-inline: var(--margen);
+  }
+
+  /* ---- Kicker ---- */
+
+  .mueve__kicker {
+    /* Los kickers del diseño mobile van en Open Sans, no en la Source Sans 3
+       de escritorio. */
+    font-family: var(--fuente-texto);
+    /* 44.5 - 42 y 82 - 76.5: 2.5 de un lado, 5.5 del otro. */
+    gap: calc(4 * var(--u));
+    /* 116.62 - 75.07: del pie del kicker al tope del título. */
+    margin-bottom: calc(41.55 * var(--u));
+    font-size: max(calc(14 * var(--u)), 12px);
+    line-height: 1.362;
+    /* 1.96/14 del diseño. */
+    letter-spacing: 0.14em;
+  }
+
+  .mueve__raya {
+    width: calc(32 * var(--u));
+  }
+
+  /* ---- Cabecera en una columna ---- */
+
+  .mueve__cabecera {
+    /* 278.72 - 252.62: del pie del título al tope de las creencias. */
+    gap: calc(26.1 * var(--u));
+    /* 473 - 438.72: de las creencias a la foto. */
+    margin-bottom: calc(34.28 * var(--u));
+  }
+
+  .mueve__titulo {
+    font-size: calc(29 * var(--u));
+    /* 34/29 del diseño. Acá el interlineado es el real, así que los cuatro
+       renglones caen donde el diseño los pone sin trucos de margen. */
+    line-height: 1.172;
+  }
+
+  /* ---- Creencias ---- */
+
+  .mueve__creencias {
+    /* 336.72 - 322.72: entre el pie de una y el tope de la siguiente. */
+    gap: calc(14 * var(--u));
+    /* El filete pasa de 2 a 3, y el texto arranca en 40: 24 del margen + 3
+       del filete + 13 de padding. */
+    border-left-width: 3px;
+    padding-left: calc(13 * var(--u));
+  }
+
+  .creencia {
+    font-size: max(calc(15 * var(--u)), 14px);
+    line-height: 1.467;
+    /*
+     * El diseño trae los cortes de línea a mano y sus cajas miden 291, 335 y
+     * 341, bastante menos que los 366 que quedan libres. Sin tope, la segunda
+     * se lleva un "de" a la primera línea y deja de coincidir. Cualquier valor
+     * entre 341 (que entre la tercera) y 359 (que NO entre ese "de") reproduce
+     * los tres cortes; 350 queda en el medio.
+     */
+    max-width: calc(350 * var(--u));
+  }
+
+  /* ---- Foto: 382×171 con esquinas redondeadas ---- */
+
+  .mueve__figura img {
+    /*
+     * El diseño mobile NO es el panorámico de escritorio en chico: la ventana
+     * pasa de 2.41:1 a 2.23:1, así que el asset (1206×500) se recorta a los
+     * costados en vez de deformarse. `cover` deja la laguna centrada, que es
+     * lo que muestra el frame.
+     */
+    aspect-ratio: 382 / 171;
+    object-fit: cover;
+  }
+
+  /* ---- Pie apilado ---- */
+
+  .mueve__pie {
+    flex-direction: column;
+    /* 682 - 677.7: los dos renglones van casi pegados. */
+    gap: calc(4.3 * var(--u));
+    /* 660 - 644: de la foto al primer renglón. */
+    margin-top: calc(16 * var(--u));
+    font-family: var(--fuente-texto);
+    font-size: max(calc(13 * var(--u)), 11px);
+    line-height: 1.3615;
+    /* 1.82/13 del diseño. */
+    letter-spacing: 0.14em;
   }
 }

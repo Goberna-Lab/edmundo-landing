@@ -1,4 +1,5 @@
 import candidato from './assets/candidato.webp'
+import candidatoMobile from './assets/candidato-mobile.webp'
 import ciudad from './assets/ciudad.webp'
 import franja from './assets/franja.webp'
 
@@ -19,6 +20,13 @@ export const formularioContent = {
   /** A dónde se postean los datos. Completar antes de publicar. */
   accion: '[[url-formulario]]',
   enviar: 'Quiero sumarme',
+
+  /*
+   * En mobile el diseño de Figma omite el select 'Motivo del mensaje' y ordena
+   * teléfono antes que correo. Solo ids: los campos completos salen de `campos`.
+   * Desktop usa la lista entera; el .tsx elige según el viewport.
+   */
+  ordenMobile: ['nombres', 'apellidos', 'telefono', 'correo', 'mensaje'],
 
   campos: [
     {
@@ -73,7 +81,12 @@ export const formularioContent = {
 
   imagenes: {
     candidato,
-    altCandidato: 'Edmundo Del Águila con una lampa al hombro',
+    /* Mobile usa otra foto (Edmundo apuntando), ya recortada y con fondo
+       transparente: el diseño de Figma no reutiliza la de la lampa. */
+    candidatoMobile,
+    /* El <picture> no puede cambiar el alt según el source: uno neutro que
+       vale para las dos fotos (lampa en desktop, señalando en mobile). */
+    altCandidato: 'Edmundo Del Águila, candidato a la alcaldía de La Molina',
     ciudad,
     franja,
   },

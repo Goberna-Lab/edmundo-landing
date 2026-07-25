@@ -1,8 +1,32 @@
+import { useEffect, useState } from 'react'
 import { formularioContent } from './formulario.content'
 import type { Campo } from './formulario.content'
 import './Formulario.css'
 
-const { tituloAccesible, accion, enviar, campos, imagenes } = formularioContent
+const { tituloAccesible, accion, enviar, campos, ordenMobile, imagenes } =
+  formularioContent
+
+/*
+ * En mobile el diseño quita un campo (el select 'Motivo'), no solo lo esconde.
+ * Un `display:none` sobre un <select required> vacío rompe el submit nativo
+ * ("no es enfocable"), así que hay que sacarlo del DOM, no ocultarlo. De ahí
+ * este hook: elegimos la lista de campos según el viewport.
+ */
+function useMobile(query = '(max-width: 760px)') {
+  const [esMobile, setEsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches,
+  )
+
+  useEffect(() => {
+    const mql = window.matchMedia(query)
+    const actualizar = () => setEsMobile(mql.matches)
+    actualizar()
+    mql.addEventListener('change', actualizar)
+    return () => mql.removeEventListener('change', actualizar)
+  }, [query])
+
+  return esMobile
+}
 
 function CampoDelFormulario({ campo }: { campo: Campo }) {
   const id = `formulario-${campo.id}`
@@ -69,6 +93,17 @@ function CampoDelFormulario({ campo }: { campo: Campo }) {
 }
 
 export function Formulario() {
+  const esMobile = useMobile()
+
+  // En mobile: solo los campos de `ordenMobile`, en ese orden. En desktop, todos.
+  const porId = new Map<string, Campo>(campos.map((campo) => [campo.id, campo]))
+  const camposVisibles: Campo[] = esMobile
+    ? ordenMobile.flatMap((id) => {
+        const campo = porId.get(id)
+        return campo ? [campo] : []
+      })
+    : campos
+
   return (
     <section className="formulario" id="sumate">
       <h2 className="sr-only">{tituloAccesible}</h2>
@@ -84,24 +119,34 @@ export function Formulario() {
 
       <div className="formulario__inner">
         {/*
-          El candidato va enmascarado, no suelto: en Figma la foto está más
-          ampliada que su ventana y sangra ~249px por debajo de la sección. El
-          marco recorta al pie y a los costados; la foto adentro reproduce el
-          encuadre exacto del diseño.
+          El candidato va primero en el DOM: en mobile el diseño lo muestra
+          arriba de la tarjeta. En desktop, `order: -1` sobre la tarjeta lo
+          mantiene a la izquierda del layout Flex.
         */}
         <div className="formulario__candidato">
-          <img
-            className="formulario__candidato-foto"
-            src={imagenes.candidato}
-            alt={imagenes.altCandidato}
-            loading="lazy"
-            decoding="async"
-          />
+          {/*
+            Foto distinta por viewport (art direction): en mobile el diseño usa
+            un recorte propio, ya cortado y sin fondo. `<picture>` la cambia sin
+            JS; el <img> conserva su clase de posicionamiento.
+          */}
+          <picture>
+            <source
+              media="(max-width: 760px)"
+              srcSet={imagenes.candidatoMobile}
+            />
+            <img
+              className="formulario__candidato-foto"
+              src={imagenes.candidato}
+              alt={imagenes.altCandidato}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </div>
 
         <form className="formulario__tarjeta" action={accion} method="post">
           <div className="formulario__campos">
-            {campos.map((campo) => (
+            {camposVisibles.map((campo) => (
               <CampoDelFormulario campo={campo} key={campo.id} />
             ))}
           </div>

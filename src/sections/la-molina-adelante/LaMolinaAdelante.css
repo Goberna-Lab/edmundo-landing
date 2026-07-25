@@ -33,43 +33,55 @@
 /* ---- Fondo con parallax ---- */
 
 /*
- * La foto es más alta que la sección (160%) y arranca corrida hacia arriba:
- * ese excedente —30% arriba y 30% abajo— es el recorrido que tiene para
+ * La foto es más alta que la sección (140%) y arranca corrida hacia arriba:
+ * ese excedente —20% arriba y 20% abajo— es el recorrido que tiene para
  * moverse sin dejar huecos.
  *
  * ESTOS DOS NÚMEROS VAN ATADOS a los @keyframes de acá abajo: el translateY
  * es un porcentaje de la ALTURA DE LA FOTO, así que el recorrido real es
- * 18% × height = 18% × 160% = 28.8% del alto de la sección, y tiene que
- * entrar en el 30% de excedente. Si tocás uno, rehacé la cuenta con el otro
+ * 13% × height = 13% × 140% = 18.2% del alto de la sección, y tiene que
+ * entrar en el 20% de excedente. Si tocás uno, rehacé la cuenta con el otro
  * o la foto deja ver el fondo en un extremo.
  *
- * ACÁ SE TERMINA EL MARGEN PARA AGRANDARLO. El techo no es la cuenta sino
- * el asset: el original es 1366×685 y a esta altura ya se escala ~1.6× en
- * una pantalla de 1366 (más en pantallas grandes), además de recortar los
- * costados porque `cover` ajusta por alto. Para un parallax más largo hay
- * que re-exportar la foto al doble (2732×1370), no subir estos números.
+ * ESTABA EN 160%/±18% Y SE BAJÓ A PROPÓSITO: a 160% la foto se escalaba
+ * 1.73× (1366×685 de origen contra 1186px de alto renderizado) y se veía
+ * lavada y blanda. A 140% escala 1.51×. El techo sigue siendo el asset, no
+ * la cuenta: en pantallas anchas la sección crece por el `50.15vw` y el
+ * escalado empeora igual. Para más parallax o más nitidez hay que
+ * re-exportar la foto al doble (2732×1370), no subir estos números.
  */
 .adelante__fondo {
   position: absolute;
-  top: -30%;
+  top: -20%;
   left: 0;
   z-index: -2;
   width: 100%;
-  height: 160%;
+  height: 140%;
   object-fit: cover;
 }
 
 /*
  * Parallax ligado al scroll, sin JavaScript.
  *
- * `animation-range: entry` y no el `cover` que viene por defecto: ésta es la
- * ÚLTIMA sección de la landing y nunca termina de salir por arriba —abajo solo
- * queda el footer—, así que con el rango completo el avance moría en ~0.6, el
- * efecto se gastaba entero durante la entrada y la foto quedaba clavada justo
- * cuando uno se planta a mirarla. `entry` termina cuando la sección queda
- * entera en pantalla, a un par de cientos de píxeles del fin del documento: el
- * desplazamiento se reparte sobre el scroll que de verdad existe, sin medir
- * nada. Si algún día ésta deja de ser la última sección, revisá este rango.
+ * `animation-range: cover`, el rango completo: la foto se mueve durante TODO
+ * el tiempo que la sección se ve.
+ *
+ * ANTES ACÁ DECÍA `entry`, y era correcto cuando esta sección cerraba la
+ * landing: como nunca terminaba de salir por arriba, con `cover` el avance
+ * moría en ~0.6 y el efecto no llegaba a completarse. Ese motivo YA NO EXISTE
+ * —ahora abajo vienen «La voz de La Molina» y el formulario—, y dejar `entry`
+ * producía justo el defecto que `entry` venía a evitar: el rango terminaba con
+ * la sección recién acomodada en pantalla, así que el parallax se gastaba
+ * entero durante la entrada y la foto quedaba clavada los ~800px de scroll en
+ * los que uno se planta a mirarla. Medido: congelada en translateY(18%) desde
+ * scrollY 6707 hasta 7520.
+ *
+ * De paso arregla el tirón: repartido sobre `entry` el fondo corría al 42% de
+ * la velocidad del scroll —un parallax muy agresivo— y después frenaba de
+ * golpe al 100%. Ese cambio brusco era lo que se veía feo. Sobre `cover` el
+ * recorrido se reparte en el doble de scroll y queda en ~0.83, sin frenazo.
+ *
+ * Si algún día ésta vuelve a ser la última sección, revisá este rango.
  *
  * El @supports es la guarda de verdad, no un adorno: donde no está soportado
  * (Firefox hasta la 155, Safari <26) no se aplica nada y la foto queda quieta
@@ -87,17 +99,18 @@
          Al revés, la animación corre sobre la timeline del documento, se
          consume al instante y la foto queda congelada en un extremo. */
       animation-timeline: --adelante-parallax;
-      animation-range: entry 0% entry 100%;
+      animation-range: cover 0% cover 100%;
     }
   }
 }
 
+/* ±13%: ver la cuenta en `.adelante__fondo`, va atada al height de la foto. */
 @keyframes adelante-parallax {
   from {
-    transform: translateY(-18%);
+    transform: translateY(-13%);
   }
   to {
-    transform: translateY(18%);
+    transform: translateY(13%);
   }
 }
 
@@ -115,15 +128,32 @@
   z-index: -1;
   background:
     /*
-     * Las paradas están calibradas con el medidor de contraste, no a ojo:
-     * el kicker es de 16px y necesita 4.5:1, que es lo que fija el 0.54 del
-     * 42%. El título, al ser 69px bold, se conforma con 3:1. Aflojar el
-     * tramo 0-42% vuelve a reprobar el kicker.
+     * El título (69px bold) necesita 3:1 y sobra: mide ~5:1.
+     *
+     * OJO CON EL KICKER, acá había una afirmación que no se sostiene. Decía
+     * que el 0.54 del 42% le garantizaba sus 4.5:1; medido a 1440 de ancho,
+     * el kicker cae en la COLA del degradé, no en ese tramo, y da entre
+     * 3.3:1 y 6.7:1 según en qué letra se mida —7 de 12 muestras a lo ancho
+     * quedan por debajo de 4.5—. Es un incumplimiento PREEXISTENTE, no lo
+     * introdujo el ajuste del parallax (medido antes y después: 3.30 vs
+     * 3.52 en el peor punto). Probablemente se calibró a 1366, donde el
+     * `cover` recorta distinto y detrás del kicker cae otra parte del cielo.
+     *
+     * Arreglarlo de verdad pide una decisión de diseño —bajarle una caja al
+     * kicker, o correrlo a la zona cargada del velo—, no subir la opacidad:
+     * eso vuelve a apagar la foto, que es justo lo que se quería evitar.
      */
     linear-gradient(
       38deg,
       rgb(23 23 23 / 0.82) 0%,
       rgb(23 23 23 / 0.54) 42%,
+      /*
+       * NO ACORTAR ESTA COLA para que la foto respire. Probado y revertido:
+       * el kicker NO cae dentro del 0-42%, cae en la cola —está arriba a la
+       * izquierda y este eje de 38° corre hacia arriba a la derecha, así que
+       * queda lejos sobre el eje—. Bajarla a 0.10/76% le sacó contraste
+       * (3.50 → 3.21:1 medido sobre «LA MOLINA ADELANTE.»).
+       */
       rgb(23 23 23 / 0.14) 66%,
       rgb(23 23 23 / 0) 82%
     ),
@@ -300,7 +330,67 @@
 /* ---- Mobile ---- */
 
 @media (max-width: 760px) {
+  .adelante {
+    --u: min(0.2326vw, 1.15px);
+    --margen: max(calc(24 * var(--u)), 16px);
+
+    min-height: 0;
+  }
+
+  .adelante__inner {
+    padding-inline: var(--margen);
+    padding-top: calc(32 * var(--u));
+    padding-bottom: calc(116 * var(--u));
+  }
+
+  .adelante__kicker {
+    gap: calc(4 * var(--u));
+    margin-bottom: calc(85 * var(--u));
+    font-family: var(--fuente-kicker);
+    font-size: max(calc(14 * var(--u)), 12px);
+    font-weight: 400;
+    line-height: 1.362;
+    letter-spacing: 0.14em;
+  }
+
+  .adelante__numero {
+    font-size: max(calc(14 * var(--u)), 12px);
+    letter-spacing: 0.14em;
+  }
+
+  .adelante__raya {
+    width: calc(32 * var(--u));
+  }
+
+  .adelante__titulo {
+    font-size: max(calc(49 * var(--u)), 32px);
+    line-height: 1.219;
+    margin-bottom: calc(20 * var(--u));
+  }
+
+  .adelante__titulo-linea--suave {
+    margin-top: calc(20 * var(--u));
+  }
+
+  .adelante__acciones {
+    flex-direction: column;
+    gap: calc(16 * var(--u));
+  }
+
   .adelante__cta {
-    flex: 1 1 190px;
+    min-width: calc(260 * var(--u));
+    min-height: max(calc(56 * var(--u)), 48px);
+    padding-inline: calc(24 * var(--u));
+    border-radius: calc(30 * var(--u));
+    font-size: max(calc(16 * var(--u)), 13px);
+  }
+
+  .adelante__cta-icono {
+    width: max(calc(29 * var(--u)), 22px);
+    height: max(calc(29 * var(--u)), 22px);
+  }
+
+  .adelante__cta-icono--plan {
+    width: max(calc(24 * var(--u)), 18px);
   }
 }

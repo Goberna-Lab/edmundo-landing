@@ -38,8 +38,10 @@
 .marca {
   display: flex;
   flex-direction: column;
-  font-family: var(--fuente-header);
-  font-weight: 800;
+  /* Montserrat como el diseño (Open Sans era del nav, no del logo). */
+  font-family: var(--fuente-display);
+  /* "EDMUNDO" en Bold (700), según Figma. */
+  font-weight: 700;
   /* Apretado: las dos líneas leen como un bloque. */
   line-height: 0.98;
   letter-spacing: -0.01em;
@@ -54,6 +56,8 @@
 .marca__linea2 {
   font-size: clamp(0.95rem, 0.85rem + 0.35vw, 1.15rem);
   letter-spacing: 0.01em;
+  /* "DEL AGUILA" un punto más liviano: SemiBold (600) en Figma. */
+  font-weight: 600;
 }
 
 /* ---- Nav ---- */
@@ -119,7 +123,8 @@
   width: 24px;
   height: 2px;
   margin-inline: auto;
-  background: var(--color-texto);
+  /* Roja como el diseño (#c61e22 ≈ el token primario), no gris del texto. */
+  background: var(--color-primario);
   border-radius: 2px;
   transition: transform var(--transicion), opacity var(--transicion);
 }
@@ -139,8 +144,18 @@
 /* ---- Mobile ---- */
 
 @media (max-width: 1080px) {
+  /* En mobile el bar solo tiene hamburguesa + marca, las dos a la izquierda;
+     un gap chico las deja como en el diseño (logo ~80px del borde). */
+  .header__bar {
+    gap: var(--espacio-4);
+  }
+
   .header__toggle {
     display: flex;
+    /* El menú va a la IZQUIERDA, ANTES de la marca (diseño mobile:
+       hamburguesa en x=20, logo en x=80), no empujado a la derecha. */
+    order: -1;
+    margin-left: 0;
   }
 
   .header__nav {

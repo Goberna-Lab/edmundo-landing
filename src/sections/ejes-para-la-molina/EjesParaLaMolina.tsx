@@ -55,25 +55,6 @@ export function EjesParaLaMolina() {
 
         <div className="ejes__intro">
           <p className="ejes__bajada">{ejesContent.bajada}</p>
-
-          <div className="ejes__flechas">
-            <button
-              type="button"
-              className="ejes__flecha"
-              onClick={() => ir(-1)}
-              aria-label="Eje anterior"
-            >
-              <img src={flechaAnterior} alt="" width="45" height="45" />
-            </button>
-            <button
-              type="button"
-              className="ejes__flecha"
-              onClick={() => ir(1)}
-              aria-label="Eje siguiente"
-            >
-              <img src={flechaSiguiente} alt="" width="45" height="45" />
-            </button>
-          </div>
         </div>
 
         {/* aria-live: al cambiar de eje, el lector anuncia la ficha nueva. */}
@@ -153,6 +134,25 @@ export function EjesParaLaMolina() {
             )
           })}
         </ol>
+
+        <div className="ejes__navegacion">
+          <button
+            type="button"
+            className="ejes__flecha"
+            onClick={() => ir(-1)}
+            aria-label="Eje anterior"
+          >
+            <img src={flechaAnterior} alt="" width="45" height="45" />
+          </button>
+          <button
+            type="button"
+            className="ejes__flecha"
+            onClick={() => ir(1)}
+            aria-label="Eje siguiente"
+          >
+            <img src={flechaSiguiente} alt="" width="45" height="45" />
+          </button>
+        </div>
       </div>
     </section>
   )

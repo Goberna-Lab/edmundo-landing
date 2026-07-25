@@ -95,6 +95,11 @@
   text-decoration: underline;
 }
 
+/* La lista plana solo existe en mobile; en desktop mandan las columnas. */
+.footer__nav-mobile {
+  display: none;
+}
+
 /* ---- Redes ---- */
 
 .footer__redes {
@@ -224,5 +229,131 @@
   .footer__redes {
     grid-column: 1 / -1;
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---- Mobile (430) ---- */
+
+@media (max-width: 760px) {
+  .footer {
+    /* `--u` = 1px del diseño de 430. Sin esto los `calc(N * var(--u))` de
+       abajo eran inválidos y se descartaban (mismo caso que el formulario).
+       `position: relative` es el ancla del botón de subir (abajo). */
+    --u: min(0.2326vw, 1.15px);
+    position: relative;
+    padding-block: calc(64 * var(--u));
+  }
+
+  .footer__inner {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: calc(28 * var(--u));
+  }
+
+  .footer__bloque-marca {
+    align-items: center;
+    text-align: center;
+    gap: calc(20 * var(--u));
+  }
+
+  /* Las dos líneas del lockup se montan como en el diseño (line-height apretado). */
+  .footer__marca {
+    align-items: center;
+    line-height: 0.9;
+  }
+
+  .footer__marca-linea1 {
+    font-size: calc(46 * var(--u));
+  }
+
+  .footer__marca-linea2 {
+    font-size: calc(40 * var(--u));
+  }
+
+  /* El diseño mobile no lleva línea legal. */
+  .footer__legal {
+    display: none;
+  }
+
+  /* En mobile mandan la lista plana; las columnas "Enlaces" se ocultan. */
+  .footer__columna {
+    display: none;
+  }
+
+  .footer__nav-mobile {
+    display: block;
+    width: 100%;
+  }
+
+  .footer__nav-mobile ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Renglones de ~40 del diseño: 17px de texto + calc(11.5*u) arriba y abajo. */
+  .footer__nav-mobile a {
+    display: block;
+    padding-block: calc(11.5 * var(--u));
+    font-family: var(--fuente-texto);
+    font-size: 17px;
+    line-height: 1;
+    color: var(--color-blanco);
+    opacity: 0.6;
+    text-decoration: none;
+    transition: opacity var(--transicion);
+  }
+
+  .footer__nav-mobile a:hover {
+    opacity: 1;
+    text-decoration: underline;
+  }
+
+  .footer__redes {
+    grid-template-columns: 1fr;
+    gap: calc(10 * var(--u));
+    justify-items: center;
+  }
+
+  .footer__redes a {
+    gap: calc(8 * var(--u));
+  }
+
+  .footer__red-icono {
+    width: 40px;
+    height: 40px;
+  }
+
+  .footer__red-icono svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .footer__red-handle {
+    font-size: 17px;
+    line-height: 17px;
+  }
+
+  .footer__qr {
+    width: 151px;
+    height: 151px;
+    border-radius: var(--radio-lg);
+  }
+
+  /* El botón de subir va abajo a la derecha, al costado del QR (no centrado). */
+  .footer__subir {
+    position: absolute;
+    right: calc(36 * var(--u));
+    bottom: calc(64 * var(--u));
+    width: 60px;
+    height: 60px;
+    margin: 0;
+  }
+
+  .footer__subir svg {
+    width: 14px;
+    height: 18px;
   }
 }

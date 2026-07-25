@@ -33,6 +33,20 @@ export const footerContent = {
     },
   ],
 
+  /*
+   * En mobile el diseño no muestra las dos columnas "Enlaces": es una sola
+   * lista centrada, sin título, con las secciones reales del sitio. El .tsx la
+   * usa solo bajo el breakpoint mobile; el desktop sigue con `columnas`.
+   */
+  enlacesMobile: [
+    { label: 'Sobre mí', href: '#quien-es' },
+    { label: 'Trayectoria', href: '#trayectoria' },
+    { label: 'Modelo de Gestión', href: '#modelo-de-gestion' },
+    { label: 'Ejes', href: '#ejes-para-la-molina' },
+    { label: 'Propuestas', href: '#la-molina-adelante' },
+    { label: 'Artículos', href: '#la-voz-de-la-molina' },
+  ] satisfies Enlace[],
+
   redes: [
     { red: 'facebook' as Red, handle: 'eddelaguila', href: '[[facebook]]' },
     { red: 'instagram' as Red, handle: 'eddelaguila', href: '[[instagram]]' },

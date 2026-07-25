@@ -88,6 +88,12 @@
   width: 36.8%;
   height: 91.3%;
   overflow: hidden;
+  order: -1;
+}
+
+/* El <picture> es solo un envoltorio para el swap de foto: que no cree caja. */
+.formulario__candidato picture {
+  display: contents;
 }
 
 /*
@@ -287,5 +293,151 @@
 
   .formulario__enviar {
     width: 100%;
+  }
+}
+
+/* ---- Mobile (430) ---- */
+
+@media (max-width: 760px) {
+  .formulario {
+    /*
+     * `--u` = 1px del diseño de 430. Sin esto, TODOS los `calc(N * var(--u))`
+     * de abajo eran inválidos y se descartaban: el mobile quedaba sin medidas.
+     * Mismo patrón que las secciones (ver Hero.css).
+     */
+    --u: min(0.2326vw, 1.15px);
+    min-height: 0;
+    overflow: hidden;
+    /* El diseño deja 82px de rojo debajo de la tarjeta (frame 984 − tarjeta
+       902) antes del footer: sin esto la tarjeta queda pegada al footer. */
+    padding-block: 0 calc(82 * var(--u));
+    /* Debajo de la ciudad (398) el diseño va en rojo, no en el oscuro base. */
+    background: var(--color-primario);
+  }
+
+  .formulario__inner {
+    min-height: 0;
+    gap: 0;
+  }
+
+  /* Fondo de ciudad a sangre (430×398) */
+  .formulario__fondo {
+    position: absolute;
+    inset: 0 0 0 0;
+    width: 100%;
+    height: calc(398 * var(--u));
+    background: var(--color-texto);
+  }
+
+  .formulario__ciudad {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: calc(398 * var(--u));
+    object-fit: cover;
+  }
+
+  .formulario__velo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: calc(398 * var(--u));
+    background: var(--color-texto);
+    opacity: 0.677;
+    mix-blend-mode: darken;
+  }
+
+  .formulario__franja {
+    display: none;
+  }
+
+  /* Candidato: 257×284 en x=73, y=50 (no centrado: el diseño lo corre a la
+     izquierda; el `align-self` gana al `align-items: center` del inner). */
+  .formulario__candidato {
+    position: relative;
+    align-self: start;
+    left: auto;
+    bottom: auto;
+    width: calc(257 * var(--u));
+    max-width: 257px;
+    height: calc(284 * var(--u));
+    max-height: 284px;
+    margin: calc(50 * var(--u)) 0 0 calc(73 * var(--u));
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  /* La foto mobile ya viene recortada (cabeza-a-pecho) y con la misma
+     proporción que la ventana: llena 257×284 sin el encuadre del desktop. */
+  .formulario__candidato-foto {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+
+  /* Tarjeta superpuesta sobre el fondo. Padding del diseño: 40 arriba, 16 a los
+     lados, 55 abajo (los campos miden 366 dentro de la tarjeta de 398). */
+  .formulario__tarjeta {
+    position: relative;
+    width: calc(398 * var(--u));
+    max-width: 100%;
+    /* La tarjeta arranca en y=322 y solo tapa 12px de la foto (no 76): así el
+       brazo que apunta no queda cortado. */
+    margin: calc(-12 * var(--u)) auto 0;
+    padding: calc(40 * var(--u)) calc(16 * var(--u)) calc(55 * var(--u));
+    border-radius: var(--radio-lg);
+    background: var(--color-blanco);
+    box-shadow: var(--sombra-lg);
+    z-index: 2;
+  }
+
+  .formulario__campos {
+    display: flex;
+    flex-direction: column;
+    gap: calc(24 * var(--u));
+  }
+
+  .formulario__label {
+    margin-bottom: calc(16 * var(--u));
+    font-size: 11px;
+    line-height: 13px;
+    letter-spacing: 0.08em;
+  }
+
+  .formulario__control {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .formulario__control--area {
+    min-height: 60px;
+    resize: vertical;
+  }
+
+  /* El diseño centra "QUIERO SUMARME →" como grupo (texto + flecha), no lo
+     estira a los extremos: por eso center + gap y no space-between. */
+  .formulario__enviar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(10 * var(--u));
+    width: 100%;
+    max-width: calc(367 * var(--u));
+    height: calc(60 * var(--u));
+    min-height: 0;
+    margin: calc(20 * var(--u)) auto 0;
+    padding: calc(10 * var(--u)) calc(16 * var(--u));
+    border-radius: var(--radio-sm);
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+  }
+
+  .formulario__enviar svg {
+    width: 15px;
+    height: 12px;
   }
 }

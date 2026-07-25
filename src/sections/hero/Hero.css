@@ -101,17 +101,31 @@
  * Va en vw y no en % del alto: si fuera porcentual, al llenar pantallas altas
  * el retrato crecería junto al hero y quedaría gigante contra la ciudad.
  */
+/* El <picture> es la caja que se posiciona; la <img> de adentro se cuelga
+   de su alto. Igual que en el fondo: el wrapper ubica, la imagen pinta. */
 .hero__retrato {
   position: absolute;
   right: 8.2%;
   bottom: 0;
   z-index: -1;
+  display: block;
   /* Tope a 820px: el nombre topa en 92px, así que sin este límite en un
      monitor de 2560 el retrato llegaría a 950px y se comería la composición. */
   height: min(37.1vw, 820px);
+}
+
+.hero__retrato-img {
+  display: block;
+  height: 100%;
   width: auto;
   object-fit: contain;
   object-position: bottom;
+}
+
+/* En desktop la foto de fondo ya trae su propio degradado; el velo solo
+   existe para el mobile, donde el texto va sobre la imagen a sangre. */
+.hero__velo {
+  display: none;
 }
 
 /*
@@ -291,58 +305,264 @@
   }
 }
 
-/* ---- Mobile: retrato arriba, texto abajo ---- */
+/* ---- Mobile ----
+ *
+ * ES OTRA COMPOSICIÓN, no el desktop angosto. Antes acá la foto iba arriba,
+ * el retrato centrado encima de ella y el texto debajo sobre blanco liso. El
+ * diseño mobile (frame de 430×932) pide lo contrario: foto a sangre ocupando
+ * toda la sección, texto ENCIMA arriba a la izquierda, y el retrato apoyado
+ * abajo saliéndose por el borde inferior.
+ *
+ * Todas las medidas de acá salen de ese frame de 430×932 y se expresan en
+ * `--u`. Ver el comentario de la variable: es lo que evita que la sección
+ * quede ahorcada en un teléfono bajo.
+ */
 
 @media (max-width: 760px) {
   .hero {
-    /* A 375px de ancho la foto mide apenas 150px de alto en su proporción:
-       demasiado poco para un hero. Acá sí se recorta, a propósito. */
-    --alto-foto: min(52vh, 380px);
-    --alto-retrato: min(46vh, 340px);
+    /*
+     * UNIDAD DE DISEÑO: 1u = 1px del frame de 430×932.
+     *
+     * MIRA EL ANCHO Y EL ALTO, no solo el ancho. Antes todo iba en vw puro y
+     * en un teléfono bajo se rompía: a 375×667 el texto se dibujaba casi a
+     * tamaño de diseño mientras la pantalla tenía 265px MENOS de alto, así
+     * que la sección terminaba midiendo 743 contra un fold de 594 y el corte
+     * caía en el cuello del retrato. Eso es lo que se veía ahorcado.
+     *
+     *   100/430 = 0.2326vw     100/932 = 0.1073svh
+     *
+     * Manda el lado más apretado, así la composición entera se achica junta
+     * y conserva las proporciones del diseño. En el teléfono del diseño da
+     * exactamente 1 y todas las medidas quedan idénticas a Figma.
+     *
+     * `svh` y no `vh`: es el alto chico y estable, no salta cuando la barra
+     * del navegador aparece o se esconde.
+     *
+     * El tope de 1.15px es para el otro extremo: cerca de 760 de ancho con
+     * una pantalla alta, sin él la unidad se iba a 1.7 y el nombre salía de
+     * 93px. El diseño solo especifica 430.
+     */
+    --u: min(0.2326vw, 0.1073svh, 1.15px);
 
-    min-height: auto;
+    --margen: max(calc(24 * var(--u)), 16px);
+    /*
+     * El retrato se deriva del ALTO y de ahí sale su ancho, no al revés: el
+     * alto es el que compite con el texto por la pantalla. Proporción del
+     * recorte: 1770/1197 = 1.479.
+     */
+    --retrato-alto: calc(533 * var(--u));
+    --retrato-ancho: calc(var(--retrato-alto) / 1.479);
+    /* El diseño deja 110 de los 533 del retrato POR DEBAJO del borde: se
+       recorta contra el piso de la sección. 110/533 = 0.206. */
+    --retrato-desborde: calc(var(--retrato-alto) * 0.206);
+
     align-items: flex-start;
-    /* Blanco liso: el texto va debajo de la foto, no sobre el cielo. */
-    background: var(--color-fondo);
+    /*
+     * Ya no hace falta un piso en vw: como el retrato escala con `--u`, el
+     * propio contenido da el alto y el `padding-bottom` del inner le reserva
+     * el hueco. Esto solo llena la pantalla cuando el contenido queda corto.
+     */
+    min-height: calc(100svh - var(--alto-header));
+    /* La foto tapa todo; el degradado de desktop no se ve. */
+    background: var(--color-texto);
   }
 
+  /* A sangre: cubre la sección entera, no una banda superior. */
   .hero__fondo {
-    top: 0;
-    bottom: auto;
-    height: var(--alto-foto);
+    inset: 0;
+    height: 100%;
   }
 
   .hero__fondo-img {
     height: 100%;
     object-fit: cover;
-    object-position: 72% center;
+    /*
+     * El asset mobile YA viene recortado a la ventana que muestra el diseño,
+     * así que no hace falta correrlo de costado como en la versión anterior.
+     * `top` y no `center`: si la sección es más baja que la proporción de la
+     * foto, lo que sobra se recorta de abajo, que es justo donde el retrato
+     * tapa. Recortar arriba se comería el cerro y el cielo.
+     */
+    object-position: center top;
   }
 
-  /* Apoyado en el piso de la foto, no en el del hero. */
+  /*
+   * Velo blanco que sostiene el texto oscuro sobre la foto. Sin esto
+   * «Edmundo» en #2E3135 cae sobre el cerro y no se lee.
+   *
+   * VA DE ARRIBA ABAJO. La API de Figma da el eje del degradado en
+   * `gradientHandlePositions` y es fácil leerlo al revés: las manijas [0] y
+   * [1] parecen definir el eje —van de x=0.87 a x=0.0, o sea horizontal—
+   * pero ésa es la perpendicular; el eje real es [0]→[2], que es vertical.
+   * Implementado como horizontal, el texto quedaba en 2.39:1 contra el cerro.
+   *
+   * Las paradas NO salen de leer el degradado sino de MEDIR el render de
+   * Figma contra la foto cruda, despejando el alpha de blanco pixel a pixel.
+   * Salió parejo a lo ancho y decreciente a lo alto:
+   *   13% -> 0.82   28% -> 0.60   35% -> 0.35   43% -> 0.10   48% -> 0
+   * (porcentajes del frame de 932). Acá van corridos porque nuestra sección
+   * arranca DEBAJO del header y el frame de Figma lo incluye: su y=80 es
+   * nuestro 0, así que el 0.85 de arranque es su valor a esa altura.
+   */
+  .hero__velo {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0.85) 0%,
+      rgb(255 255 255 / 0.62) 19%,
+      /*
+       * 0.42 y no el 0.36 que sale de la medición: en pantallas bajas el
+       * bloque de texto ocupa proporcionalmente más de la sección, así que
+       * el segundo renglón de la bajada cae más abajo dentro del velo. Con
+       * 0.36 daba 4.24:1 a 320×568. Son 6 centésimas que no se ven y lo
+       * dejan sobre 4.5 en todos los tamaños.
+       */
+      rgb(255 255 255 / 0.42) 29%,
+      rgb(255 255 255 / 0.12) 38%,
+      rgb(255 255 255 / 0) 44%
+    );
+  }
+
+  /*
+   * Apoyado en el piso de la sección y desbordándolo: el `overflow: hidden`
+   * del .hero lo recorta, que es exactamente lo que hace la máscara en Figma.
+   * left 28/430 = 6.51vw.
+   */
   .hero__retrato {
-    top: calc(var(--alto-foto) - var(--alto-retrato));
-    bottom: auto;
-    right: 50%;
-    transform: translateX(50%);
-    height: var(--alto-retrato);
+    top: auto;
+    right: auto;
+    /* 28 del diseño: va 4px más adentro que el texto, no alineado con él. */
+    left: max(calc(28 * var(--u)), 16px);
+    bottom: calc(var(--retrato-desborde) * -1);
+    height: var(--retrato-alto);
+    width: var(--retrato-ancho);
+  }
+
+  .hero__retrato-img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+    object-position: bottom;
   }
 
   .hero__inner {
-    /* Empuja el texto por debajo de la foto. */
-    padding-top: var(--alto-foto);
-    padding-bottom: var(--espacio-12);
+    padding-inline: var(--margen);
+    /* 112 del diseño menos los 80 del header = 32px de aire arriba. */
+    padding-top: max(calc(32 * var(--u)), 18px);
+    /* Reserva el hueco del retrato para que el texto nunca se le encime:
+       lo que se ve de él es su alto menos lo que desborda. */
+    padding-bottom: calc(var(--retrato-alto) - var(--retrato-desborde));
   }
 
   .hero__texto {
     max-width: none;
   }
 
+  /*
+   * ---- Tipografía del frame de 430 ----
+   *
+   * Cada cuerpo es «lo que dice el diseño × --u», con un PISO en px. El piso
+   * no es decoración: en un teléfono chico la unidad baja a 0.61 y sin él la
+   * bajada caía a 11px, ilegible. Los pisos están todos por debajo del valor
+   * del diseño, así que a 430 no se activa ninguno y el frame sale exacto.
+   */
+
+  .hero__nombre {
+    font-size: max(calc(53 * var(--u)), 34px);
+    margin-bottom: 0;
+  }
+
+  /*
+   * El line-height va sobre la CLASE del renglón, no sobre .hero__nombre:
+   * .hero__nombre-pila trae el 0.896 de desktop puesto directo sobre sí
+   * mismo, así que gana por especificidad y heredar desde el padre no lo
+   * pisa. Medido: dejaba el apellido 4.5px arriba de donde va.
+   * 52/53 del diseño (el avance entre los dos renglones es 164 - 112).
+   */
+  .hero__nombre-pila {
+    line-height: 0.981;
+  }
+
+  .hero__nombre-apellido {
+    /* 48/53 del diseño. */
+    font-size: 0.906em;
+    /* 59/48: del tope del apellido al tope de «Alcalde de La Molina». */
+    line-height: 1.23;
+  }
+
+  .hero__cargo {
+    font-size: max(calc(17 * var(--u)), 14px);
+    margin-top: 0;
+    /* Cierra los 39px que el diseño deja del tope del cargo al de la bajada
+       (262 - 223) con el alto natural del renglón. */
+    margin-bottom: calc(12 * var(--u));
+  }
+
   .hero__bajada {
     max-width: none;
+    /* Open Sans 700 con lh 24/18. */
+    font-size: max(calc(18 * var(--u)), 14px);
+    line-height: 1.334;
+    letter-spacing: -0.02em;
+    /* El filete rojo es de 2px y el texto arranca 8px después. */
+    border-left-width: 2px;
+    padding-left: 8px;
+    /* 384 - 310 = 74px del pie de la bajada al tope del primer botón. Es el
+       hueco más grande del bloque, así que es el que más se nota al achicar. */
+    margin-bottom: max(calc(74 * var(--u)), 26px);
+  }
+
+  /* ---- CTAs apilados ---- */
+
+  .hero__acciones {
+    /* En el diseño van uno debajo del otro, no lado a lado. */
+    flex-direction: column;
+    /* 440 - 432 = 8px entre pastillas. */
+    gap: calc(8 * var(--u));
   }
 
   .hero__cta {
-    /* Que ocupen el ancho en vez de quedar dos pastillas sueltas. */
-    flex: 1 1 230px;
+    /*
+     * Contenido a la IZQUIERDA, no centrado como en desktop: en el diseño
+     * los dos textos arrancan en el mismo x=79 y los iconos en 47 y 49, o
+     * sea alineados entre sí. Centrarlos rompería esa columna, que es lo que
+     * hace que las dos pastillas apiladas se lean como un bloque.
+     */
+    justify-content: flex-start;
+    /* 47 - 24 = 23px del borde de la pastilla al icono. */
+    padding-inline: max(calc(23 * var(--u)), 16px);
+    /* 79 - 73 = 6px del icono al texto en el rojo. */
+    gap: max(calc(6 * var(--u)), 5px);
+    /*
+     * 230×48 del diseño.
+     *
+     * `fit-content` con piso: la pastilla mide lo del diseño, pero si el
+     * texto no entra —en pantallas chicas el ancho proporcional se queda
+     * corto— crece en vez de que la etiqueta se salga del borde redondeado.
+     *
+     * El alto tiene piso de 44px por área táctil, no por estética.
+     */
+    width: fit-content;
+    min-width: min(calc(230 * var(--u)), 260px);
+    max-width: 100%;
+    min-height: max(calc(48 * var(--u)), 44px);
+    font-size: max(calc(15 * var(--u)), 13px);
+    /* Open Sans 400 en el diseño mobile, no la semibold de desktop. */
+    font-family: var(--fuente-texto);
+    font-weight: 400;
+  }
+
+  /* Los iconos también bajan: 26 y 21 de ancho sobre una pastilla de 48. */
+  .hero__cta--primario .hero__cta-icono {
+    width: max(calc(26 * var(--u)), 20px);
+    height: max(calc(26 * var(--u)), 20px);
+  }
+
+  .hero__cta--secundario .hero__cta-icono {
+    width: max(calc(21 * var(--u)), 17px);
+    height: max(calc(26 * var(--u)), 20px);
   }
 }

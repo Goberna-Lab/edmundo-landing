@@ -4,7 +4,26 @@ import { heroContent } from './hero.content'
 import fondo from './assets/fondo-la-molina.webp'
 // import fondo1920 from './assets/fondo-la-molina-1920.webp'
 import edmundo from './assets/edmundo.webp'
+/*
+ * Recortes propios del mobile, no versiones chicas de los de desktop: el
+ * diseño mobile es a sangre y vertical, así que necesita OTRA porción de la
+ * misma foto (una franja alta, no la panorámica) y el retrato entero con
+ * torso, no el plano corto que usa desktop.
+ *
+ * Salieron de los mismos originales que Figma tiene cargados; si hay que
+ * rehacerlos, los `imageRef` del archivo llNqGN7b3MNXaCpCWX40s3 son
+ * e49777b4f373067603f6b519c2dd5c3da6354c5a (fondo, 1717×916) y
+ * 9d0f01372ddf8e3b544f6500046b996af964b8de (retrato, 1197×1770). El fondo es
+ * el recorte x=773..1196 de ese original, que es la ventana que el diseño deja
+ * a la vista. No se versionan los PNG: pesan 4.7 MB entre los dos y el
+ * `imageRef` es mejor procedencia que un binario en el repo.
+ */
+import fondoMobile from './assets/fondo-la-molina-mobile.webp'
+import edmundoMobile from './assets/edmundo-mobile.webp'
 import './Hero.css'
+
+/** Arriba de acá manda el diseño desktop; abajo, el de 430. */
+const MOBILE = '(max-width: 760px)'
 
 /*
  * Iconos inline y no desde el sprite: con <use href="archivo.svg#id"> el
@@ -74,6 +93,8 @@ export function Hero() {
       */}
       <picture className="hero__fondo">
         {/* <source media="(min-width: 1600px)" srcSet={fondo1920} /> */}
+        {/* El <source> mobile va PRIMERO: gana el primero que matchea. */}
+        <source media={MOBILE} srcSet={fondoMobile} />
         <img
           className="hero__fondo-img"
           src={fondo}
@@ -84,13 +105,20 @@ export function Hero() {
         />
       </picture>
 
-      <img
-        className="hero__retrato"
-        src={edmundo}
-        alt={heroContent.altFoto}
-        fetchPriority="high"
-        decoding="async"
-      />
+      {/* En mobile el velo es una capa aparte; en desktop la foto ya lo trae
+          integrado, así que este div queda sin pintar. Ver Hero.css. */}
+      <div className="hero__velo" aria-hidden="true" />
+
+      <picture className="hero__retrato">
+        <source media={MOBILE} srcSet={edmundoMobile} />
+        <img
+          className="hero__retrato-img"
+          src={edmundo}
+          alt={heroContent.altFoto}
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
 
       {/* Sin .container a propósito: el hero se despega de la columna
           centrada y usa un margen proporcional. Ver Hero.css. */}

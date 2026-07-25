@@ -51,6 +51,17 @@ export function ModeloDeGestion() {
         </div>
 
         <div className="modelo__cuerpo">
+          <figure className="modelo__figura">
+            <img
+              src={punto.imagen}
+              alt={punto.altImagen}
+              width="698"
+              height="509"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+
           <ol className="modelo__lista">
             {puntos.map((item, indice) => (
               <li key={item.id}>
@@ -81,20 +92,27 @@ export function ModeloDeGestion() {
                     />
                   </svg>
                 </button>
+
+                {/*
+                  Foto del punto elegido, INLINE bajo su fila: es la
+                  composición mobile del diseño. En desktop se muestra la
+                  .modelo__figura de la columna de al lado y ésta queda oculta.
+                */}
+                {indice === activo && (
+                  <figure className="modelo__figura-inline">
+                    <img
+                      src={item.imagen}
+                      alt={item.altImagen}
+                      width="698"
+                      height="509"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                )}
               </li>
             ))}
           </ol>
-
-          <figure className="modelo__figura">
-            <img
-              src={punto.imagen}
-              alt={punto.altImagen}
-              width="698"
-              height="509"
-              loading="lazy"
-              decoding="async"
-            />
-          </figure>
         </div>
       </div>
     </section>
