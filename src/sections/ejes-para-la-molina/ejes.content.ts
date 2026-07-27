@@ -1,9 +1,19 @@
 import ejeSeguridad from './assets/eje-1-seguridad.webp'
+import ejeFluye from './assets/eje-2-fluye.webp'
+import ejeOrdenada from './assets/eje-3-ordenada.webp'
+import ejeAcompana from './assets/eje-4-acompana.webp'
+import ejeParques from './assets/eje-5-parques.webp'
+import ejeConocimiento from './assets/eje-6-conocimiento.webp'
+import ejeVerde from './assets/eje-7-verde.webp'
+import ejeResponsable from './assets/eje-8-responsable.webp'
 import mini1 from './assets/mini-1.webp'
 import mini2 from './assets/mini-2.webp'
 import mini3 from './assets/mini-3.webp'
 import mini4 from './assets/mini-4.webp'
 import mini5 from './assets/mini-5.webp'
+import mini6 from './assets/mini-6.webp'
+import mini7 from './assets/mini-7.webp'
+import mini8 from './assets/mini-8.webp'
 import num01 from './assets/num-01.svg'
 import num02 from './assets/num-02.svg'
 import num03 from './assets/num-03.svg'
@@ -47,13 +57,17 @@ export interface Eje {
 type EjeBase = Omit<Eje, 'titulo'> & { titulo?: string }
 
 /*
- * Los nueve ejes, con el texto definitivo de campaña.
+ * Los nueve ejes, con el texto y las fotos de campaña.
  *
- * Falta el material gráfico propio: solo hay foto grande del eje 1 y
- * miniaturas de los cinco primeros. Del 6 al 9 se reusa la foto del 1 y una
- * miniatura ya usada, y el `alt` describe LO QUE SE VE (la central de
- * monitoreo), no el eje: decir otra cosa le mentiría al lector de pantalla.
- * Cuando lleguen las fotos, cambiar `imagen`, `miniatura` y `altImagen`.
+ * Del 1 al 8 cada uno trae la suya. La ficha y la miniatura NO son la misma
+ * imagen escalada: el diseño las pide en proporciones distintas (832×607 y
+ * 260×147), así que cada una se recorta por separado desde la fuente, que
+ * queda guardada al lado como `eje-N-<slug>-fuente.*`.
+ *
+ * El 9 todavía no tiene material propio: se presta la foto del 1 y el `alt`
+ * describe LO QUE SE VE, no el eje —decir otra cosa le mentiría a quien usa
+ * lector de pantalla—. Cuando llegue, cambiar `imagen`, `miniatura` y
+ * `altImagen`.
  *
  * Ninguno tiene `url` todavía, así que el botón «Conoce más» no se dibuja.
  */
@@ -72,66 +86,63 @@ const ejes: EjeBase[] = [
     nombre: 'La Molina fluye',
     descripcion:
       'Movilidad más ordenada, puntos críticos atendidos, cultura vial y soluciones inteligentes para reducir el caos diario.',
-    imagen: ejeSeguridad,
+    imagen: ejeFluye,
     miniatura: mini2,
-    altImagen: 'Vista aérea del tránsito en La Molina',
+    altImagen: 'Vista aérea de una avenida de La Molina con el tránsito congestionado',
   },
   {
     id: 'ordenada',
     nombre: 'La Molina ordenada',
     descripcion:
       'Defensa del carácter residencial, comercio formal acompañado, fiscalización inteligente y recuperación del espacio público.',
-    imagen: ejeSeguridad,
+    imagen: ejeOrdenada,
     miniatura: mini3,
-    altImagen: 'Personal municipal de La Molina en la vía pública',
+    altImagen: 'Personal municipal frente a un local clausurado en La Molina',
   },
   {
     id: 'acompana',
     nombre: 'La Molina acompaña',
     descripcion:
       'Servicios cercanos para adultos mayores, salud preventiva, integración familiar y una municipalidad más humana.',
-    imagen: ejeSeguridad,
+    imagen: ejeAcompana,
     miniatura: mini4,
-    altImagen: 'Grupo de adultos mayores en una actividad municipal',
+    altImagen: 'Adultos mayores en una actividad cultural de la municipalidad',
   },
   {
     id: 'parques',
     nombre: 'Parques para la familia',
     descripcion:
       'Parques seguros, iluminados, activos y adaptados a cada barrio, como espacios de encuentro y convivencia.',
-    imagen: ejeSeguridad,
+    imagen: ejeParques,
     miniatura: mini5,
-    altImagen: 'Parque de La Molina visto desde el aire',
+    altImagen: 'Render de un parque en ladera con juegos infantiles y terrazas',
   },
   {
     id: 'conocimiento',
     nombre: 'La Molina, ciudad del conocimiento',
     descripcion:
       'Educación, universidades, innovación, emprendimiento y juventud como ventaja competitiva del distrito.',
-    imagen: ejeSeguridad,
-    miniatura: mini1,
-    // Foto prestada del eje 1 hasta que llegue la suya.
-    altImagen: 'Central de monitoreo de seguridad de La Molina',
+    imagen: ejeConocimiento,
+    miniatura: mini6,
+    altImagen: 'Escolares trabajando en el aula de un colegio de La Molina',
   },
   {
     id: 'verde',
     nombre: 'La Molina verde',
     descripcion:
       'Cuidado de áreas verdes, agua, reciclaje, educación ambiental y sostenibilidad urbana.',
-    imagen: ejeSeguridad,
-    miniatura: mini2,
-    // Foto prestada del eje 1 hasta que llegue la suya.
-    altImagen: 'Central de monitoreo de seguridad de La Molina',
+    imagen: ejeVerde,
+    miniatura: mini7,
+    altImagen: 'Vista aérea de un área verde de La Molina con la ciudad al fondo',
   },
   {
     id: 'responsable',
     nombre: 'La Molina responsable',
     descripcion:
       'Bienestar animal, tenencia responsable, campañas de esterilización, salud pública y convivencia entre vecinos y mascotas.',
-    imagen: ejeSeguridad,
-    miniatura: mini3,
-    // Foto prestada del eje 1 hasta que llegue la suya.
-    altImagen: 'Central de monitoreo de seguridad de La Molina',
+    imagen: ejeResponsable,
+    miniatura: mini8,
+    altImagen: 'Vecina sentada en el pasto de un parque junto a su perro',
   },
   {
     id: 'moderna',
@@ -139,8 +150,9 @@ const ejes: EjeBase[] = [
     descripcion:
       'Menos trámites, más atención digital, inteligencia artificial, transparencia e indicadores para medir resultados.',
     imagen: ejeSeguridad,
-    miniatura: mini4,
-    // Foto prestada del eje 1 hasta que llegue la suya.
+    miniatura: mini1,
+    // Sin foto propia todavía: se presta la del eje 1 y el alt describe
+    // lo que se ve, no el eje.
     altImagen: 'Central de monitoreo de seguridad de La Molina',
   },
 ]
