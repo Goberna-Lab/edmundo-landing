@@ -4,6 +4,14 @@
  *   kicker   left 166px, Open Sans 16px/22px, ls 2.24px, #2E3135
  *   título   left 80px,  Montserrat Bold 50px/55px, ls -1px
  *   foto     left 588px, 698×509
+ *
+ * Mesa de 1920 (node 79:1580, 1920×1153):
+ *   contenido  240 → 1680, con 120 de aire arriba y abajo
+ *   kicker     Source Sans 3 25.2px/35.88 (acá NO es Open Sans como en 1366)
+ *   título     Montserrat Bold 70px/64, ls -0.02em
+ *   contador   Open Sans 600 25.2px, cerrando en 1680
+ *   lista      587 de ancho, filas de 74, Inter 400 22.4px/27.11
+ *   foto       832×606.7 en 848, radio 16
  */
 
 .modelo {
@@ -376,5 +384,163 @@
   .punto__flecha {
     width: calc(13 * var(--u));
     height: calc(13 * var(--u));
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 79:1580 del Figma, 1920×1153. Medidas en vw sobre base 1920:
+ * 1px = 1/19.2 vw = 0.05208vw. Solo de 1600px de ancho para arriba; abajo
+ * manda el desktop de 1366.
+ *
+ * Diferencias contra 1366, más allá del tamaño:
+ *   - el kicker va en Source Sans 3, no en la Open Sans de 1366;
+ *   - la lista va en Inter (la familia de "dato" del diseño), no Open Sans;
+ *   - el contador cae POR DEBAJO del título, no alineado a su base;
+ *   - el número de cada punto comparte el color de su fila, no el gris suave;
+ *   - la trama de puntos es la chica (68×55), no la de 95×77 de las otras
+ *     secciones de esta mesa.
+ */
+
+@media (min-width: 1600px) {
+  .modelo {
+    /*
+     * Sin piso: el contenido (913) más los 120 de aire arriba y abajo da los
+     * 1153 del frame. El max(..., 67.86vw) de 1366 estiraba la sección a 1303.
+     */
+    min-height: 0;
+    padding-block: 6.25vw; /* 120 */
+  }
+
+  .modelo__inner {
+    padding-inline: 12.5vw; /* 240 */
+  }
+
+  /* Acá la trama es la chica del diseño; solo cambia de sitio y de calibre. */
+  .modelo .puntos {
+    --ancho: 3.547vw; /* 68.1 */
+    --alto: 2.865vw; /* 55 */
+    --radio-punto: 0.138vw; /* ~2.65: puntos de 5.3 */
+    top: 2.396vw; /* 46 */
+    right: 8.953vw; /* 171.9 */
+  }
+
+  /* ---- Kicker: 04 —— MODELO DE GESTIÓN ---- */
+
+  .modelo__kicker {
+    /* Pegado a la raya de los dos lados: 269 → 272 y 335 → 338. */
+    gap: 0.156vw; /* 3 */
+    /* 198 - 155.9: del pie del kicker al tope del título. */
+    margin-bottom: 2.194vw; /* 42.1 */
+    /* En 1366 este kicker es Open Sans; en 1920 vuelve a la Source Sans 3
+       que usan los demás. */
+    font-family: var(--fuente-kicker);
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin fijarlo, Source Sans 3 usa su `normal` (~1.6) y la caja
+       del kicker sale 4px más alta, corriendo todo el bloque. */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  /* CSS agrega el espaciado también DESPUÉS de la última letra y Figma no:
+     sin esto el «04» sale 3px más ancho y corre la raya y la etiqueta. */
+  .modelo__numero {
+    margin-right: -0.14em;
+  }
+
+  .modelo__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /* ---- Cabecera: título + contador ---- */
+
+  .modelo__cabecera {
+    /* 367 - 326: del pie del título al tope de la lista y de la foto. */
+    margin-bottom: 2.135vw; /* 41 */
+  }
+
+  .modelo__titulo {
+    font-size: 3.646vw; /* 70 */
+    /*
+     * 64/70 = 0.914: MENOR que 1, el interlineado aprieta los dos renglones
+     * más que el cuerpo de la letra. No es un error de lectura del diseño.
+     */
+    line-height: 0.914;
+  }
+
+  /*
+   * El contador no se apoya en la base del título: en el diseño su tinta cae
+   * en 336.8, o sea 10.8 POR DEBAJO del pie del título (326), en el hueco
+   * hasta la lista. El `flex-end` de la cabecera lo dejaría en 305, así que
+   * se lo baja a mano. Es un corrimiento visual: no toca el alto de la fila.
+   */
+  .modelo__contador {
+    position: relative;
+    top: 1.641vw; /* 31.5 */
+    font-family: var(--fuente-texto);
+    font-size: 1.3125vw; /* 25.2 */
+    line-height: 0.992; /* 25/25.2 */
+    letter-spacing: normal;
+  }
+
+  /* Acá los dos números van del mismo color, no el total en gris. */
+  .modelo__contador-total {
+    color: inherit;
+  }
+
+  /* ---- Cuerpo: lista de 587 + foto de 832, con 21 en el medio ---- */
+
+  .modelo__cuerpo {
+    grid-template-columns: 30.573vw minmax(0, 1fr); /* 587 */
+    gap: 1.094vw; /* 21 */
+  }
+
+  /* ---- Lista ---- */
+
+  .modelo__lista {
+    border-top-color: #d9dee2;
+  }
+
+  /*
+   * Filas de 74 con el contenido centrado. Las columnas salen de los `x` del
+   * diseño: el número arranca en 241 y el texto en 285 (44 de columna), y la
+   * flecha cierra en 802.6, o sea 25.4 antes del borde de la fila.
+   */
+  .punto {
+    grid-template-columns: 2.292vw minmax(0, 1fr) 0.917vw; /* 44 | · | 17.6 */
+    gap: 0;
+    min-height: 3.854vw; /* 74 */
+    padding: 0 1.323vw 0 0; /* 25.4 a la derecha */
+    border-bottom-color: #d9dee2;
+  }
+
+  .punto__numero {
+    font-size: 0.802vw; /* 15.4 */
+    font-weight: 600;
+    line-height: 1.362; /* 20.97/15.4 */
+    letter-spacing: 0.06em; /* 0.924 */
+    /* Sigue el color de la fila (rojo si está activa), no el gris suave. */
+    color: inherit;
+  }
+
+  .punto__texto {
+    /* Inter, no la Open Sans de 1366. */
+    font-family: var(--fuente-datos);
+    font-weight: 400;
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.21; /* 27.11/22.4 */
+    letter-spacing: -0.02em;
+  }
+
+  .punto__flecha {
+    width: 0.917vw; /* 17.6 */
+    height: 0.917vw;
+  }
+
+  /* ---- Foto ---- */
+
+  .modelo__figura img {
+    /* 832×606.7 con radio 16, más grande que el --radio (12) de 1366. */
+    border-radius: 0.833vw;
   }
 }

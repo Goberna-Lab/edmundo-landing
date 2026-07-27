@@ -1,21 +1,30 @@
 import { escucharContent } from './escuchar.content'
+// Recorte del nodo 90:39 del Figma, solo para la mesa de 1920: NO es el de
+// 1366 más grande, es otra proporción (588×867 contra 474×681).
+import central1920 from './assets/central-monitoreo-1920.webp'
 import './EscucharParaDecidir.css'
 
 const { titulo, bajada, pasos, compromiso, plazo } = escucharContent
+
+/** De acá para arriba manda el diseño de 1920. Ver EscucharParaDecidir.css. */
+const DESKTOP_1920 = '(min-width: 1600px)'
 
 export function EscucharParaDecidir() {
   return (
     <section className="escuchar" id="escuchar-para-decidir">
       <div className="escuchar__inner">
         <figure className="escuchar__figura">
-          <img
-            src={escucharContent.imagen}
-            alt={escucharContent.altImagen}
-            width="474"
-            height="681"
-            loading="lazy"
-            decoding="async"
-          />
+          <picture>
+            <source media={DESKTOP_1920} srcSet={central1920} />
+            <img
+              src={escucharContent.imagen}
+              alt={escucharContent.altImagen}
+              width="474"
+              height="681"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </figure>
 
         <div className="escuchar__texto">

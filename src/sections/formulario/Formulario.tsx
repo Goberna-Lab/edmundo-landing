@@ -108,12 +108,25 @@ export function Formulario() {
     <section className="formulario" id="sumate">
       <h2 className="sr-only">{tituloAccesible}</h2>
 
-      {/* Fondo: ciudad velada a la izquierda, franja roja a la derecha. */}
+      {/*
+        Fondo: ciudad velada a la izquierda, franja roja a la derecha.
+
+        Las dos van `lazy`. Son decorativas y esta es la ÚLTIMA sección de la
+        página, pero sin el atributo el navegador se las baja junto con el hero:
+        409 KB (274 + 135) de la carga inicial para algo que recién se ve
+        después de scrollear diez pantallas.
+      */}
       <div className="formulario__fondo" aria-hidden="true">
-        <img className="formulario__ciudad" src={imagenes.ciudad} alt="" />
+        <img
+          className="formulario__ciudad"
+          src={imagenes.ciudad}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
         <div className="formulario__velo" />
         <div className="formulario__franja">
-          <img src={imagenes.franja} alt="" />
+          <img src={imagenes.franja} alt="" loading="lazy" decoding="async" />
         </div>
       </div>
 

@@ -5,6 +5,14 @@
  *   bajada      left 175px, Open Sans 16px/32px, ls -0.32px, #1D1616
  *   retrato     554×595, apoyado abajo a la derecha
  *   forma roja  764×433, en el ángulo inferior derecho, detrás del retrato
+ *
+ * Mesa de 1920 (node 72:1422, 1920×1009):
+ *   kicker      left 240px, Source Sans 3 25.2px, raya de 63
+ *   título      left 335px, Montserrat Bold 67.2px/81.92, ls -0.02em, #171717
+ *   bajada      left 335px, Open Sans 22.4px/30.5, ls -0.02em, #1D1616
+ *   hitos       iconos centrados en 360.5, renglones desde 401
+ *   retrato     775.6×833, a 146 del borde derecho, apoyado abajo
+ *   forma roja  1068.7×606, en el ángulo inferior derecho, detrás del retrato
  */
 
 .trayectoria {
@@ -13,14 +21,20 @@
   /* 700/1366 = 51.24vw, nunca menos que la pantalla bajo el header. */
   min-height: max(calc(100svh - var(--alto-header)), 51.24vw);
   display: flex;
-  align-items: center;
+  /*
+   * stretch, no center. El `height: 100%` del inner NO resuelve contra un
+   * `min-height` (para el navegador el alto del contenedor es indefinido), así
+   * que con `center` la grilla quedaba del alto del texto y el `bottom: 0` del
+   * retrato caía en el pie del texto, no en el de la sección: la foto flotaba
+   * 124px arriba del piso en 1920. Estirando la grilla, el texto lo centra el
+   * `align-items` de la grilla y la figura se apoya donde va.
+   */
   background: #f7f8fa;
 }
 
 .trayectoria__inner {
   position: relative;
   width: 100%;
-  height: 100%;
   display: grid;
   /* El texto arranca en 175px → 12.81vw. */
   grid-template-columns: minmax(0, 1fr) minmax(0, 44vw);
@@ -152,13 +166,23 @@
   max-width: none;
 }
 
-/* 554×595 apoyado en el piso de la sección. */
+/*
+ * 554×595 apoyado en el piso de la sección. El <picture> que intercala la
+ * fuente de 1920 es inline por defecto: sin `display: block` el `width: 100%`
+ * del <img> no tendría contra qué resolver y la foto se achicaría.
+ */
 .trayectoria__retrato {
   position: absolute;
   right: 12.15vw;
   bottom: 0;
   z-index: 1;
+  display: block;
   width: 40.56vw;
+}
+
+.trayectoria__retrato img {
+  display: block;
+  width: 100%;
   height: auto;
 }
 
@@ -205,5 +229,197 @@
     bottom: auto;
     display: block;
     width: min(88%, 440px);
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 72:1422 del Figma, 1920×1009. Medidas en vw sobre base 1920:
+ * 1px = 1/19.2 vw = 0.05208vw. Solo de 1600px de ancho para arriba; abajo
+ * manda el desktop de 1366.
+ *
+ * Diferencias contra 1366, más allá del tamaño:
+ *   - el kicker se queda en 240 pero el resto del texto se indenta 95px más;
+ *   - los hitos van casi-negros (#1D1616), no el gris #2C2C2C;
+ *   - el icono va centrado sobre los dos renglones, no pegado al primero.
+ */
+
+@media (min-width: 1600px) {
+  .trayectoria {
+    /*
+     * 1009/1920 = 52.55vw. El piso en vw no es decorativo: es lo que evita
+     * que en pantallas anchas y bajas (un ultrawide de 1080) el retrato,
+     * que mide 43.4vw de alto, desborde la sección y quede descabezado.
+     */
+    min-height: max(calc(100svh - var(--alto-header)), 52.55vw);
+  }
+
+  .trayectoria__inner {
+    /*
+     * Kicker a 240 → 12.5vw. La columna derecha solo define dónde cae el
+     * `right` de la figura, que es el borde de la sección; su ancho lo
+     * fijamos al del retrato para que a la de texto le sobre lugar.
+     */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 40.4vw);
+    padding-left: 12.5vw;
+  }
+
+  /*
+   * El bloque va centrado en la sección (120 arriba y 120 abajo en el diseño),
+   * pero la caja que mide Figma incluye el sobresalto de las colas del último
+   * renglón (769) y la de CSS termina en el renglón (760). Centrar la caja más
+   * corta lo dejaba 4.5px abajo; se compensa a mano.
+   */
+  .trayectoria__texto {
+    position: relative;
+    top: -0.234vw; /* -4.5 */
+  }
+
+  /* ---- Kicker: 02 —— TRAYECTORIA ---- */
+
+  .trayectoria__kicker {
+    /* Pegado a la raya de los dos lados: 269 → 272 y 335 → 338. */
+    gap: 0.156vw; /* 3 */
+    /* 219 - 156: del pie del kicker al tope del título. */
+    margin-bottom: 3.281vw; /* 63 */
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin fijarlo, Source Sans 3 usa su `normal` (~1.6), la caja
+       del kicker sale 4px más alta y corre todo el bloque. Igual que QuienEs. */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  /*
+   * CSS agrega el espaciado también DESPUÉS de la última letra y Figma no: el
+   * «02» salía 32.1 de ancho contra los 29 del diseño y corría la raya y la
+   * etiqueta 3px a la derecha. El margen negativo devuelve ese sobrante.
+   */
+  .trayectoria__numero {
+    margin-right: -0.14em;
+  }
+
+  .trayectoria__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /*
+   * El kicker arranca en 240 pero el título en 335: en esta mesa el bloque de
+   * texto va 95px indentado respecto del kicker. En 1366 van todos alineados.
+   */
+  .trayectoria__titulo,
+  .trayectoria__bajada,
+  .trayectoria__hitos {
+    margin-left: 4.948vw; /* 95 */
+  }
+
+  /* ---- Título y bajada ---- */
+
+  .trayectoria__titulo {
+    font-size: 3.5vw; /* 67.2 */
+    line-height: 1.219; /* 81.92/67.2 */
+    /*
+     * Negativo a propósito. La caja del título termina en 301 pero la bajada
+     * arranca en 294.8: con 81.92 de interlineado sobre 67.2px de tipo sobra
+     * aire abajo, y el diseño lo recupera solapando 6px.
+     */
+    margin-bottom: -0.323vw; /* -6.2 */
+  }
+
+  .trayectoria__bajada {
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+    letter-spacing: -0.02em;
+    /* 362 - 325.8: del pie de la bajada al primer renglón de los hitos. */
+    margin-bottom: 1.885vw; /* 36.2 */
+  }
+
+  /* ---- Hitos ---- */
+
+  /*
+   * En el diseño los seis hitos son UN solo bloque de texto: dos renglones
+   * por hito y uno en blanco entre medio. De ahí que la separación sea
+   * exactamente un interlineado (30.5) y no una medida aparte.
+   */
+  .trayectoria__hitos {
+    gap: 1.589vw; /* 30.5 */
+  }
+
+  /*
+   * Columna de 51 (el icono más ancho, el apretón de manos) y 15 hasta el
+   * texto: 335 + 51 + 15 = 401, donde arrancan los renglones. Los seis
+   * iconos comparten el centro 360.5, así que van centrados en la columna.
+   */
+  .hito {
+    grid-template-columns: 2.656vw minmax(0, 1fr); /* 51 */
+    gap: 0.781vw; /* 15 */
+    /* Acá el icono va centrado sobre los DOS renglones, no arriba del primero. */
+    align-items: center;
+  }
+
+  /*
+   * Cada icono con SU ancho, como los datos de QuienEs: los seis PNG tienen
+   * aspectos distintos y un ancho único les daría altos disparejos. El alto
+   * sale del propio ratio y cae a menos de 1px del diseño.
+   */
+  .hito__icono {
+    height: auto;
+    margin-top: 0;
+  }
+
+  .hito:nth-child(1) .hito__icono {
+    width: 1.99vw; /* 38.2 (diploma) */
+  }
+
+  .hito:nth-child(2) .hito__icono {
+    width: 2.167vw; /* 41.6 (maletín) */
+  }
+
+  .hito:nth-child(3) .hito__icono {
+    width: 1.635vw; /* 31.4 (atril) */
+  }
+
+  .hito:nth-child(4) .hito__icono {
+    width: 2.609vw; /* 50.1 (multitud) */
+  }
+
+  .hito:nth-child(5) .hito__icono {
+    width: 2.531vw; /* 48.6 (birrete) */
+  }
+
+  .hito:nth-child(6) .hito__icono {
+    width: 2.656vw; /* 51 (apretón de manos) */
+  }
+
+  .hito__texto {
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+    letter-spacing: -0.02em;
+  }
+
+  /* Casi-negro, no el #2C2C2C de 1366. */
+  .hito__texto,
+  .hito__fuerte {
+    color: var(--color-oscuro-titular);
+  }
+
+  /* ---- Retrato y forma roja ---- */
+
+  .trayectoria__forma {
+    width: 55.661vw; /* 1068.7 */
+  }
+
+  .trayectoria__retrato {
+    right: 7.625vw; /* 146.4 */
+    width: 40.396vw; /* 775.6 */
+  }
+
+  /* ---- Trama de puntos: la misma de QuienEs, 95×77 arriba a la derecha ---- */
+
+  .trayectoria .puntos {
+    --ancho: 4.948vw; /* 95 */
+    --alto: 4.01vw; /* 77 */
+    --radio-punto: 0.193vw; /* ~3.7: puntos de 7.4 */
+    top: 2.396vw; /* 46 */
+    right: 7.552vw; /* 145 */
   }
 }

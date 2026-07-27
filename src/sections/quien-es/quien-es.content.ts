@@ -1,6 +1,6 @@
-import iconoExperiencia from './assets/icono-experiencia.png'
-import iconoServicio from './assets/icono-servicio.png'
-import iconoCompromiso from './assets/icono-compromiso.png'
+import iconoExperiencia from './assets/icono-experiencia.webp'
+import iconoServicio from './assets/icono-servicio.webp'
+import iconoCompromiso from './assets/icono-compromiso.webp'
 
 export interface Dato {
   id: string

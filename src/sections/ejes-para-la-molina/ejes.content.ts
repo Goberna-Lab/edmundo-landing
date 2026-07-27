@@ -5,6 +5,12 @@ import mini3 from './assets/mini-3.webp'
 import mini4 from './assets/mini-4.webp'
 import mini5 from './assets/mini-5.webp'
 
+export interface ParteTitulo {
+  texto: string
+  /** Los tonos del título: base #171717, medio #404040 y el rojo de marca. */
+  tono?: 'medio' | 'primario'
+}
+
 export interface Eje {
   id: string
   /** Título de la ficha grande. */
@@ -22,11 +28,19 @@ export const ejesContent = {
   numero: '05',
   kicker: 'Ejes para La Molina',
 
-  /** "Metas claras" va en rojo; el resto en negro. */
+  /**
+   * Tres tonos, como el título de "Lo que me mueve": el primer renglón en
+   * casi-negro (#171717), "Ejes concretos." un escalón más claro (#404040) y
+   * solo "Metas claras" en rojo. El tono base no lleva marca.
+   */
   titulo: [
     [{ texto: 'Ejes para La Molina' }],
-    [{ texto: 'Ejes concretos. ' }, { texto: 'Metas claras', destacado: true }],
-  ] satisfies { texto: string; destacado?: boolean }[][],
+    [
+      { texto: 'Ejes concretos.', tono: 'medio' },
+      { texto: ' ' },
+      { texto: 'Metas claras', tono: 'primario' },
+    ],
+  ] satisfies ParteTitulo[][],
 
   bajada:
     'Cada eje tendrá acciones, responsables, indicadores y seguimiento público. En esta portada mostramos la visión general. El detalle completo irá en páginas internas.',

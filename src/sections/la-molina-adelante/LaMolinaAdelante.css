@@ -3,6 +3,14 @@
  *   título   left 80px, Montserrat Bold 69px/61px
  *            "Construyamos Juntos" en blanco
  *            "La Molina adelante."  en #B4B2B1
+ *
+ * Mesa de 1920 (node 90:126, 1920×963):
+ *   contenido 240 → 1198, con 207 de aire arriba y 206 abajo
+ *   velo      degradé VERTICAL desde y=112, transparente → negro al 75.4%,
+ *             todo al 80.8% (en 1366 es diagonal: son distintos)
+ *   título    Montserrat Bold 96.6px/98, sin tracking, los tres renglones
+ *             parejos (acá el gris NO lleva el aire extra de 1366)
+ *   botones   364×78, píldora, Montserrat 500 22.4px
  */
 
 .adelante {
@@ -340,5 +348,130 @@
 
   .adelante__cta-icono--plan {
     width: max(calc(24 * var(--u)), 18px);
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 90:126 del Figma, 1920×963. Medidas en vw sobre base 1920:
+ * 1px = 1/19.2 vw = 0.05208vw. Solo de 1600px de ancho para arriba; abajo
+ * manda el desktop de 1366.
+ *
+ * OJO: el kicker de este frame dice "05 —— EJES PARA LA MOLINA", que es una
+ * copia sin actualizar del frame de ejes. El de 1366 dice "07 —— La Molina
+ * Adelante.", así que manda el contenido y acá solo se copian las medidas.
+ */
+
+@media (min-width: 1600px) {
+  .adelante {
+    /*
+     * 963/1920 = 50.156vw. Sin el término en `svh`: este frame mide MENOS que
+     * la pantalla bajo el header (963 contra 1008), o sea que el diseño no
+     * quiere que llene el alto, y el max() lo estiraba 45px.
+     */
+    min-height: 50.156vw;
+    /*
+     * Foto propia: la de 1366 se exportó con el velo YA HORNEADO encima, y
+     * como acá el velo va aparte (y es otro degradé) hace falta la limpia.
+     * Ver el comentario de --adelante-fondo-1920 en el TSX.
+     */
+    background-image: var(--adelante-fondo-1920);
+  }
+
+  /*
+   * Otro velo, no el diagonal de 1366: un degradé VERTICAL que arranca a 112
+   * del techo, va de transparente a negro puro al 75.4% de su alto y todo va
+   * al 80.8% de opacidad. El 0.808 ya viene multiplicado en el alfa del tope.
+   */
+  .adelante__velo {
+    top: 5.833vw; /* 112 */
+    background: linear-gradient(
+      to bottom,
+      rgb(7 7 8 / 0) 0%,
+      rgb(0 0 0 / 0.808) 75.4%
+    );
+  }
+
+  .adelante__inner {
+    padding-inline: 12.5vw; /* 240 */
+    padding-block: 10.781vw 10.729vw; /* 207 arriba, 206 abajo */
+  }
+
+  /* ---- Kicker ---- */
+
+  .adelante__kicker {
+    /* Pegado a la raya de los dos lados: 269 → 272 y 335 → 338. */
+    gap: 0.156vw; /* 3 */
+    /* 314 - 242.9: del pie del kicker al tope del título. */
+    margin-bottom: 3.704vw; /* 71.1 */
+    font-family: var(--fuente-kicker);
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin fijarlo, Source Sans 3 usa su `normal` (~1.6). */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  /* Acá el número mide lo mismo que la etiqueta, no 2px más como en 1366. */
+  .adelante__numero {
+    font-size: 1.3125vw; /* 25.2 */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+    /* CSS agrega el espaciado también después de la última letra y Figma no. */
+    margin-right: -0.14em;
+  }
+
+  .adelante__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /* ---- Título ---- */
+
+  .adelante__titulo {
+    font-size: 5.031vw; /* 96.6 */
+    /* 98/96.6: casi 1, mucho más apretado que el 1.219 de 1366. */
+    line-height: 1.0145;
+    /* Sin tracking: el diseño de 1920 lo deja en 0. */
+    letter-spacing: normal;
+    /* 679 - 608: del pie del título al tope de los botones. */
+    margin-bottom: 3.698vw; /* 71 */
+  }
+
+  /*
+   * Acá los tres renglones van parejos: el gris es parte del MISMO bloque de
+   * texto que los blancos, con el mismo interlineado. El aire extra de 23px
+   * que sí tiene la mesa de 1366 no existe en ésta.
+   */
+  .adelante__titulo-linea--suave {
+    margin-top: 0;
+  }
+
+  /* ---- CTAs ---- */
+
+  .adelante__acciones {
+    gap: 0.833vw; /* 16 */
+  }
+
+  .adelante__cta {
+    gap: 0.521vw; /* 10 */
+    min-width: 18.958vw; /* 364 */
+    min-height: 4.063vw; /* 78 */
+    /* Píldora entera, no los 30 fijos de 1366. */
+    border-radius: 999px;
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.219; /* 27.31/22.4 */
+  }
+
+  /* En esta mesa el sólido no lleva sombra: el nodo no trae efectos. */
+  .adelante__cta--solido {
+    box-shadow: none;
+  }
+
+  .adelante__cta-icono {
+    width: 1.51vw; /* 29 */
+    height: 1.51vw;
+  }
+
+  .adelante__cta-icono--plan {
+    width: 1.229vw; /* 23.6 */
   }
 }

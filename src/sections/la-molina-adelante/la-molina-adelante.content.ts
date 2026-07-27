@@ -1,4 +1,5 @@
 import atardecer from './assets/atardecer-la-molina.webp'
+import atardecer1920 from './assets/atardecer-la-molina-1920.webp'
 
 /** Acá el gris aplica al renglón entero, no a palabras sueltas. */
 export interface LineaTitulo {
@@ -26,5 +27,7 @@ export const adelanteContent = {
   ctaSecundario: { label: 'Conoce mi plan', href: '#ejes-para-la-molina' },
 
   imagen: atardecer,
+  /** Foto limpia del nodo 90:128, solo para la mesa de 1920. */
+  imagen1920: atardecer1920,
   altImagen: 'Atardecer sobre La Molina desde los cerros',
 }

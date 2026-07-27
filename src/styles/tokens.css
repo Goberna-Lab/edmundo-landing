@@ -47,6 +47,13 @@
   --fuente-header: 'Open Sans', system-ui, sans-serif;
   /* Los kickers numerados de las secciones ("03 —— LO QUE ME MUEVE"). */
   --fuente-kicker: 'Source Sans 3', system-ui, sans-serif;
+  /*
+   * La cuarta familia del diseño, para texto "de dato": los items de la lista
+   * del modelo de gestión, los valores de "¿Quién es?", los números de los
+   * ejes, las fechas de las notas y los usuarios del footer. Aparece en 25
+   * nodos de cada mesa (1366 y 1920), así que no es un caso suelto.
+   */
+  --fuente-datos: 'Inter', system-ui, sans-serif;
 
   /* Escala fluida: el tamaño acompaña al viewport sin media queries. */
   --texto-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.82rem);

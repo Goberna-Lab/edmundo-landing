@@ -3,6 +3,13 @@
  *   fondo   #F7F8FA
  *   foto    left 80px, 474×681
  *   texto   arranca en 629px  (80 + 474 + 75 de separación)
+ *
+ * Mesa de 1920 (node 90:32, 1920×1303):
+ *   contenido  240 → 1680, con 218 de aire arriba y abajo
+ *   foto       588×867 en 240, radio 16 (OTRA proporción que la de 1366)
+ *   texto      arranca en 970 (240 + 588 + 142)
+ *   pasos      filete de 2px a todo el ancho, círculos de 67.2 con sombra
+ *   tarjetas   compromiso 467.9 + plazo 214.9, radio 20, borde #D9DEE2
  */
 
 .escuchar {
@@ -30,6 +37,12 @@
 
 .escuchar__figura {
   margin: 0;
+}
+
+/* El <picture> que intercala la fuente de 1920 es inline por defecto; sin esto
+   el width:100% del <img> no tendría contra qué resolver. */
+.escuchar__figura picture {
+  display: block;
 }
 
 .escuchar__figura img {
@@ -516,5 +529,286 @@
   .escuchar__cta-icono {
     width: max(calc(29 * var(--u)), 22px);
     height: max(calc(29 * var(--u)), 22px);
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 90:32 del Figma, 1920×1303. Medidas en vw sobre base 1920:
+ * 1px = 1/19.2 vw = 0.05208vw. Solo de 1600px de ancho para arriba; abajo
+ * manda el desktop de 1366.
+ *
+ * OJO: el kicker de este frame dice "05 —— EJES PARA LA MOLINA", que es una
+ * copia sin actualizar del frame anterior. El de 1366 dice "ESCUCHAR PARA
+ * DECIDIR", así que manda el contenido y acá solo se copian las medidas.
+ *
+ * Diferencias contra 1366, más allá del tamaño:
+ *   - el kicker va en Source Sans 3, no en la Open Sans de 1366;
+ *   - los pasos no son tres columnas iguales: son tres bloques al ancho de su
+ *     texto con 55 de separación, y el filete cruza toda la caja por detrás;
+ *   - los círculos llevan sombra y NO llevan borde;
+ *   - los dos botones tienen anchos distintos (364 y 224), no uno común.
+ */
+
+@media (min-width: 1600px) {
+  .escuchar {
+    /* Sin piso: 218 + 867 + 218 da los 1303 del frame. */
+    min-height: 0;
+  }
+
+  .escuchar__inner {
+    /* Foto 588 (240 → 828), 142 de aire y el texto de 710 (970 → 1680). */
+    grid-template-columns: 30.625vw minmax(0, 1fr); /* 588 */
+    gap: 7.396vw; /* 142 */
+    padding-inline: 12.5vw; /* 240 */
+    padding-block: 11.354vw; /* 218 */
+  }
+
+  .escuchar__figura img {
+    border-radius: 0.833vw; /* 16 */
+  }
+
+  /* ---- Kicker ---- */
+
+  .escuchar__kicker {
+    /* Pegado a la raya de los dos lados: 999 → 1002 y 1065 → 1068. */
+    gap: 0.156vw; /* 3 */
+    /* 289 - 253.9: del pie del kicker al tope del título. */
+    margin-bottom: 1.829vw; /* 35.1 */
+    font-family: var(--fuente-kicker);
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin fijarlo, Source Sans 3 usa su `normal` (~1.6) y la caja
+       del kicker sale 4px más alta, corriendo todo el bloque. */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  /* CSS agrega el espaciado también DESPUÉS de la última letra y Figma no.
+     Va por posición porque ese <span> no lleva clase. */
+  .escuchar__kicker span:first-child {
+    margin-right: -0.14em;
+  }
+
+  .escuchar__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /* ---- Título y bajada ---- */
+
+  .escuchar__titulo {
+    font-size: 3.5vw; /* 67.2 */
+    line-height: 1.219; /* 81.92/67.2 */
+    /* 474 - 453: del pie del título al tope de la bajada. */
+    margin-bottom: 1.094vw; /* 21 */
+    /*
+     * base.css pone `text-wrap: balance` en todos los encabezados, y eso acá
+     * repartía el título en dos mitades parejas («Tu propuesta» / «entra al
+     * plan», 448 y 422) en vez del corte del diseño. Con el algoritmo simple
+     * —llenar y cortar— sale «Tu propuesta entra» / «al plan», que es el del
+     * frame, y además es el mismo en todos los motores.
+     */
+    text-wrap: wrap;
+    /*
+     * La caja del texto NO es la de la columna (710). Medido a 67.2px, el
+     * primer renglón pide 645.4 y la palabra que sigue recién entra en 722:
+     * con 710 quedan 12px antes de que «al» se suba y se desarme el corte.
+     * 684 es el centro de esa ventana y deja ~38 para cada lado. Es un tope
+     * invisible: el texto va pegado a la izquierda y a la derecha sobra aire.
+     */
+    max-width: 35.625vw; /* 684 */
+  }
+
+  .escuchar__bajada {
+    /* Mismo truco que en ejes: el diseño pone esta caja 6px adentro para que
+       su tinta quede alineada con la de la «T» del título. */
+    margin-left: 0.313vw; /* 6 */
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+    /* 584 - 536: de la bajada al bloque de pasos. */
+    margin-bottom: 2.5vw; /* 48 */
+  }
+
+  /* ---- Pasos ---- */
+
+  /*
+   * NO son tres columnas iguales. En el diseño los tres bloques miden lo que
+   * mide su texto (191, 142 y 196) y van separados por 55 fijos, arrancando 14
+   * adentro de la caja. Con `repeat(3, 1fr)` los círculos caían hasta 37px
+   * corridos de donde el diseño los pone.
+   */
+  .escuchar__pasos {
+    position: relative;
+    display: flex;
+    gap: 2.865vw; /* 55 */
+    padding-left: 0.729vw; /* 14 */
+    /* 751 - 703.2: del pie de los pasos al tope de las tarjetas. */
+    margin-bottom: 2.49vw; /* 47.8 */
+  }
+
+  /*
+   * El filete es UNO solo que cruza los 710 por detrás de los círculos, no
+   * segmentos entre pasos: los círculos son opacos y lo tapan.
+   */
+  .escuchar__pasos::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* 618 - 584: cae en el centro de los círculos. */
+    top: 1.771vw; /* 34 */
+    height: 0.104vw; /* 2 */
+    background: #d9dee2;
+  }
+
+  .paso:not(:last-child)::after {
+    display: none;
+  }
+
+  .paso {
+    /* 672 - 651.2: del pie del círculo al texto. */
+    gap: 1.083vw; /* 20.8 */
+  }
+
+  .paso__circulo {
+    position: relative;
+    width: 3.5vw; /* 67.2 */
+    height: 3.5vw;
+    /* Acá el círculo no lleva borde: lo que lo despega del filete es la sombra. */
+    border: 0;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.161);
+    /* El número va en Inter, la familia de "dato" del diseño. */
+    font-family: var(--fuente-datos);
+    font-weight: 400;
+    font-size: 1.24vw; /* 23.8 */
+    line-height: 1.21; /* 28.8/23.8 */
+    letter-spacing: 0.14em;
+    color: #2e3135;
+  }
+
+  .paso__texto {
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+    color: #2e3135;
+  }
+
+  /* ---- Tarjetas ---- */
+
+  .escuchar__tarjetas {
+    /* Compromiso 467.9 + 26.2 de aire + plazo 214.9 = 709. */
+    grid-template-columns: minmax(0, 1fr) 11.193vw; /* 214.9 */
+    gap: 1.365vw; /* 26.2 */
+    /* 1007 - 969.2: de las tarjetas a los botones. */
+    margin-bottom: 1.969vw; /* 37.8 */
+  }
+
+  .compromiso,
+  .plazo {
+    border: 1px solid #d9dee2;
+    border-radius: 1.042vw; /* 20 */
+  }
+
+  .compromiso {
+    padding: 1.667vw 1.193vw; /* 32 arriba, 22.9 a los lados */
+  }
+
+  .compromiso__titulo {
+    font-size: 1.021vw; /* 19.6 */
+    line-height: 1.362; /* 26.69/19.6 */
+    letter-spacing: 0.14em;
+    color: #7e7e7e;
+    /* 820.3 - 809.7: del título al primer punto. */
+    margin-bottom: 0.552vw; /* 10.6 */
+  }
+
+  /*
+   * Sin separación entre puntos: en el diseño son UN bloque de texto de tres
+   * renglones con 39 de interlineado, así que el aire ya lo pone el propio
+   * interlineado de cada punto.
+   */
+  .compromiso__lista {
+    gap: 0;
+  }
+
+  .compromiso__punto {
+    /* Tilde de 20.5 y 9 hasta el texto: 993.9 + 20.5 + 9 = 1023.4. */
+    grid-template-columns: 1.068vw minmax(0, 1fr); /* 20.5 */
+    gap: 0.469vw; /* 9 */
+    /* El tilde va centrado en su renglón, no pegado arriba. */
+    align-items: center;
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.741; /* 39/22.4 */
+  }
+
+  .compromiso__tilde {
+    width: 1.068vw; /* 20.5 */
+    height: 0.792vw; /* 15.2 */
+    margin-top: 0;
+  }
+
+  /* ---- Plazo ---- */
+
+  /*
+   * Sin padding a la DERECHA a propósito. «DE RESPUESTA» mide 166 y la caja
+   * útil que le deja el diseño es 186 (del texto al borde de la tarjeta); con
+   * 20 de padding derecho quedaban 166.4 y la etiqueta se partía en tres
+   * renglones, lo que estiraba la tarjeta 18px y corría todo lo de abajo.
+   */
+  .plazo {
+    /* El bloque no va centrado: el «7» arranca a 10 del techo de la caja. */
+    justify-content: flex-start;
+    padding: 0.521vw 0 0.521vw 1.042vw; /* 10 arriba y abajo, 20 a la izquierda */
+    background: #2e3135;
+  }
+
+  .plazo__numero {
+    font-size: 5.177vw; /* 99.4 */
+    line-height: 1.219; /* 121.17/99.4 */
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+  }
+
+  .plazo__etiqueta {
+    /* 895 - 882.2: del pie del «7» a la etiqueta. */
+    margin-top: 0.667vw; /* 12.8 */
+    /* La etiqueta va 8.5 más adentro que el «7». */
+    margin-left: 0.443vw; /* 8.5 */
+    font-size: 1.021vw; /* 19.6 */
+    line-height: 1.362; /* 26.69/19.6 */
+    letter-spacing: 0.14em;
+    /* Gris sólido del diseño, no el blanco atenuado. */
+    color: #d9dee2;
+    opacity: 1;
+  }
+
+  /* ---- CTAs ---- */
+
+  .escuchar__acciones {
+    gap: 0.833vw; /* 16 */
+  }
+
+  .escuchar__cta {
+    gap: 0.521vw; /* 10 */
+    min-height: 4.063vw; /* 78 */
+    /* Radio 999 del diseño: una píldora, no los 30 de 1366. */
+    border-radius: 999px;
+    font-weight: 400;
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+  }
+
+  /* Los dos botones NO miden lo mismo: 364 y 224. */
+  .escuchar__cta--primario {
+    min-width: 18.958vw; /* 364 */
+  }
+
+  .escuchar__cta--secundario {
+    min-width: 11.667vw; /* 224 */
+    border-color: #d9dee2;
+    color: #2e3135;
+  }
+
+  .escuchar__cta-icono {
+    width: 1.51vw; /* 29 */
+    height: 1.51vw;
   }
 }

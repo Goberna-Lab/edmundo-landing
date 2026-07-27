@@ -4,6 +4,14 @@
  *   título       left 80px,  Montserrat Bold 48px/55px, ls -0.96px, #171717
  *   creencias    left 885px, Open Sans 15px/22px, #2C2C2C
  *   foto         1206×500   →  80px de margen a cada lado
+ *
+ * Mesa de 1920 (node 75:1509, 1920×1378, fondo blanco):
+ *   contenido    240 → 1680, con 120 de aire arriba y abajo
+ *   kicker       left 240px, Source Sans 3 25.2px/35.88, raya de 63
+ *   título       left 240px, caja de 832, Montserrat Bold 67.2px/81.92
+ *   creencias    filete de 6px en 1213, texto en 1237, Open Sans 21px/28.6
+ *   foto         1440×597 en 606, radio 16
+ *   pie          Source Sans 3 22.4px/31.9, ls 3.136, #7E7E7E
  */
 
 .mueve {
@@ -91,9 +99,15 @@
   display: block;
 }
 
-/* Solo esta palabra va en rojo. */
-.mueve__titulo-destacado {
+/* Solo "orden" va en rojo. */
+.mueve__titulo-primario {
   color: var(--color-primario);
+}
+
+/* "tranquilidad," y "confianza": un escalón más claro que el resto del
+   título, no el rojo. Es sutil pero está en las dos mesas del diseño. */
+.mueve__titulo-medio {
+  color: #404040;
 }
 
 /* ---- Creencias ---- */
@@ -293,5 +307,166 @@
     line-height: 1.3615;
     /* 1.82/13 del diseño. */
     letter-spacing: 0.14em;
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 75:1509 del Figma, 1920×1378. Medidas en vw sobre base 1920:
+ * 1px = 1/19.2 vw = 0.05208vw. Solo de 1600px de ancho para arriba; abajo
+ * manda el desktop de 1366.
+ *
+ * Diferencias contra 1366, más allá del tamaño:
+ *   - el título NO corta en los mismos lugares (ver .mueve__titulo-linea);
+ *   - el filete de las creencias pasa de 2 a 6px;
+ *   - el pie va en gris #7E7E7E y la foto con radio 16, no el --radio-lg.
+ */
+
+@media (min-width: 1600px) {
+  .mueve {
+    /*
+     * Sin piso: el contenido (1138) más los 120 de aire arriba y abajo da
+     * justo los 1378 del frame. El `max(..., 80.97vw)` de 1366 acá estiraba
+     * la sección casi 200px de más.
+     */
+    min-height: 0;
+    padding-block: 6.25vw; /* 120 */
+  }
+
+  .mueve__inner {
+    padding-inline: 12.5vw; /* 240 */
+  }
+
+  /* La misma trama que las otras secciones de esta mesa. */
+  .mueve .puntos {
+    --ancho: 4.948vw; /* 95 */
+    --alto: 4.01vw; /* 77 */
+    --radio-punto: 0.193vw; /* ~3.7: puntos de 7.4 */
+    top: 2.396vw; /* 46 */
+    right: 7.552vw; /* 145 */
+  }
+
+  /* ---- Kicker: 03 —— LO QUE ME MUEVE ---- */
+
+  .mueve__kicker {
+    /* Pegado a la raya de los dos lados: 269 → 272 y 335 → 338. */
+    gap: 0.156vw; /* 3 */
+    /* 237 - 155.9: del pie del kicker al tope del título. */
+    margin-bottom: 4.225vw; /* 81.1 */
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin fijarlo, Source Sans 3 usa su `normal` (~1.6) y la caja
+       del kicker sale 4px más alta, corriendo todo el bloque. */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  /* CSS agrega el espaciado también DESPUÉS de la última letra y Figma no:
+     sin esto el «03» sale 3px más ancho y corre la raya y la etiqueta. */
+  .mueve__numero {
+    margin-right: -0.14em;
+  }
+
+  .mueve__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /* ---- Cabecera ---- */
+
+  /*
+   * Caja del título 821, 152 de aire, y la columna de creencias 467
+   * (1213 → 1680, filete incluido). 821 + 152 + 467 = 1440.
+   *
+   * El diseño dibuja la caja del título en 832, no 821, pero ese borde es
+   * INVISIBLE: el texto va pegado a la izquierda y a la derecha solo hay aire
+   * hasta las creencias. Lo único que decide ese ancho es dónde corta el
+   * texto, y para eso 832 está al filo (ver .mueve__titulo-linea). El aire se
+   * queda con los 11 de diferencia y el resultado en pantalla es el mismo.
+   */
+  .mueve__cabecera {
+    grid-template-columns: 42.76vw minmax(0, 1fr); /* 821 */
+    gap: 7.917vw; /* 152 */
+    /* 606 - 564.7: del pie del título al tope de la foto. */
+    margin-bottom: 2.152vw; /* 41.3 */
+  }
+
+  .mueve__titulo {
+    font-size: 3.5vw; /* 67.2 */
+    line-height: 1.219; /* 81.92/67.2 */
+    /*
+     * `pretty` rebalancea los últimos renglones y cada motor lo hace distinto.
+     * Acá los cortes tienen que ser exactos, así que se vuelve al algoritmo
+     * simple —llenar y cortar— que da lo mismo en todos lados.
+     */
+    text-wrap: wrap;
+  }
+
+  /*
+   * Acá el título es UN bloque que fluye, no cuatro renglones fijos: en Figma
+   * la mesa de 1366 son cuatro nodos de texto sueltos, pero la de 1920 es uno
+   * solo dentro de una caja, y corta en otro lado:
+   *   1366 → «…La Molina la / tranquilidad, el orden y la / confianza…»
+   *   1920 → «…La Molina / la tranquilidad, el orden / y la confianza…»
+   * Los renglones del contenido terminan en espacio para poder empalmarse acá.
+   *
+   * POR QUÉ 821 Y NO LOS 832 DEL DISEÑO. Medido en Chrome a 67.2px, los cuatro
+   * renglones piden 761.3 / 804.7 / 663.7 / 501.5, y la palabra que sigue a
+   * cada uno recién entra en 837.9 / 861.2 / 990.1. O sea que cualquier ancho
+   * entre 804.7 y 837.9 da los cortes del diseño: con 832 quedan 5.9px de
+   * margen antes de que «la» se suba al primer renglón y se desarme todo,
+   * con 821 quedan 16 para cada lado. Es el centro de esa ventana.
+   */
+  .mueve__titulo-linea {
+    display: inline;
+  }
+
+  /* ---- Creencias ---- */
+
+  /*
+   * El filete ocupa 1213 → 1219 (medido sobre el propio render de Figma) y el
+   * texto arranca en 1237: 6 de filete + 18 de aire. Ojo con poner los 24
+   * enteros de padding, que es la distancia del filete al texto: ahí la caja
+   * queda de 437 y no de 443, y la tercera creencia se lleva «valor» al
+   * renglón de abajo, que no es donde corta el diseño.
+   */
+  .mueve__creencias {
+    padding-left: 0.9375vw; /* 18 */
+    border-left-width: 0.3125vw; /* 6 */
+    /* Entre el pie de una y el tope de la siguiente. */
+    gap: 1.1875vw; /* 22.8 */
+  }
+
+  .creencia {
+    font-size: 1.094vw; /* 21 */
+    line-height: 1.362; /* 28.6/21 */
+  }
+
+  /* ---- Foto ---- */
+
+  .mueve__figura img {
+    /* 16 del diseño: más chico que el --radio-lg (20) que usa 1366. */
+    border-radius: 0.833vw;
+    /*
+     * El recorte del diseño mide 597 pero el PNG exportado sale de 598: sin
+     * fijar la proporción, ese píxel de más corre el pie y todo lo de abajo.
+     */
+    aspect-ratio: 1440 / 597;
+    object-fit: cover;
+  }
+
+  /* ---- Pie ---- */
+
+  .mueve__pie {
+    /* 1226 - 1203: del pie de la foto al renglón. */
+    margin-top: 1.198vw; /* 23 */
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.424; /* 31.9/22.4 */
+    letter-spacing: 0.14em;
+    color: #7e7e7e;
+  }
+
+  /* El de la derecha cierra en 1680: sin esto el espaciado de la última letra
+     lo mete 3px para adentro. */
+  .mueve__pie span:last-child {
+    margin-right: -0.14em;
   }
 }

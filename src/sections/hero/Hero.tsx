@@ -7,6 +7,10 @@ import edmundo from './assets/edmundo.webp'
 // Retrato específico de 1920: recorte más alto (torso completo) que el plano
 // corto de escritorio. Solo se usa de 1600px para arriba. Ver Hero.css.
 import edmundo1920 from './assets/edmundo-1920.webp'
+// Mismo recorte a 1x. El de arriba es el 2x: el navegador baja UNO de los
+// dos según la densidad de la pantalla, así que un monitor 1x se ahorra
+// 99 KB y uno retina sigue viendo el grande. Ver el srcSet de abajo.
+import edmundo1920x1 from './assets/edmundo-1920-1x.webp'
 /*
  * Recortes propios del mobile, no versiones chicas de los de desktop: el
  * diseño mobile es a sangre y vertical, así que necesita OTRA porción de la
@@ -117,7 +121,10 @@ export function Hero() {
       <div className="hero__velo" aria-hidden="true" />
 
       <picture className="hero__retrato">
-        <source media={DESKTOP_1920} srcSet={edmundo1920} />
+        <source
+          media={DESKTOP_1920}
+          srcSet={`${edmundo1920x1} 1x, ${edmundo1920} 2x`}
+        />
         <source media={MOBILE} srcSet={edmundoMobile} />
         <img
           className="hero__retrato-img"

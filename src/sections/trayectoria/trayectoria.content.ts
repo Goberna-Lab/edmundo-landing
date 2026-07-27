@@ -1,9 +1,9 @@
-import iconoMba from './assets/icono-mba.png'
-import iconoProfesor from './assets/icono-profesor.png'
-import iconoCongresista from './assets/icono-congresista.png'
-import iconoGestion from './assets/icono-gestion.png'
-import iconoEducacion from './assets/icono-educacion.png'
-import iconoVecino from './assets/icono-vecino.png'
+import iconoMba from './assets/icono-mba.webp'
+import iconoProfesor from './assets/icono-profesor.webp'
+import iconoCongresista from './assets/icono-congresista.webp'
+import iconoGestion from './assets/icono-gestion.webp'
+import iconoEducacion from './assets/icono-educacion.webp'
+import iconoVecino from './assets/icono-vecino.webp'
 
 export interface Hito {
   id: string

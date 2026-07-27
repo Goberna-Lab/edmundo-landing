@@ -12,6 +12,13 @@ const { titulo, ctaPrimario, ctaSecundario } = adelanteContent
  */
 const estiloFondo = {
   '--adelante-fondo': `url(${adelanteContent.imagen})`,
+  /*
+   * La mesa de 1920 usa su propia foto y no alcanza con que sea más grande:
+   * la de 1366 viene con el velo YA HORNEADO (se exportó con el degradé
+   * encima) y el CSS le suma otro. La de 1920 es la foto limpia del nodo
+   * 90:128, con el velo del diseño puesto aparte. Ver LaMolinaAdelante.css.
+   */
+  '--adelante-fondo-1920': `url(${adelanteContent.imagen1920})`,
 } as CSSProperties
 
 export function LaMolinaAdelante() {

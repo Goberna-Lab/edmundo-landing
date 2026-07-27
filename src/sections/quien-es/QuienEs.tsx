@@ -3,6 +3,9 @@ import retrato from './assets/edmundo-quien-es.webp'
 // Recorte 2x del nodo 65:1114 del Figma, solo para la mesa de 1920: a 787px
 // de ancho el asset de 562 se veía borroso. Ver QuienEs.css bloque 1920.
 import retrato1920 from './assets/edmundo-quien-es-1920.webp'
+// El mismo recorte a 1x: el <source> de abajo ofrece los dos y el
+// navegador baja el que corresponde a la densidad de la pantalla.
+import retrato1920x1 from './assets/edmundo-quien-es-1920-1x.webp'
 import './QuienEs.css'
 
 /** De acá para arriba manda el diseño de 1920 (mesa aparte). Ver QuienEs.css. */
@@ -17,7 +20,10 @@ export function QuienEs() {
       <div className="quien-es__inner">
         <figure className="quien-es__figura">
           <picture>
-            <source media={DESKTOP_1920} srcSet={retrato1920} />
+            <source
+              media={DESKTOP_1920}
+              srcSet={`${retrato1920x1} 1x, ${retrato1920} 2x`}
+            />
             <img
               src={retrato}
               alt={quienEsContent.altFoto}

@@ -6,6 +6,16 @@
  *   ficha       foto 698×509
  *   miniaturas  5 × 217×123, de 80 a 1285 con 30px de separación
  *               (80 + 5×217 + 4×30 = 1285)
+ *
+ * Mesa de 1920 (node 83:1752, 1920×1521, fondo blanco):
+ *   contenido   240 → 1680, con 120 de aire arriba y abajo
+ *   kicker      Source Sans 3 25.2px/35.88 (acá NO es Open Sans como en 1366)
+ *   título      dos renglones Montserrat Bold 67.2px/81.92 que se solapan 4
+ *   flechas     63×63 en 1544 y 1617, A LA DERECHA DE LA BAJADA (en 1366 van
+ *               abajo del todo)
+ *   ficha       foto 832×606.7 en 240 | detalle de 467 en 1213
+ *   marca       "01" vectorizado, 191.9×156.1 en 1213/485, #EBEBEB
+ *   miniaturas  5 × 259.3×146.9 con 35.9 de separación, radio 10
  */
 
 .ejes {
@@ -70,8 +80,14 @@
   display: block;
 }
 
-.ejes__titulo-destacado {
+/* Solo "Metas claras" va en rojo. */
+.ejes__titulo-primario {
   color: var(--color-primario);
+}
+
+/* "Ejes concretos.": un escalón más claro que el resto, no el rojo. */
+.ejes__titulo-medio {
+  color: #404040;
 }
 
 /* ---- Bajada + flechas ---- */
@@ -244,22 +260,27 @@
   border: 0;
   text-align: left;
   cursor: pointer;
-  /* Las no elegidas van al 50%, como el diseño. */
-  opacity: 0.5;
-  transition: opacity var(--transicion);
 }
 
-.mini:hover,
-.mini--activa {
-  opacity: 1;
-}
-
+/*
+ * El 50% de las no elegidas va SOLO sobre la foto. En el diseño —en las dos
+ * mesas— la opacidad está puesta en el grupo de la imagen y los nombres van a
+ * color pleno; atenuando el botón entero, los cuatro nombres que no son el
+ * activo salían en gris claro y casi no se leían.
+ */
 .mini__imagen {
   display: block;
   width: 100%;
   height: auto;
   border-radius: var(--radio-sm);
   margin-bottom: var(--espacio-3);
+  opacity: 0.5;
+  transition: opacity var(--transicion);
+}
+
+.mini:hover .mini__imagen,
+.mini--activa .mini__imagen {
+  opacity: 1;
 }
 
 .mini__nombre {
@@ -433,5 +454,267 @@
   .ejes__flecha img {
     width: calc(45 * var(--u));
     height: calc(45 * var(--u));
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 83:1752 del Figma, 1920×1521. Medidas en vw sobre base 1920:
+ * 1px = 1/19.2 vw = 0.05208vw. Solo de 1600px de ancho para arriba; abajo
+ * manda el desktop de 1366.
+ *
+ * Diferencias contra 1366, más allá del tamaño:
+ *   - las FLECHAS suben al costado de la bajada; en el DOM van últimas (que es
+ *     el orden de mobile), así que acá se recolocan con una grilla explícita;
+ *   - el kicker va en Source Sans 3, no en la Open Sans de 1366;
+ *   - "Ejes concretos." se suma al gris intermedio del título;
+ *   - los nombres de las miniaturas van en Open Sans 600, no 400.
+ */
+
+@media (min-width: 1600px) {
+  .ejes {
+    /*
+     * Sin piso: el contenido (1281) más los 120 de aire arriba y abajo da los
+     * 1521 del frame. El max(..., 91.87vw) de 1366 lo estiraba a 1764.
+     */
+    min-height: 0;
+  }
+
+  /*
+   * Grilla explícita porque el orden del DOM no es el de esta mesa: la
+   * navegación es el último hijo (así cae al pie en mobile, que es donde la
+   * pone ese frame) pero acá tiene que ir en la misma fila que la bajada.
+   * Con áreas fijas se recoloca sin tocar el JSX ni las otras mesas.
+   */
+  .ejes__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    padding-inline: 12.5vw; /* 240 */
+    padding-block: 6.25vw; /* 120 */
+  }
+
+  .ejes__kicker {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+
+  .ejes__titulo {
+    grid-area: 2 / 1 / 3 / 3;
+  }
+
+  .ejes__intro {
+    grid-area: 3 / 1 / 4 / 2;
+  }
+
+  .ejes__navegacion {
+    grid-area: 3 / 2 / 4 / 3;
+  }
+
+  .ejes__ficha {
+    grid-area: 4 / 1 / 5 / 3;
+  }
+
+  .ejes__miniaturas {
+    grid-area: 5 / 1 / 6 / 3;
+  }
+
+  /* ---- Kicker: 05 —— EJES PARA LA MOLINA ---- */
+
+  .ejes__kicker {
+    /* Pegado a la raya de los dos lados: 269 → 272 y 335 → 338. */
+    gap: 0.156vw; /* 3 */
+    /* 190.6 - 155.9: del pie del kicker al tope del título. */
+    margin-bottom: 1.808vw; /* 34.7 */
+    font-family: var(--fuente-kicker);
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin fijarlo, Source Sans 3 usa su `normal` (~1.6) y la caja
+       del kicker sale 4px más alta, corriendo todo el bloque. */
+    line-height: 1.424;
+    letter-spacing: 0.14em;
+  }
+
+  /* CSS agrega el espaciado también DESPUÉS de la última letra y Figma no:
+     sin esto el «05» sale 3px más ancho y corre la raya y la etiqueta.
+     Va por posición porque ese <span> no lleva clase. */
+  .ejes__kicker span:first-child {
+    margin-right: -0.14em;
+  }
+
+  .ejes__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /* ---- Título ---- */
+
+  .ejes__titulo {
+    font-size: 3.5vw; /* 67.2 */
+    line-height: 1.219; /* 81.92/67.2 */
+    /* 373 - 350.5: del pie del título al tope de la bajada. */
+    margin-bottom: 1.171vw; /* 22.5 */
+  }
+
+  /*
+   * Los dos renglones se solapan: el segundo arranca en 268.6 pero el primero
+   * ocupa hasta 272.5. Como en el nombre de «¿Quién es?», el interlineado real
+   * se respeta y el solape lo hace el margen negativo.
+   */
+  .ejes__titulo-linea + .ejes__titulo-linea {
+    margin-top: -0.204vw; /* -3.9 */
+  }
+
+  /* ---- Bajada + flechas ---- */
+
+  .ejes__intro {
+    /*
+     * 485 - 373 = 112 hasta la foto, y la bajada mide 61: el resto es este
+     * margen. Se mide contra la fila entera porque las flechas (63) son más
+     * altas que la bajada.
+     */
+    margin-bottom: 2.656vw; /* 51 */
+  }
+
+  .ejes__bajada {
+    /* Caja de 941: es la que parte el texto en los dos renglones del diseño. */
+    max-width: 49.01vw;
+    /*
+     * El diseño pone esta caja en 246 y no en 240 como el resto. No es un
+     * descuido: la «E» de «Ejes para La Molina» tiene 6px de aire propio, así
+     * que su TINTA arranca en 246, y la bajada se corrió para que las dos
+     * queden ópticamente alineadas. Medido sobre el PNG: título y bajada
+     * empiezan a pintar en 246 y 247.
+     */
+    margin-left: 0.313vw; /* 6 */
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+  }
+
+  .ejes__navegacion {
+    gap: 0.521vw; /* 10: 1617 - 1544 - 63 */
+  }
+
+  .ejes__flecha img {
+    /* Acá el diseño las usa al tamaño exportado, 63, no a 45 como en 1366. */
+    width: 3.281vw;
+    height: 3.281vw;
+  }
+
+  /* ---- Ficha ---- */
+
+  /*
+   * Foto 832 (240 → 1072), 141 de aire y detalle de 467 (1213 → 1680).
+   * 832 + 141 + 467 = 1440. `stretch` para que la columna del detalle tome el
+   * alto de la foto: es lo que hace que el pie se apoye en su borde de abajo.
+   */
+  .ejes__ficha {
+    grid-template-columns: 43.333vw minmax(0, 1fr); /* 832 */
+    gap: 7.344vw; /* 141 */
+    align-items: stretch;
+    /* 1180 - 1091.7: del pie de la foto al tope de las miniaturas. */
+    margin-bottom: 4.599vw; /* 88.3 */
+  }
+
+  .ejes__figura img {
+    border-radius: 0.833vw; /* 16 */
+  }
+
+  /*
+   * El "01" de fondo. En Figma es un VECTOR (texto contorneado) cuya tinta mide
+   * 191.9×156.1 y apoya en 1213/485, el tope de la foto. Acá sigue siendo
+   * texto, y un vector no tiene ni aire de caja ni bearing lateral, así que las
+   * tres medidas se calibraron contra el PNG del diseño:
+   *   - cuerpo 215 para que la cifra mida 156 de alto;
+   *   - tracking -0.05em porque con el -0.02em del resto salía 200 de ancho
+   *     en vez de 192 (el alto está bien pero el hueco entre 0 y 1 sobra);
+   *   - los márgenes negativos comen el aire de la caja (30) y el bearing
+   *     izquierdo del «0» (9) para que la TINTA caiga en 1213/485.
+   */
+  .ejes__marca {
+    font-size: 11.198vw; /* 215 */
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: #ebebeb;
+    margin: -1.573vw 0 0 -0.453vw; /* -30.2 arriba, -8.7 a la izquierda */
+  }
+
+  /*
+   * El título y la descripción van en 1216, tres píxeles adentro del borde de
+   * la columna (1213), que es donde apoyan la cifra y «Conoce más».
+   */
+  .ejes__eje-titulo,
+  .ejes__eje-descripcion {
+    margin-left: 0.156vw; /* 3 */
+  }
+
+  .ejes__eje-titulo {
+    font-size: 2.625vw; /* 50.4 */
+    line-height: 1.219; /* 61.44/50.4 */
+    /* 678 - 669.8: del pie de la caja de la cifra al título del eje. */
+    margin-top: 0.427vw; /* 8.2 */
+    /* 807 - 800: van casi pegados. */
+    margin-bottom: 0.365vw; /* 7 */
+  }
+
+  .ejes__eje-descripcion {
+    max-width: none;
+    font-size: 1.167vw; /* 22.4 */
+    line-height: 1.362; /* 30.5/22.4 */
+  }
+
+  /* ---- Pie de la ficha ---- */
+
+  .ejes__pie {
+    /* 1456 - 1401: del filete de "Conoce más" al contador. */
+    gap: 2.865vw; /* 55 */
+    padding-top: 0;
+  }
+
+  .ejes__mas {
+    /* 1383 - 1361: del texto a la flecha. */
+    gap: 1.146vw; /* 22 */
+    /* 1090 - 1075.3: del texto al filete, que acá mide 2. */
+    padding-bottom: 0.781vw; /* 15 */
+    border-bottom-width: 0.104vw; /* 2 */
+    border-bottom-color: #2e3135;
+    font-weight: 600;
+    font-size: 1.3125vw; /* 25.2 */
+    line-height: 1.362; /* 34.32/25.2 */
+    color: #2e3135;
+  }
+
+  .ejes__mas-flecha {
+    width: 0.917vw; /* 17.6 */
+    height: 0.917vw;
+  }
+
+  .ejes__contador {
+    font-weight: 600;
+    font-size: 1.3125vw; /* 25.2 */
+    line-height: 0.992; /* 25/25.2 */
+    /* Acá los dos números van del mismo color, no el total en gris. */
+    color: #2e3135;
+  }
+
+  .ejes__contador-actual {
+    color: inherit;
+  }
+
+  /* ---- Miniaturas ---- */
+
+  .ejes__miniaturas {
+    gap: 1.87vw; /* 35.9 */
+  }
+
+  .mini__imagen {
+    border-radius: 0.521vw; /* 10 */
+    /* 1347 - 1326.9: de la foto al nombre. */
+    margin-bottom: 1.047vw; /* 20.1 */
+  }
+
+  .mini__nombre {
+    /* Semibold, no la regular de 1366. */
+    font-weight: 600;
+    font-size: 1.021vw; /* 19.6 */
+    line-height: 1.362; /* 26.69/19.6 */
+    color: #2e3135;
   }
 }

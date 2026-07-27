@@ -41,8 +41,8 @@ export function EjesParaLaMolina() {
           {titulo.map((linea, indice) => (
             <span className="ejes__titulo-linea" key={indice}>
               {linea.map((parte) =>
-                parte.destacado ? (
-                  <span className="ejes__titulo-destacado" key={parte.texto}>
+                parte.tono ? (
+                  <span className={`ejes__titulo-${parte.tono}`} key={parte.texto}>
                     {parte.texto}
                   </span>
                 ) : (
@@ -63,8 +63,8 @@ export function EjesParaLaMolina() {
             <img
               src={eje.imagen}
               alt={eje.altImagen}
-              width="698"
-              height="509"
+              width="832"
+              height="607"
               loading="lazy"
               decoding="async"
             />
@@ -121,8 +121,8 @@ export function EjesParaLaMolina() {
                     className="mini__imagen"
                     src={item.miniatura}
                     alt=""
-                    width="217"
-                    height="123"
+                    width="260"
+                    height="147"
                     loading="lazy"
                     decoding="async"
                   />
@@ -142,7 +142,14 @@ export function EjesParaLaMolina() {
             onClick={() => ir(-1)}
             aria-label="Eje anterior"
           >
-            <img src={flechaAnterior} alt="" width="45" height="45" />
+            <img
+              src={flechaAnterior}
+              alt=""
+              width="45"
+              height="45"
+              loading="lazy"
+              decoding="async"
+            />
           </button>
           <button
             type="button"
@@ -150,7 +157,14 @@ export function EjesParaLaMolina() {
             onClick={() => ir(1)}
             aria-label="Eje siguiente"
           >
-            <img src={flechaSiguiente} alt="" width="45" height="45" />
+            <img
+              src={flechaSiguiente}
+              alt=""
+              width="45"
+              height="45"
+              loading="lazy"
+              decoding="async"
+            />
           </button>
         </div>
       </div>

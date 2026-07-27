@@ -24,8 +24,8 @@ export function LoQueMeMueve() {
               // porque el orden es fijo y no se reordena.
               <span className="mueve__titulo-linea" key={indice}>
                 {linea.map((parte) =>
-                  parte.destacado ? (
-                    <span className="mueve__titulo-destacado" key={parte.texto}>
+                  parte.tono ? (
+                    <span className={`mueve__titulo-${parte.tono}`} key={parte.texto}>
                       {parte.texto}
                     </span>
                   ) : (
@@ -50,8 +50,8 @@ export function LoQueMeMueve() {
           <img
             src={panoramica}
             alt={loQueMeMueveContent.altFoto}
-            width="1206"
-            height="500"
+            width="1440"
+            height="598"
             loading="lazy"
             decoding="async"
           />
