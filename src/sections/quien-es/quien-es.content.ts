@@ -28,8 +28,8 @@ export const quienEsContent = {
       id: 'experiencia',
       icono: iconoExperiencia,
       etiqueta: 'Experiencia',
-      // El diseño trae "XX + AÑOS": es un placeholder del propio mockup.
-      valor: '[[quien-es-anios]] + años',
+      // "XX" es provisional: reemplazar por los años reales de experiencia.
+      valor: 'XX + años',
     },
     {
       id: 'servicio',

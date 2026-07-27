@@ -187,19 +187,10 @@
   transform: translateY(0);
 }
 
-/* Lockup arriba y línea legal abajo, dentro de la misma celda de la grilla. */
+/* Lockup de marca; queda flex-column para que el mobile lo pueda centrar. */
 .footer__bloque-marca {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  gap: var(--espacio-8);
-}
-
-.footer__legal {
-  font-family: var(--fuente-texto);
-  font-size: var(--texto-xs);
-  opacity: 0.6;
 }
 
 .footer :where(a):focus-visible {
@@ -253,7 +244,6 @@
   .footer__bloque-marca {
     align-items: center;
     text-align: center;
-    gap: calc(20 * var(--u));
   }
 
   /* Las dos líneas del lockup se montan como en el diseño (line-height apretado). */
@@ -268,11 +258,6 @@
 
   .footer__marca-linea2 {
     font-size: calc(40 * var(--u));
-  }
-
-  /* El diseño mobile no lleva línea legal. */
-  .footer__legal {
-    display: none;
   }
 
   /* En mobile mandan la lista plana; las columnas "Enlaces" se ocultan. */

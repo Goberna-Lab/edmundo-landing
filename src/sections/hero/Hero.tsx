@@ -2,8 +2,11 @@ import { heroContent } from './hero.content'
 // WebP: pesan 133 KB entre las dos contra 1.6 MB de los PNG originales, que
 // quedan en la carpeta como fuente (al no importarse, no entran al bundle).
 import fondo from './assets/fondo-la-molina.webp'
-// import fondo1920 from './assets/fondo-la-molina-1920.webp'
+import fondo1920 from './assets/fondo-la-molina-1920.webp'
 import edmundo from './assets/edmundo.webp'
+// Retrato específico de 1920: recorte más alto (torso completo) que el plano
+// corto de escritorio. Solo se usa de 1600px para arriba. Ver Hero.css.
+import edmundo1920 from './assets/edmundo-1920.webp'
 /*
  * Recortes propios del mobile, no versiones chicas de los de desktop: el
  * diseño mobile es a sangre y vertical, así que necesita OTRA porción de la
@@ -24,6 +27,8 @@ import './Hero.css'
 
 /** Arriba de acá manda el diseño desktop; abajo, el de 430. */
 const MOBILE = '(max-width: 760px)'
+/** De acá para arriba manda el diseño de 1920 (mesa aparte). Ver Hero.css. */
+const DESKTOP_1920 = '(min-width: 1600px)'
 
 /*
  * Iconos inline y no desde el sprite: con <use href="archivo.svg#id"> el
@@ -92,7 +97,9 @@ export function Hero() {
         abajo sigue con el de 1366. Sin JS.
       */}
       <picture className="hero__fondo">
-        {/* <source media="(min-width: 1600px)" srcSet={fondo1920} /> */}
+        {/* De 1600px para arriba, el fondo de 1920 (foto cruda que llena el
+            cuadro; el degradado blanco lo pone el .hero__velo en CSS). */}
+        <source media={DESKTOP_1920} srcSet={fondo1920} />
         {/* El <source> mobile va PRIMERO: gana el primero que matchea. */}
         <source media={MOBILE} srcSet={fondoMobile} />
         <img
@@ -110,6 +117,7 @@ export function Hero() {
       <div className="hero__velo" aria-hidden="true" />
 
       <picture className="hero__retrato">
+        <source media={DESKTOP_1920} srcSet={edmundo1920} />
         <source media={MOBILE} srcSet={edmundoMobile} />
         <img
           className="hero__retrato-img"

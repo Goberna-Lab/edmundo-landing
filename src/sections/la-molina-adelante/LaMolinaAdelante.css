@@ -13,104 +13,42 @@
   min-height: max(calc(100svh - var(--alto-header)), 50.15vw);
   display: flex;
   align-items: center;
-  background: var(--color-texto);
 
   /*
-   * La timeline del parallax se declara ACÁ y no con `view()` en la foto.
+   * Parallax con `background-attachment: fixed` (el clásico de W3Schools).
+   * La foto se ancla al viewport y la sección es la "ventana" que se corre
+   * por encima al scrollear: ese desfase entre foto quieta y ventana en
+   * movimiento ES el parallax. Sin JS y sin animation-timeline, y se ve
+   * IGUAL en Chrome, Firefox y Safari de escritorio —justo lo que el enfoque
+   * scroll-driven NO conseguía: rompía en Firefox/Safari según la versión y
+   * arrastró cinco commits de idas y vueltas—.
    *
-   * NO ES UN CAPRICHO, es por el `overflow: hidden` de arriba: eso convierte
-   * a la sección en scroll container, y `view()` cuelga la timeline del
-   * scrollport más cercano —que pasa a ser esta misma sección, que nunca
-   * scrollea—. La foto quedaba congelada en un extremo, en TODOS los
-   * navegadores. Nombrando la timeline sobre la sección, el scrollport que
-   * se mide es el documento, que es el que de verdad se mueve.
+   * `--adelante-fondo` la inyecta el TSX con la url del webp importado, así
+   * el asset sigue pasando por el pipeline de Vite (hash incluido). El color
+   * de fondo queda detrás como respaldo si la foto no cargara.
    *
-   * Si algún día sacás el `overflow: hidden`, esto sigue andando igual.
+   * OJO: para que esto ancle al viewport, ningún ancestro puede tener
+   * `transform`/`filter`/`will-change` (crean un containing block y `fixed`
+   * pasa a comportarse como `scroll`). Verificado: html/body/#root/main están
+   * limpios; el `overflow: clip` del body no cuenta.
+   *
+   * En móvil y con reduced-motion baja a `scroll` (más abajo): los
+   * navegadores móviles ignoran `fixed` igual, y forzarlo dispara el bug de
+   * iOS que agranda el fondo. Ahí queda una foto de cierre quieta, que es el
+   * fallback correcto.
    */
-  view-timeline-name: --adelante-parallax;
-}
-
-/* ---- Fondo con parallax ---- */
-
-/*
- * La foto es más alta que la sección (140%) y arranca corrida hacia arriba:
- * ese excedente —20% arriba y 20% abajo— es el recorrido que tiene para
- * moverse sin dejar huecos.
- *
- * ESTOS DOS NÚMEROS VAN ATADOS a los @keyframes de acá abajo: el translateY
- * es un porcentaje de la ALTURA DE LA FOTO, así que el recorrido real es
- * 13% × height = 13% × 140% = 18.2% del alto de la sección, y tiene que
- * entrar en el 20% de excedente. Si tocás uno, rehacé la cuenta con el otro
- * o la foto deja ver el fondo en un extremo.
- *
- * ESTABA EN 160%/±18% Y SE BAJÓ A PROPÓSITO: a 160% la foto se escalaba
- * 1.73× (1366×685 de origen contra 1186px de alto renderizado) y se veía
- * lavada y blanda. A 140% escala 1.51×. El techo sigue siendo el asset, no
- * la cuenta: en pantallas anchas la sección crece por el `50.15vw` y el
- * escalado empeora igual. Para más parallax o más nitidez hay que
- * re-exportar la foto al doble (2732×1370), no subir estos números.
- */
-.adelante__fondo {
-  position: absolute;
-  top: -20%;
-  left: 0;
-  z-index: -2;
-  width: 100%;
-  height: 140%;
-  object-fit: cover;
+  background:
+    var(--adelante-fondo) center / cover no-repeat fixed,
+    var(--color-texto);
 }
 
 /*
- * Parallax ligado al scroll, sin JavaScript.
- *
- * `animation-range: cover`, el rango completo: la foto se mueve durante TODO
- * el tiempo que la sección se ve.
- *
- * ANTES ACÁ DECÍA `entry`, y era correcto cuando esta sección cerraba la
- * landing: como nunca terminaba de salir por arriba, con `cover` el avance
- * moría en ~0.6 y el efecto no llegaba a completarse. Ese motivo YA NO EXISTE
- * —ahora abajo vienen «La voz de La Molina» y el formulario—, y dejar `entry`
- * producía justo el defecto que `entry` venía a evitar: el rango terminaba con
- * la sección recién acomodada en pantalla, así que el parallax se gastaba
- * entero durante la entrada y la foto quedaba clavada los ~800px de scroll en
- * los que uno se planta a mirarla. Medido: congelada en translateY(18%) desde
- * scrollY 6707 hasta 7520.
- *
- * De paso arregla el tirón: repartido sobre `entry` el fondo corría al 42% de
- * la velocidad del scroll —un parallax muy agresivo— y después frenaba de
- * golpe al 100%. Ese cambio brusco era lo que se veía feo. Sobre `cover` el
- * recorrido se reparte en el doble de scroll y queda en ~0.83, sin frenazo.
- *
- * Si algún día ésta vuelve a ser la última sección, revisá este rango.
- *
- * El @supports es la guarda de verdad, no un adorno: donde no está soportado
- * (Firefox hasta la 155, Safari <26) no se aplica nada y la foto queda quieta
- * y centrada, que es el fallback correcto. Prueba `view()` y no la timeline con
- * nombre a propósito: es la sonda canónica de la feature y las dos cosas van
- * juntas (verificado: da false en Firefox 152 y true en Chrome).
+ * Reduced-motion: el parallax es movimiento, así que se apaga. La foto queda
+ * como un cierre quieto (cover, centrada), sin desfase al scrollear.
  */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .adelante__fondo {
-      /* Sin duración a propósito: sobre una timeline de progreso, el `auto`
-         que deja el shorthand es lo que estira la animación por todo el rango. */
-      animation: adelante-parallax linear both;
-      /* DESPUÉS del shorthand: `animation` resetea animation-timeline a auto.
-         Al revés, la animación corre sobre la timeline del documento, se
-         consume al instante y la foto queda congelada en un extremo. */
-      animation-timeline: --adelante-parallax;
-      animation-range: cover 0% cover 100%;
-    }
-  }
-}
-
-/* ±13%: ver la cuenta en `.adelante__fondo`, va atada al height de la foto. */
-@keyframes adelante-parallax {
-  from {
-    transform: translateY(-13%);
-  }
-  to {
-    transform: translateY(13%);
+@media (prefers-reduced-motion: reduce) {
+  .adelante {
+    background-attachment: scroll;
   }
 }
 
@@ -335,6 +273,9 @@
     --margen: max(calc(24 * var(--u)), 16px);
 
     min-height: 0;
+    /* Los navegadores móviles ignoran `fixed` (y forzarlo agranda el fondo en
+       iOS): acá la foto es un cover normal, sin parallax. */
+    background-attachment: scroll;
   }
 
   .adelante__inner {
@@ -345,7 +286,9 @@
 
   .adelante__kicker {
     gap: calc(4 * var(--u));
-    margin-bottom: calc(85 * var(--u));
+    /* Al tope del título: en el diseño el kicker queda pegado al bloque, no a
+       la distancia larga que tenía antes (85u lo separaba de más). */
+    margin-bottom: calc(44 * var(--u));
     font-family: var(--fuente-kicker);
     font-size: max(calc(14 * var(--u)), 12px);
     font-weight: 400;
@@ -369,11 +312,16 @@
   }
 
   .adelante__titulo-linea--suave {
-    margin-top: calc(20 * var(--u));
+    /* El gris pegado al blanco: apenas un respiro, no el salto de 20u que lo
+       dejaba lejos de «Construyamos Juntos». */
+    margin-top: calc(6 * var(--u));
   }
 
   .adelante__acciones {
     flex-direction: column;
+    /* Alineados a la izquierda y al ancho de su contenido (260u), NO estirados
+       de borde a borde: en columna, el `stretch` por defecto los ensanchaba. */
+    align-items: flex-start;
     gap: calc(16 * var(--u));
   }
 

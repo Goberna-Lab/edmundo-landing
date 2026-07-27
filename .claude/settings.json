@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(google-chrome-stable --headless=new --hide-scrollbars --remote-debugging-port=9222 --user-data-dir=/tmp/claude-1000/-home-angele-Projects-edmundo-web/3830e3e5-1b30-427a-b94b-467c3a7b0110/scratchpad/chrome-profile about:blank)"
+    ]
+  }
+}

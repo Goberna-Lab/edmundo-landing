@@ -361,7 +361,9 @@
     justify-content: center;
     margin-bottom: 44px;
     padding: 8px 39px;
-    border: 1.5px solid var(--color-primario);
+    /* Borde coral del diseño (#e74942, 2px); el texto va en primario por
+       contraste (los dos rojos no se distinguen). */
+    border: 2px solid var(--color-primario-claro);
     border-radius: 999px;
     background: transparent;
     color: var(--color-primario);

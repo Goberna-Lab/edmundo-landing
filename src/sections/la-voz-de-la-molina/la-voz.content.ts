@@ -14,6 +14,13 @@ export interface Nota {
   url: string
 }
 
+/**
+ * Destino de la nota destacada. El botón "Ver todo" y la propia nota-1
+ * comparten este link: mientras no haya un listado aparte, el botón abre la
+ * nota destacada, y cuando llegue la URL real se cambia acá una sola vez.
+ */
+const nota1Url = '[[nota-1-url]]'
+
 export const laVozContent = {
   titulo: 'La Voz de La Molina',
   /** Solo lo oyen los lectores de pantalla: el diseño no muestra este rótulo. */
@@ -21,8 +28,8 @@ export const laVozContent = {
   anterior: 'Ver notas anteriores',
   siguiente: 'Ver notas siguientes',
   leerMas: 'Leer nota completa',
-  /* Botón del diseño mobile: lleva al listado completo de notas. */
-  verTodo: { label: 'Ver todo', url: '[[voz-ver-todo-url]]' },
+  /* Botón del diseño mobile. Comparte destino con la nota-1 (ver nota1Url). */
+  verTodo: { label: 'Ver todo', url: nota1Url },
 
   notas: [
     {
@@ -33,7 +40,7 @@ export const laVozContent = {
       fecha: '2026-07-20',
       imagen: nota1,
       altImagen: 'Una familia sentada en el pasto de un parque de La Molina',
-      url: '[[nota-1-url]]',
+      url: nota1Url,
     },
     {
       id: 'nota-2',

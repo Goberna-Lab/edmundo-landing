@@ -1,20 +1,22 @@
+import type { CSSProperties } from 'react'
 import { adelanteContent } from './la-molina-adelante.content'
 import './LaMolinaAdelante.css'
 
 const { titulo, ctaPrimario, ctaSecundario } = adelanteContent
 
+/*
+ * La foto de fondo va por CSS (`background-attachment: fixed`), no en un
+ * <img>: es el parallax. El webp importado entra como custom property para no
+ * perder el hashing de Vite. Es decorativa (el texto lleva el sentido), así
+ * que no necesita alt.
+ */
+const estiloFondo = {
+  '--adelante-fondo': `url(${adelanteContent.imagen})`,
+} as CSSProperties
+
 export function LaMolinaAdelante() {
   return (
-    <section className="adelante" id="la-molina-adelante">
-      {/* Fondo con parallax. Va más alto que la sección para tener recorrido;
-          el movimiento lo maneja el CSS con animation-timeline. */}
-      <img
-        className="adelante__fondo"
-        src={adelanteContent.imagen}
-        alt={adelanteContent.altImagen}
-        loading="lazy"
-        decoding="async"
-      />
+    <section className="adelante" id="la-molina-adelante" style={estiloFondo}>
       {/* Vela que oscurece la foto para que el texto blanco se lea. */}
       <div className="adelante__velo" aria-hidden="true" />
 

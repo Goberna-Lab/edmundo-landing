@@ -74,15 +74,14 @@
 }
 
 /*
- * FONDO DE 1920 — descomentar junto con el <source> de Hero.tsx.
- * 52.5vw = 1008px a 1920, la proporción del asset grande (1920×1008).
- * Sin esto el hero seguiría usando la proporción del de 1366 y recortaría.
- *
- * @media (min-width: 1600px) {
- *   .hero {
- *     min-height: clamp(770px, 52.5vw, 1100px);
- *   }
- * }
+ * ┌────────────────────────────────────────────────────────────────────┐
+ * │  MESA DE 1920 — bloque al final del archivo (@media min-width:1600). │
+ * └────────────────────────────────────────────────────────────────────┘
+ * El diseño de 1920 NO es el de 1366 escalado: usa tipografía y márgenes
+ * proporcionalmente más grandes, otra foto de fondo (que llena el cuadro) y
+ * un recorte más alto del candidato. Todo eso vive en el bloque de abajo,
+ * medido contra el frame 65:1013 (1920×1080) y escrito en vw sobre esa base
+ * (1px del diseño = 1/19.2 vw). De 1600px para abajo no se toca nada.
  */
 
 /*
@@ -564,5 +563,132 @@
   .hero__cta--secundario .hero__cta-icono {
     width: max(calc(21 * var(--u)), 17px);
     height: max(calc(26 * var(--u)), 20px);
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 65:1013 del Figma, 1920×1080 (incluye los 72px del header, que acá
+ * es un componente aparte). Medidas en vw sobre base 1920: 1px = 1/19.2 vw.
+ * Solo aplica de 1600px de ancho para arriba; abajo manda el desktop de 1366.
+ */
+
+@media (min-width: 1600px) {
+  .hero {
+    /* Llena la pantalla bajo el header; nunca menos que la proporción del
+       diseño (1008/1920 = 52.5vw) para que el retrato entre entero. */
+    min-height: max(calc(100svh - var(--alto-header)), 52.5vw);
+  }
+
+  /* ---- Fondo: la foto cruda llena el cuadro (cover), como en el diseño ---- */
+  .hero__fondo {
+    inset: 0;
+    height: 100%;
+  }
+
+  .hero__fondo-img {
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /*
+   * Degradado blanco del diseño (Rectángulo 1): fundido horizontal de
+   * izquierda. Va sobre la foto y debajo del retrato (z-index -2). Paradas
+   * medidas del gradiente de Figma, pasadas a % del ancho del hero:
+   *   blanco 1.0 en x=0  →  0.62 en ~42%  →  transparente en ~65%.
+   */
+  .hero__velo {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(
+      to right,
+      rgb(255 255 255 / 1) 0%,
+      rgb(255 255 255 / 0.62) 42%,
+      rgb(255 255 255 / 0) 65%
+    );
+  }
+
+  /* ---- Retrato: caja 710×970 apoyada abajo, a 240px del borde derecho ---- */
+  .hero__retrato {
+    right: 12.5vw; /* 240/1920 */
+    height: 50.52vw; /* 970/1920 */
+  }
+
+  /* ---- Texto: margen 240, bloque anclado abajo con el hueco del diseño ---- */
+  .hero__inner {
+    padding-inline: 12.5vw; /* 240 */
+    /* Del pie de los botones al piso del hero: 1080 - 798 = 282px. */
+    padding-bottom: 14.69vw;
+  }
+
+  .hero__texto {
+    max-width: 46vw;
+  }
+
+  .hero__nombre {
+    font-size: 6.302vw; /* 121 */
+    /* El aire a «Alcalde» lo pone el margin-top del cargo (colapsan). */
+    margin-bottom: 0;
+  }
+
+  .hero__nombre-pila {
+    /* 128/121: el avance real entre «Edmundo» y «Del Águila» en el diseño. */
+    line-height: 1.058;
+  }
+
+  .hero__nombre-apellido {
+    font-size: 0.934em; /* 113/121 */
+    line-height: 0.95;
+  }
+
+  .hero__cargo {
+    font-size: 1.823vw; /* 35 */
+    /* 43/35 del diseño. Sin esto hereda `normal` (~1.5) y la caja del cargo
+       queda ~9px más alta, empujando el nombre para arriba. */
+    line-height: 1.23;
+    /* «Del Águila» → «Alcalde». El spec da 138, pero el render de Figma, con
+       el leading del line-height, lo deja en ~130; medido contra ese render. */
+    margin-top: 0.82vw;
+    margin-bottom: 0.73vw; /* 14: cargo → bajada */
+  }
+
+  .hero__bajada {
+    max-width: 37vw; /* ~710 */
+    font-size: 1.406vw; /* 27 */
+    /* Interlineado del diseño (37/27), no el 1.45 base: si no, la caja de dos
+       renglones queda 4px más alta. */
+    line-height: 1.37;
+    /* -0.54px del diseño: sin esto el renglón se ensancha y las letras se
+       corren hacia la derecha (se veía como texto “fantasma” al comparar). */
+    letter-spacing: -0.02em;
+    border-left-width: 4px;
+    padding-left: 0.73vw; /* ~14 */
+    margin-bottom: 1.72vw; /* 33: bajada → botón */
+  }
+
+  .hero__acciones {
+    gap: 1.04vw; /* 20 */
+  }
+
+  .hero__cta {
+    min-width: 16.77vw; /* 322 */
+    min-height: 3.49vw; /* 67 */
+    /* Open Sans 400 en el diseño de 1920, no la semibold de 1366. */
+    font-family: var(--fuente-texto);
+    font-weight: 400;
+    font-size: 1.094vw; /* 21 */
+  }
+
+  .hero__cta--primario .hero__cta-icono {
+    width: 1.354vw; /* 26 */
+    height: 1.354vw;
+  }
+
+  .hero__cta--secundario .hero__cta-icono {
+    width: 1.094vw; /* 21 */
+    height: 1.354vw; /* 26 */
   }
 }

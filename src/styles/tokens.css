@@ -9,6 +9,9 @@
   /* ---- Marca de campaña ---- */
   --color-primario: #c51f25;
   --color-primario-oscuro: #9d1a1e;
+  /* Rojo coral del diseño para BORDES y acentos (botón "Ver todo"). Sobre
+     blanco da 3.87:1, así que NO usarlo en texto chico: ahí va el primario. */
+  --color-primario-claro: #e74942;
   --color-acento: #c51f25;
 
   /* ---- Neutros ---- */

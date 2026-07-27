@@ -48,10 +48,18 @@ export const footerContent = {
   ] satisfies Enlace[],
 
   redes: [
-    { red: 'facebook' as Red, handle: 'eddelaguila', href: '[[facebook]]' },
-    { red: 'instagram' as Red, handle: 'eddelaguila', href: '[[instagram]]' },
-    { red: 'x' as Red, handle: 'eddelaguila', href: '[[x]]' },
-    { red: 'tiktok' as Red, handle: 'eddelaguila', href: '[[tiktok]]' },
+    {
+      red: 'facebook' as Red,
+      handle: 'eddelaguila',
+      href: 'https://www.facebook.com/eddelaguila/?locale=es_LA',
+    },
+    {
+      red: 'instagram' as Red,
+      handle: 'eddelaguila',
+      href: 'https://www.instagram.com/eddelaguila?igsh=ZHg2cWgzaTFreGtl',
+    },
+    { red: 'x' as Red, handle: 'eddelaguila', href: 'https://x.com/eddelaguila?lang=es' },
+    { red: 'tiktok' as Red, handle: 'eddelaguila', href: 'https://www.tiktok.com/@eddelaguilah' },
   ],
 
   /** El cuadro de 108×108 del diseño: en Figma quedó vacío, sin imagen. */
@@ -59,5 +67,4 @@ export const footerContent = {
   altQr: 'Código QR de la campaña',
 
   subir: 'Volver arriba',
-  legal: '[[pie-legal]]',
 }

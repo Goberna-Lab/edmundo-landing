@@ -73,6 +73,12 @@
   align-self: end;
 }
 
+/* El <picture> intercalado (fuente 1920) es inline por defecto; sin esto el
+   width:100% del img no tendría contra qué resolver y la foto se achicaría. */
+.quien-es__figura picture {
+  display: block;
+}
+
 .quien-es__figura img {
   display: block;
   width: 100%;
@@ -468,5 +474,199 @@
   /* Acá la rayita mide 40 fijos, no el ancho del dato como en escritorio. */
   .dato__valor::before {
     width: calc(40 * var(--u));
+  }
+}
+
+/* ============================ MESA DE 1920 ============================
+ *
+ * Frame 65:1084 del Figma (1920×1008, arranca donde termina el hero). NO es
+ * el diseño de 1366 escalado: tipografía y márgenes son proporcionalmente más
+ * grandes. Medidas en vw sobre base 1920: 1px = 1/19.2 vw = 0.05208vw. Solo
+ * de 1600px de ancho para arriba; abajo manda el desktop de 1366.
+ *
+ * Diferencias clave contra 1366, más allá del tamaño:
+ *   - el «01» del kicker acá va en rojo, no gris;
+ *   - la bajada y el párrafo son casi-negros (#1D1616), no el gris suave;
+ *   - la rayita de cada dato mide 36px fijos, no el ancho del dato;
+ *   - el valor va Regular, no Semibold.
+ */
+
+@media (min-width: 1600px) {
+  /* Barra roja: 76px en el diseño (vs. el tope de 72 de 1366). */
+  .quien-es::before {
+    width: 3.958vw; /* 76 */
+  }
+
+  /*
+   * Foto 787×868 apoyada al piso, a 171 del borde; texto en una columna de
+   * 628 a 240 del borde derecho. 171 + 787 + 94 + 628 + 240 = 1920.
+   * El tope por alto (0.9067 = 787/868) mantiene el retrato entero bajo el
+   * header, igual que en 1366.
+   */
+  .quien-es__inner {
+    grid-template-columns:
+      min(40.99vw, calc((100svh - var(--alto-header) - var(--aire-min)) * 0.9067))
+      minmax(0, 1fr);
+    gap: 4.896vw; /* 94 */
+    padding-left: 8.906vw; /* 171 */
+    padding-right: 12.5vw; /* 240 */
+  }
+
+  /* ---- Kicker: 01 —— ¿QUIÉN ES?, acá todo en rojo ---- */
+
+  .quien-es__kicker {
+    gap: 0.156vw; /* 3: pegado a la raya de los dos lados */
+    /* 238 - 193: del pie del kicker al tope de «Edmundo». */
+    margin-bottom: 2.344vw; /* 45 */
+    font-family: var(--fuente-kicker);
+    font-size: 1.3125vw; /* 25.2 */
+    /* 35.88/25.2: sin esto Source Sans 3 usa su `normal` (~1.6) y la caja del
+       kicker sale 4px más alta, corriendo todo el bloque para arriba. */
+    line-height: 1.424;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+  }
+
+  .quien-es__numero {
+    /* En 1920 el número también es rojo, no gris. */
+    color: var(--color-primario);
+  }
+
+  .quien-es__raya {
+    width: 3.281vw; /* 63 */
+  }
+
+  /* ---- Nombre ---- */
+
+  .quien-es__nombre {
+    font-size: 5.396vw; /* 103.6 */
+    /* Con el tracking natural Montserrat sale ~12px más ancho que el diseño
+       («Edmundo» 532 vs 520); -0.016em lo deja clavado en los dos renglones. */
+    letter-spacing: -0.016em;
+    /* 453 - 421: del pie de «del Águila» al tope de la bajada. */
+    margin-bottom: 1.667vw; /* 32 */
+  }
+
+  .quien-es__nombre-pila {
+    line-height: 1.219; /* 126.29/103.6 */
+  }
+
+  /*
+   * «del Águila» pisa a «Edmundo»: su tope de diseño (339) queda 25.29 más
+   * arriba de donde lo dejaría el interlineado de «Edmundo» (238 + 126.29).
+   * Mismo truco que en mobile: cada renglón con SU interlineado real y el
+   * solapamiento lo hace el margen negativo.
+   */
+  .quien-es__nombre-apellido {
+    font-size: 0.6486em; /* 67.2/103.6 */
+    line-height: 1.219; /* 81.92/67.2 */
+    margin-top: -1.317vw; /* -25.29 */
+  }
+
+  /* ---- Textos: los dos casi-negros, no el gris de 1366 ---- */
+
+  .quien-es__lead {
+    /* La columna ya mide 628: que la bajada la llene y corte donde el diseño. */
+    max-width: none;
+    font-size: 1.604vw; /* 30.8 */
+    line-height: 1.362; /* 41.94/30.8 */
+    letter-spacing: -0.02em;
+    color: var(--color-oscuro-titular);
+    /* 542 - 537: la bajada y el párrafo van casi pegados. */
+    margin-bottom: 0.26vw; /* 5 */
+  }
+
+  .quien-es__parrafo {
+    max-width: none;
+    font-size: 1.3125vw; /* 25.2 */
+    line-height: 1.362; /* 34.32/25.2 */
+    color: var(--color-oscuro-titular);
+    /* 686 - 644: del pie del párrafo a la línea separadora. */
+    margin-bottom: 2.188vw; /* 42 */
+  }
+
+  /* ---- Datos ---- */
+
+  .quien-es__datos {
+    gap: 4.06vw; /* 78 entre datos */
+    /*
+     * 712 - 686: de la línea al tope del dato MÁS ALTO (servicio), que es el
+     * que fija el alto del bloque. Medir contra el primero (719) lo dejaba 7px
+     * de más y corría todo para arriba al centrar.
+     */
+    padding-top: 1.354vw; /* 26 */
+    /*
+     * Los datos van 11px adentro de la columna (etiqueta en 1063, no 1052). El
+     * padding indenta el contenido pero la línea separadora, que es el
+     * border-top, sigue a todo el ancho de la columna como en el diseño.
+     */
+    padding-left: 0.573vw; /* 11 */
+  }
+
+  /*
+   * Separación distinta por tramo (17 icono→etiqueta, 9 etiqueta→raya,
+   * 6 raya→valor), así que no alcanza un gap único: van por márgenes.
+   */
+  .dato {
+    gap: 0;
+  }
+
+  /*
+   * Los datos son flex-row con align-items:stretch, así que el más alto fija
+   * el alto de todos y, con él, el del bloque entero. Los tres PNG tienen
+   * aspectos distintos (uno apaisado, dos verticales): un ancho único les daba
+   * altos disparejos (46/57/61) y el de «compromiso» sobresalía del diseño.
+   * Por eso cada icono lleva SU ancho, el del nodo de Figma, y así los altos
+   * caen en 48/56/54 como el diseño.
+   */
+  .dato__icono {
+    margin-bottom: 0.885vw; /* 17 */
+  }
+
+  .dato:nth-child(1) .dato__icono {
+    width: 2.76vw; /* 53 (maletín) */
+  }
+
+  .dato:nth-child(2) .dato__icono {
+    width: 2.552vw; /* 49 (libro) */
+  }
+
+  .dato:nth-child(3) .dato__icono {
+    width: 2.292vw; /* 44 (escudo) */
+  }
+
+  .dato__etiqueta {
+    font-family: var(--fuente-kicker);
+    font-size: 1.021vw; /* 19.6 */
+    /* 28/19.6: mismo motivo que el kicker, Source Sans 3 trae `normal` alto. */
+    line-height: 1.428;
+    /* 0.13em deja «EXPERIENCIA» en 136 como el diseño; con 0.1 salía 130 y
+       corría los dos datos de la derecha 6px para la izquierda. */
+    letter-spacing: 0.13em;
+  }
+
+  .dato__valor {
+    margin-top: 0.469vw; /* 9: etiqueta → raya */
+    padding-top: 0.313vw; /* 6: raya → valor */
+    font-size: 1.094vw; /* 21 */
+    /* Regular, no la Semibold de 1366. */
+    font-weight: 400;
+    line-height: 1.21; /* 25.41/21 */
+    letter-spacing: normal;
+  }
+
+  /* La rayita mide 36px fijos, no el ancho del dato como en 1366. */
+  .dato__valor::before {
+    width: 1.875vw; /* 36 */
+  }
+
+  /* ---- Trama de puntos: más grande y más adentro que la base ---- */
+
+  .quien-es .puntos {
+    --ancho: 4.948vw; /* 95 */
+    --alto: 4.01vw; /* 77 */
+    --radio-punto: 0.182vw; /* ~3.5, puntos de 7px */
+    top: 2.396vw; /* 46 */
+    right: 7.552vw; /* 145 */
   }
 }

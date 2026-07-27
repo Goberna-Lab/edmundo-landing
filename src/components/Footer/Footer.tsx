@@ -2,7 +2,7 @@ import { footerContent } from './footer.content'
 import type { Red } from './footer.content'
 import './Footer.css'
 
-const { marca, columnas, enlacesMobile, redes, imagenQr, altQr, subir, legal } =
+const { marca, columnas, enlacesMobile, redes, imagenQr, altQr, subir } =
   footerContent
 
 /** Los íconos van inline: el sprite de public/icons.svg es de temas, no de redes. */
@@ -29,17 +29,11 @@ export function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
-        {/*
-          La línea legal va acá adentro y no en una fila propia: el diseño no
-          la tiene y ponerla abajo le sumaba 50px al footer. Debajo del lockup
-          hay lugar de sobra y el alto queda como en Figma.
-        */}
         <div className="footer__bloque-marca">
           <p className="footer__marca">
             <span className="footer__marca-linea1">{marca.linea1}</span>
             <span className="footer__marca-linea2">{marca.linea2}</span>
           </p>
-          <p className="footer__legal">{legal}</p>
         </div>
 
         {columnas.map((columna) => (
