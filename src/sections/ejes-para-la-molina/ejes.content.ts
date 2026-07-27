@@ -6,6 +6,7 @@ import ejeParques from './assets/eje-5-parques.webp'
 import ejeConocimiento from './assets/eje-6-conocimiento.webp'
 import ejeVerde from './assets/eje-7-verde.webp'
 import ejeResponsable from './assets/eje-8-responsable.webp'
+import ejeModerna from './assets/eje-9-moderna.webp'
 import mini1 from './assets/mini-1.webp'
 import mini2 from './assets/mini-2.webp'
 import mini3 from './assets/mini-3.webp'
@@ -14,6 +15,7 @@ import mini5 from './assets/mini-5.webp'
 import mini6 from './assets/mini-6.webp'
 import mini7 from './assets/mini-7.webp'
 import mini8 from './assets/mini-8.webp'
+import mini9 from './assets/mini-9.webp'
 import num01 from './assets/num-01.svg'
 import num02 from './assets/num-02.svg'
 import num03 from './assets/num-03.svg'
@@ -59,15 +61,13 @@ type EjeBase = Omit<Eje, 'titulo'> & { titulo?: string }
 /*
  * Los nueve ejes, con el texto y las fotos de campaña.
  *
- * Del 1 al 8 cada uno trae la suya. La ficha y la miniatura NO son la misma
+ * Cada uno trae la suya. La ficha y la miniatura NO son la misma
  * imagen escalada: el diseño las pide en proporciones distintas (832×607 y
  * 260×147), así que cada una se recorta por separado desde la fuente, que
  * queda guardada al lado como `eje-N-<slug>-fuente.*`.
  *
- * El 9 todavía no tiene material propio: se presta la foto del 1 y el `alt`
- * describe LO QUE SE VE, no el eje —decir otra cosa le mentiría a quien usa
- * lector de pantalla—. Cuando llegue, cambiar `imagen`, `miniatura` y
- * `altImagen`.
+ * Los `alt` describen LO QUE SE VE en cada foto, no el título del eje: quien
+ * usa lector de pantalla necesita saber qué hay en la imagen.
  *
  * Ninguno tiene `url` todavía, así que el botón «Conoce más» no se dibuja.
  */
@@ -149,11 +149,10 @@ const ejes: EjeBase[] = [
     nombre: 'Municipalidad moderna',
     descripcion:
       'Menos trámites, más atención digital, inteligencia artificial, transparencia e indicadores para medir resultados.',
-    imagen: ejeSeguridad,
-    miniatura: mini1,
-    // Sin foto propia todavía: se presta la del eje 1 y el alt describe
-    // lo que se ve, no el eje.
-    altImagen: 'Central de monitoreo de seguridad de La Molina',
+    imagen: ejeModerna,
+    miniatura: mini9,
+    altImagen:
+      'Operadores en la Central de Gestión de Seguridad de La Molina',
   },
 ]
 
