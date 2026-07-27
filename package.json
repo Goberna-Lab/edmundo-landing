@@ -11,7 +11,7 @@
     "setup": "node setup.mjs"
   },
   "dependencies": {
-    "@goberna/landing-kit": "file:/home/angele/Projects/landing-kit",
+    "@goberna/landing-kit": "github:Goberna-Lab/landing-kit",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },
