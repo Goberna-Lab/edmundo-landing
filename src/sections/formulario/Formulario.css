@@ -54,8 +54,21 @@
   background: var(--color-primario);
 }
 
-/* La textura ya es roja y va opaca, como en Figma: el color del token queda
-   abajo como respaldo por si la imagen no carga. */
+/*
+ * La textura viene YA COMPUESTA como la pinta Figma: el rojo de abajo más el
+ * grano encima al 40.66% de opacidad (nodo 90:295, el grupo entero, no solo
+ * la imagen). El color del token queda detrás como respaldo si no carga.
+ *
+ * OJO, acá hubo un bug: el asset anterior traía el grano horneado al 100% y
+ * se veía como una alfombra con mega zoom. Medido sobre el recorte, la
+ * desviación del grano era 5.30 contra 1.65 del diseño: más de 3× más fuerte.
+ * Si alguna vez hay que re-exportar, tiene que salir del GRUPO (que lleva la
+ * opacidad), nunca del rectángulo de la imagen suelto.
+ *
+ * Su proporción (1000×1368 = 0.731) es la de la franja en las dos mesas
+ * (694×950 y 496×676 = 0.731), así que el `cover` casi no recorta: el encuadre
+ * ya viene del propio export.
+ */
 .formulario__franja img {
   width: 100%;
   height: 100%;

@@ -71,29 +71,45 @@ export function EjesParaLaMolina() {
           </figure>
 
           <div className="ejes__detalle">
-            {/* Número de marca de agua: decorativo, el dato real va en el contador. */}
-            <p className="ejes__marca" aria-hidden="true">
-              {conCero(activo + 1)}
-            </p>
+            {/*
+              Cifra de marca de agua: decorativa, el dato real va en el
+              contador de abajo. Es un SVG del diseño y no texto, así que no
+              depende de que Montserrat haya cargado ni de emparejar el
+              tracking a mano.
+            */}
+            <img
+              className="ejes__marca"
+              src={ejesContent.numeros[activo]}
+              alt=""
+              aria-hidden="true"
+            />
 
             <h3 className="ejes__eje-titulo">{eje.titulo}</h3>
             <p className="ejes__eje-descripcion">{eje.descripcion}</p>
 
             <div className="ejes__pie">
-              <a className="ejes__mas" href={eje.url}>
-                {ejesContent.verMas}
-                <svg
-                  className="ejes__mas-flecha"
-                  viewBox="0 0 12.603 12.603"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M68.6,56.7v9.1a.7.7,0,0,1-1.4,0V58.39L57.191,68.4a.7.7,0,0,1-.991-.991L66.208,57.4H58.8a.7.7,0,1,1,0-1.4h9.1A.7.7,0,0,1,68.6,56.7Z"
-                    transform="translate(-55.996 -56)"
-                    fill="currentColor"
-                  />
-                </svg>
-              </a>
+              {/*
+                El botón solo existe si el eje tiene su página interna. Todavía
+                no hay ninguna: un <a> sin destino real no lleva a ningún lado y
+                además se anuncia como enlace, así que hasta entonces no se
+                dibuja. Cuando lleguen las URLs, vuelve solo.
+              */}
+              {eje.url && (
+                <a className="ejes__mas" href={eje.url}>
+                  {ejesContent.verMas}
+                  <svg
+                    className="ejes__mas-flecha"
+                    viewBox="0 0 12.603 12.603"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M68.6,56.7v9.1a.7.7,0,0,1-1.4,0V58.39L57.191,68.4a.7.7,0,0,1-.991-.991L66.208,57.4H58.8a.7.7,0,1,1,0-1.4h9.1A.7.7,0,0,1,68.6,56.7Z"
+                      transform="translate(-55.996 -56)"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </a>
+              )}
 
               <p className="ejes__contador">
                 <span className="ejes__contador-actual">{conCero(activo + 1)}</span>

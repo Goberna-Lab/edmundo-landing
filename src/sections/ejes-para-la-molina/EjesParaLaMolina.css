@@ -164,14 +164,26 @@
   height: 100%;
 }
 
-/* Número gigante de fondo. */
+/*
+ * Cifra gigante de fondo. Es un SVG del diseño (contornos, no tipografía), así
+ * que se le fija el ALTO y el ancho queda libre: cada cifra trae el suyo según
+ * los dígitos —el «01» mide 137 de ancho y el «04» llega a 202—, y forzar un
+ * ancho común los deformaría.
+ *
+ * 111.5/1366 = 8.16vw en la mesa de 1366 y 156.1/1920 = 8.13vw en la de 1920:
+ * prácticamente la misma proporción, así que un solo valor sirve para las dos.
+ */
 .ejes__marca {
-  font-family: var(--fuente-display);
-  font-weight: 700;
-  font-size: clamp(4rem, 2rem + 6vw, 8rem);
-  line-height: 0.85;
-  letter-spacing: -0.04em;
-  color: var(--color-borde);
+  display: block;
+  height: 8.16vw;
+  width: auto;
+  /*
+   * `flex-start` o la cifra queda centrada. `.ejes__detalle` es una columna
+   * flex con el `stretch` por defecto, así que la caja del <img> se estiraba a
+   * los 467 de la columna; el SVG respeta su proporción por dentro y se
+   * centraba en esa caja sobrante, quedando ~100px a la derecha de donde va.
+   */
+  align-self: flex-start;
   margin: 0 0 var(--espacio-6);
 }
 
@@ -402,9 +414,9 @@
     border-radius: calc(16 * var(--u));
   }
 
-  /* Número marca de agua */
+  /* Cifra de marca de agua: 95.9 de alto en el frame de 430. */
   .ejes__marca {
-    font-size: max(calc(80 * var(--u)), 52px);
+    height: calc(95.9 * var(--u));
     margin-bottom: calc(8 * var(--u));
   }
 
@@ -618,22 +630,14 @@
   }
 
   /*
-   * El "01" de fondo. En Figma es un VECTOR (texto contorneado) cuya tinta mide
-   * 191.9×156.1 y apoya en 1213/485, el tope de la foto. Acá sigue siendo
-   * texto, y un vector no tiene ni aire de caja ni bearing lateral, así que las
-   * tres medidas se calibraron contra el PNG del diseño:
-   *   - cuerpo 215 para que la cifra mida 156 de alto;
-   *   - tracking -0.05em porque con el -0.02em del resto salía 200 de ancho
-   *     en vez de 192 (el alto está bien pero el hueco entre 0 y 1 sobra);
-   *   - los márgenes negativos comen el aire de la caja (30) y el bearing
-   *     izquierdo del «0» (9) para que la TINTA caiga en 1213/485.
+   * La cifra de fondo apoya en 1213/485, el tope de la foto, y mide 156.1 de
+   * alto. Al ser un SVG con la caja pegada a la tinta, cae ahí sola: ya no
+   * hacen falta los márgenes negativos que sí necesitaba cuando esto era
+   * texto (había que comerle el aire de la caja y el bearing del «0»).
    */
   .ejes__marca {
-    font-size: 11.198vw; /* 215 */
-    line-height: 1;
-    letter-spacing: -0.05em;
-    color: #ebebeb;
-    margin: -1.573vw 0 0 -0.453vw; /* -30.2 arriba, -8.7 a la izquierda */
+    height: 8.13vw; /* 156.1 */
+    margin: 0;
   }
 
   /*
@@ -648,8 +652,8 @@
   .ejes__eje-titulo {
     font-size: 2.625vw; /* 50.4 */
     line-height: 1.219; /* 61.44/50.4 */
-    /* 678 - 669.8: del pie de la caja de la cifra al título del eje. */
-    margin-top: 0.427vw; /* 8.2 */
+    /* 678 - 641.1: del pie de la cifra al título del eje. */
+    margin-top: 1.922vw; /* 36.9 */
     /* 807 - 800: van casi pegados. */
     margin-bottom: 0.365vw; /* 7 */
   }
