@@ -40,8 +40,12 @@ export const escucharContent = {
 
   plazo: {
     numero: '7',
-    /** Dos renglones en el diseño. */
-    etiqueta: ['Días máx.', 'de respuesta'],
+    /**
+     * Dos renglones en el escritorio y UNO en mobile, donde el CSS los
+     * empalma con `display: inline`. El espacio final del primero es lo que
+     * los separa al empalmar: sin él quedaría "máx.de respuesta".
+     */
+    etiqueta: ['Días máx. ', 'de respuesta'],
   },
 
   ctaPrimario: { label: 'Dejar mi propuesta', href: '#la-molina-adelante' },

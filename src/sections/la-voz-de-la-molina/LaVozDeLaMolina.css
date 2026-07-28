@@ -260,14 +260,22 @@
   bottom: -4px;
   /* 310 de 343: la placa no llega al borde derecho de la foto. */
   width: 90.4%;
-  min-height: 40px;
+  /*
+   * TRES renglones de 20, no dos.
+   *
+   * La placa va anclada abajo, así que si cada una mide lo que mide su texto,
+   * las de tres renglones arrancan 20px más arriba que las de dos y la fila
+   * queda despareja —medido: la del medio en 392 y las otras dos en 412—.
+   * Reservando el alto del título más largo, las tres empiezan a la misma
+   * altura y el texto se centra dentro.
+   *
+   * OJO: si alguna nota llegara a necesitar CUATRO renglones, hay que subir
+   * este valor o acortar el título; si no, esa placa vuelve a desalinearse.
+   */
+  min-height: 60px;
   display: flex;
   align-items: center;
-  /*
-   * Sin padding vertical: el título son dos renglones de 17/20, o sea 40px
-   * justos, que es el alto de la placa en el diseño. Agregarle aire la hacía
-   * crecer y le comía otros 12px a la foto.
-   */
+  /* Sin padding vertical: el alto lo fija el `min-height` de arriba. */
   padding: 0 10px;
   background: var(--color-blanco);
   font-family: var(--fuente-display);

@@ -333,9 +333,21 @@
 
 /* ---- Mobile ----
  *
- * ES OTRA COMPOSICIÓN, no el escritorio angosto. El frame de 430×1625
- * apila todo: foto → kicker → título → bajada → pasos verticales →
- * tarjetas apiladas → CTAs apilados.
+ * ES OTRA COMPOSICIÓN, no el escritorio angosto. El frame es el 19:1289
+ * ("Frame 8", 430×1625) de la página "Landing Page - Mobile": apila foto →
+ * kicker → título → bajada → pasos verticales → tarjetas → CTAs.
+ *
+ * MEDIDAS DEL FRAME (y relativo al tope de la sección, x absoluto):
+ *   foto      24, 56    382×479, radio 16   (OTRO recorte que el de 1366)
+ *   kicker    24, 591   14/19.1, ls 0.14em
+ *   título    24, 643.8 Montserrat 29/34 — UN renglón de 385
+ *   bajada    27, 688.8 16/32, dos renglones
+ *   filete    48.5, 787.8  269 de largo (arranca en el eje de los círculos)
+ *   círculos  24, 805 / 893 / 982   48×48  (paso de 88)
+ *   compromiso 24, 1113  382×197, radio 16, borde #D9DEE2
+ *   plazo      24, 1325  382×100, «7» de 71/81 y etiqueta en UN renglón
+ *   CTAs       24, 1441  260×56  ·  24, 1513  160×56
+ *   cierra en 1569, o sea 56 de aire abajo
  */
 
 @media (max-width: 760px) {
@@ -350,7 +362,7 @@
   .escuchar__inner {
     padding-inline: var(--margen);
     padding-top: calc(56 * var(--u));
-    padding-bottom: calc(40 * var(--u));
+    padding-bottom: calc(56 * var(--u));
     gap: 0;
   }
 
@@ -360,7 +372,20 @@
     margin-bottom: calc(56 * var(--u));
   }
 
+  /*
+   * El recorte de mobile NO es el de 1366: 382×479 (0.80) contra 474×681
+   * (0.70), o sea una ventana más ancha y más baja. Dejándole la proporción
+   * natural del archivo, la foto salía 70px más alta y corría toda la
+   * sección. `cover` recorta arriba y abajo.
+   *
+   * OJO: el encuadre no queda idéntico al del diseño, porque el asset ya
+   * viene recortado para 1366. Para clavarlo habría que exportar el grupo
+   * 19:1296 como asset propio y sumarlo al <picture>, como se hizo con el
+   * de 1920.
+   */
   .escuchar__figura img {
+    aspect-ratio: 382 / 479;
+    object-fit: cover;
     border-radius: calc(16 * var(--u));
   }
 
@@ -368,8 +393,14 @@
 
   .escuchar__kicker {
     gap: calc(4 * var(--u));
-    margin-bottom: calc(12 * var(--u));
-    font-family: var(--fuente-kicker);
+    /* Del pie del kicker (610) al tope del título (643.8). */
+    margin-bottom: calc(33.8 * var(--u));
+    /*
+     * Open Sans, NO la Source Sans 3 del kicker de 1920: este frame lo tiene
+     * en OpenSans-Regular. Con Source Sans 3 la etiqueta salía 19px más
+     * angosta que la del diseño (187 contra 206).
+     */
+    font-family: var(--fuente-texto);
     font-size: max(calc(14 * var(--u)), 12px);
     font-weight: 400;
     line-height: 1.362;
@@ -387,15 +418,27 @@
   .escuchar__titulo {
     font-size: max(calc(29 * var(--u)), 20px);
     line-height: 1.172;
-    margin-bottom: calc(12 * var(--u));
+    /*
+     * En el diseño entra en UN renglón, pero Figma no parte el texto de ancho
+     * automático: su caja mide 385 y el ancho útil a 430 es 382. MEDIDO en el
+     * navegador: a 29/-0.02em el renglón pide 383.66 y se partía en dos.
+     * Cerrando el tracking a -0.03em pide 376.11 y quedan ~6 de aire; el
+     * ajuste aguanta hasta 320, donde todavía sobran ~4.
+     */
+    letter-spacing: -0.03em;
+    margin-bottom: calc(11 * var(--u));
   }
 
   /* ---- Bajada ---- */
 
   .escuchar__bajada {
+    /* Mismo truco que en la mesa de 1920: el diseño mete esta caja 3px
+       adentro para que su tinta quede alineada con la de la «T» del título. */
+    margin-left: calc(3 * var(--u));
     font-size: max(calc(16 * var(--u)), 13px);
     line-height: 2;
-    margin-bottom: calc(28 * var(--u));
+    /* Del pie de la bajada (752.8) al filete (787.8). */
+    margin-bottom: calc(35 * var(--u));
   }
 
   /* ---- Pasos: verticales, con el círculo al costado ---- */
@@ -403,21 +446,29 @@
   .escuchar__pasos {
     display: flex;
     flex-direction: column;
+    /* Paso de 88 entre círculos de 48. */
     gap: calc(40 * var(--u));
-    margin-bottom: calc(28 * var(--u));
-    /* Línea separadora arriba del primer paso. */
-    padding-top: calc(28 * var(--u));
+    /* Del pie del último círculo (1030) al tope de la tarjeta (1113). */
+    margin-bottom: calc(83 * var(--u));
+    /* Del filete (787.8) al primer círculo (805). */
+    padding-top: calc(17.2 * var(--u));
     position: relative;
   }
 
+  /*
+   * El filete NO cruza todo el ancho: arranca en el eje de los círculos
+   * (48.5 absoluto) y mide 269, o sea que muere bastante antes del margen
+   * derecho.
+   */
   .escuchar__pasos::before {
     content: '';
     position: absolute;
     top: 0;
-    left: calc(24.5 * var(--u));
-    right: calc(24.5 * var(--u));
+    left: calc(24 * var(--u));
+    right: auto;
+    width: calc(269 * var(--u));
     height: 1px;
-    background: var(--color-borde);
+    background: #d9dee2;
   }
 
   .paso {
@@ -427,9 +478,31 @@
     text-align: left;
   }
 
-  /* Sin línea conectora entre pasos en mobile. */
+  /*
+   * La conectora del escritorio es horizontal; acá los pasos se apilan, así
+   * que el mismo pseudo-elemento se para y cae por el eje de los círculos.
+   * Hay que reescribir las cuatro medidas del bloque de escritorio: `right`
+   * vuelve a `auto` porque ahí la línea se estira entre dos bordes y acá el
+   * largo lo fija el alto.
+   */
   .paso:not(:last-child)::after {
-    display: none;
+    /* Del pie del círculo (100%) al tope del siguiente, que está 40 más
+       abajo (el `gap` de la lista), dejando 6 de aire de cada lado —el
+       mismo respiro que deja la conectora horizontal del escritorio—. */
+    top: calc(100% + 6 * var(--u));
+    /*
+     * 24 = el radio del círculo, o sea su eje. SIN centrar el pelo con un
+     * `translateX(-50%)`: a 430 eso lo dejaba apoyado en el medio píxel y el
+     * antialias lo repartía al 50% entre dos columnas, que sobre este fondo
+     * es casi invisible. Apoyado en el píxel entero se ve nítido, y el medio
+     * píxel que queda corrido del eje no lo nota nadie.
+     */
+    left: calc(24 * var(--u));
+    right: auto;
+    width: 1px;
+    height: calc(28 * var(--u));
+    /* El mismo gris del filete de arriba: son el mismo riel. */
+    background: #d9dee2;
   }
 
   .paso__circulo {
@@ -450,34 +523,53 @@
 
   .escuchar__tarjetas {
     grid-template-columns: 1fr;
-    gap: calc(12 * var(--u));
-    margin-bottom: calc(18 * var(--u));
+    /* Del pie de compromiso (1310) al tope de plazo (1325). */
+    gap: calc(15 * var(--u));
+    /* Del pie de plazo (1425) al primer botón (1441). */
+    margin-bottom: calc(16 * var(--u));
   }
 
+  /* 26 abajo y no 24: con los 2 del borde da los 197 de alto del diseño. */
   .compromiso {
-    padding: calc(24 * var(--u));
+    padding: calc(24 * var(--u)) calc(24 * var(--u)) calc(26 * var(--u));
+    border-color: #d9dee2;
     border-radius: calc(16 * var(--u));
   }
 
   .compromiso__titulo {
     font-size: max(calc(14 * var(--u)), 11px);
+    /* Sin fijarlo hereda el 1.6 del body: la caja salía de 22.4 en vez de los
+       19.1 del diseño y empujaba la lista entera 3.3px para abajo. */
+    line-height: 1.362;
     letter-spacing: 0.14em;
-    margin-bottom: calc(12 * var(--u));
+    margin-bottom: calc(8.9 * var(--u));
+    color: #7e7e7e;
   }
 
+  /*
+   * Sin separación entre puntos, igual que en la mesa de 1920: en el diseño
+   * los tres son UN bloque de texto de tres renglones de 39, así que el aire
+   * ya lo pone el propio interlineado.
+   */
   .compromiso__lista {
-    gap: calc(8 * var(--u));
+    gap: 0;
   }
 
   .compromiso__punto {
+    /* El base deja la columna del tilde en 14px y acá el tilde mide 18.8:
+       sin reescribirla se desbordaba sobre el texto. */
+    grid-template-columns: calc(18.8 * var(--u)) minmax(0, 1fr);
+    gap: calc(8.2 * var(--u));
+    /* El tilde va centrado en su renglón, no pegado arriba. */
+    align-items: center;
     font-size: max(calc(16 * var(--u)), 13px);
-    line-height: 1.5;
+    line-height: 2.4375; /* 39/16 */
   }
 
   .compromiso__tilde {
-    width: max(calc(19 * var(--u)), 14px);
-    height: max(calc(14 * var(--u)), 10px);
-    margin-top: calc(2 * var(--u));
+    width: calc(18.8 * var(--u));
+    height: calc(13.9 * var(--u));
+    margin-top: 0;
   }
 
   /* ---- Plazo ---- */
@@ -485,14 +577,21 @@
   .plazo {
     flex-direction: row;
     align-items: center;
-    gap: calc(12 * var(--u));
-    padding: calc(16 * var(--u)) calc(24 * var(--u));
+    /* El escritorio centra el contenido en la caja, y eso pisaba el padding
+       de acá: el bloque «7 + etiqueta» quedaba 31px corrido a la derecha. */
+    justify-content: flex-start;
+    /* Del «7» (termina en 102) a la etiqueta (109). */
+    gap: calc(7 * var(--u));
+    /* 9.5 arriba y abajo dejan la caja en los 100 del diseño; el «7» arranca
+       33 adentro del borde izquierdo, no 24. */
+    padding: calc(9.5 * var(--u)) calc(24 * var(--u)) calc(9.5 * var(--u))
+      calc(33 * var(--u));
     border-radius: calc(16 * var(--u));
   }
 
   .plazo__numero {
     font-size: max(calc(71 * var(--u)), 46px);
-    line-height: 1;
+    line-height: 1.141; /* 81/71 */
     margin-bottom: 0;
   }
 
@@ -500,20 +599,39 @@
     font-size: max(calc(14 * var(--u)), 11px);
     letter-spacing: 0.14em;
     line-height: 1.362;
+    /* Gris sólido del diseño, no el blanco atenuado del escritorio. */
+    color: #d9dee2;
+    opacity: 1;
+  }
+
+  /* Acá la etiqueta va en UN renglón, no en dos como en el escritorio: los
+     dos renglones del contenido se empalman (terminan en espacio). */
+  .plazo__etiqueta span {
+    display: inline;
   }
 
   /* ---- CTAs: apilados ---- */
 
   .escuchar__acciones {
     flex-direction: column;
-    gap: calc(12 * var(--u));
+    /* Del pie del primario (1497) al tope del secundario (1513). */
+    gap: calc(16 * var(--u));
   }
 
   .escuchar__cta {
+    /*
+     * El bloque de ≤900 deja `flex: 1 1 175px` pensando en una FILA, pero acá
+     * la caja es una columna: ese 175 dejaba de ser ancho y pasaba a ser el
+     * alto base de cada botón. Se veían de 175 de alto en vez de 56, y la
+     * sección terminaba 238px más larga que el frame.
+     */
+    flex: 0 0 auto;
     width: 100%;
     min-width: 0;
     min-height: max(calc(56 * var(--u)), 48px);
     padding-inline: calc(24 * var(--u));
+    /* Del icono (termina en 79) al texto (89). */
+    gap: calc(10 * var(--u));
     border-radius: calc(30 * var(--u));
     font-size: max(calc(16 * var(--u)), 13px);
   }

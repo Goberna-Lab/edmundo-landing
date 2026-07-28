@@ -166,12 +166,19 @@
   /* 69px exactos a 1366: 1.2rem (19.2) + 3.65vw (49.9). */
   font-size: clamp(2.2rem, 1.2rem + 3.65vw, 5.5rem);
   /*
-   * 84/69 = 1.219. En Figma el interlineado del título es AUTOMÁTICO, que en
-   * Montserrat 69px calcula 84.11px: el bloque «Construyamos/Juntos» mide
-   * 168px justos, o sea 84 por renglón. (El «69px/61px» que decía el
-   * encabezado de este archivo estaba mal y apretaba el título 23px de más.)
+   * 1.0145, el mismo ratio que la mesa de 1920 (98 sobre 96.6).
+   *
+   * Antes iba 1.219, que es el interlineado AUTOMÁTICO que Figma calcula para
+   * Montserrat en la mesa de 1366 (84.11 sobre 69). Da un bloque muy aireado:
+   * a 1184 de ancho el hueco entre «Construyamos» y «Juntos» quedaba en 76px
+   * para una letra de 62. El rediseño de 1920 lo cierra a casi 1 y se ve
+   * mejor, así que las dos mesas usan el mismo criterio.
+   *
+   * OJO, no bajarlo mucho más: «Construyamos» y «Juntos» tienen cola («y» y
+   * «J» en Montserrat) y el renglón de abajo arranca con mayúscula. Por debajo
+   * de ~0.95 la cola de un renglón empieza a tocar el siguiente.
    */
-  line-height: 1.219;
+  line-height: 1.0145;
   letter-spacing: -0.01em;
   color: var(--color-blanco);
   /* Del pie del último renglón al tope de los botones: 521 - 445 = 76px. */
@@ -186,11 +193,12 @@
 .adelante__titulo-linea--suave {
   color: #b4b2b1;
   /*
-   * El gris no sigue el ritmo del interlineado: en el diseño arranca en 361
-   * y el blanco termina en 338, o sea 23px de aire extra entre los dos
-   * bloques. Sin esto, los tres renglones quedan pegados a 84px parejos.
+   * Un respiro entre el bloque blanco y el gris, no el salto de 23px que traía
+   * la mesa de 1366: sumado al interlineado nuevo, ese aire extra volvía a
+   * separar demasiado los tres renglones. En 1920 el diseño no lleva ninguno
+   * (los tres van parejos), así que acá queda apenas un guiño.
    */
-  margin-top: clamp(8px, 1.68vw, 23px);
+  margin-top: clamp(4px, 0.7vw, 10px);
 }
 
 /* ---- CTAs ---- */
