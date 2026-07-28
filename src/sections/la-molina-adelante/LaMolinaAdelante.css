@@ -323,8 +323,16 @@
 
   .adelante__titulo {
     font-size: max(calc(49 * var(--u)), 32px);
-    line-height: 1.219;
-    margin-bottom: calc(20 * var(--u));
+    /*
+     * El mismo 1.0145 que las otras dos mesas, no el 1.219 que traía: ése es
+     * el interlineado AUTOMÁTICO de Figma para Montserrat y acá pesaba más
+     * que en desktop —tres renglones de 49u con casi un cuarto de letra de
+     * aire entre cada uno—. Ver el comentario del título en desktop: las tres
+     * mesas usan el mismo criterio.
+     */
+    line-height: 1.0145;
+    /* Del pie del último renglón al tope de los botones. */
+    margin-bottom: calc(56 * var(--u));
   }
 
   .adelante__titulo-linea--suave {
